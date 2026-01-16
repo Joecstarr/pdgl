@@ -1,0 +1,12 @@
+[submodule "libraries/unity"]
+	path = libraries/unity
+	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "libraries/cmock"]
+	path = libraries/cmock
+	url = https://github.com/ThrowTheSwitch/CMock
+[submodule "libraries/fmem"]
+	path = libraries/fmem
+	url = https://github.com/Joecstarr/fmem.git
+[submodule "libraries/tomlc17"]
+	path = libraries/tomlc17
+	url = https://github.com/cktan/tomlc17.git
