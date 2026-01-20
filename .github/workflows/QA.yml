@@ -1,0 +1,45 @@
+name: CMake
+
+on:
+    pull_request:
+        branches: ["main"]
+
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+                  fetch-depth: 0
+
+            - name: Check Nixpkgs inputs
+              uses: DeterminateSystems/flake-checker-action@main
+              with:
+                  fail-mode: true
+
+            - name: Install Nix
+              uses: DeterminateSystems/nix-installer-action@main
+
+            - name: Check
+              run: |
+                  nix develop --command \
+                      just check
+
+            - name: Build
+              run: |
+                  nix develop --command \
+                      just build_all
+
+            - name: Test
+              run: |
+                  nix develop --command \
+                    just test_all
+
+            - name: Docs html
+              run: |
+                  nix develop --command \
+                    just html
