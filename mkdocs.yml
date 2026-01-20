@@ -3,7 +3,7 @@ site_description: A Portable Generation Language Based on Probabilistic Context 
 site_url: https://joe-starr.com/
 theme:
     name: material
-    logo: assets/logo.png
+    logo: assets/logo.svg
     favicon: assets/favicon.png
     palette:
         - media: "(prefers-color-scheme: light)"
@@ -18,7 +18,7 @@ theme:
         - media: "(prefers-color-scheme: dark)"
           accent: deep purple
           primary: deep purple
-          scheme: slate
+          scheme: dracula
           toggle:
               icon: material/brightness-4
               name: Switch to light mode
@@ -32,6 +32,7 @@ repo_url: https://github.com/Uiowa-Applied-Topology/dgl_v1_mirror
 extra_css:
     - https://unpkg.com/katex@0/dist/katex.min.css
     - "admonitions.css"
+    - "colors.css"
 
 extra_javascript:
     - https://unpkg.com/katex@0/dist/katex.min.js

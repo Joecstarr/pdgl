@@ -1,0 +1,25 @@
+---
+title: Force Exit
+authors:
+  - joe_starr
+---
+
+## Primary actor
+
+N/A
+
+## Trigger:
+
+An upstream actor requests the PDGL be exited.
+
+## Goal:
+
+The PDGL is exited.
+
+## Preconditions:
+
+None.
+
+## Scenario:
+
+1. The PDGL exits.
