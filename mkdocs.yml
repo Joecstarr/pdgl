@@ -1,0 +1,113 @@
+site_name: PDGL
+site_description: A Portable Generation Language Based on Probabilistic Context Free Grammars
+site_url: https://joe-starr.com/
+theme:
+    name: material
+    logo: assets/logo.png
+    favicon: assets/favicon.png
+    palette:
+        - media: "(prefers-color-scheme: light)"
+          accent: deep purple
+          primary: deep purple
+          scheme: default
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+
+        # Palette toggle for dark mode
+        - media: "(prefers-color-scheme: dark)"
+          accent: deep purple
+          primary: deep purple
+          scheme: slate
+          toggle:
+              icon: material/brightness-4
+              name: Switch to light mode
+    features:
+        - navigation.tabs
+        - navigation.tabs.sticky
+        - navigation.indexes
+        - navigation.path
+repo_name: Uiowa-Applied-Topology/dgl_v1_mirror
+repo_url: https://github.com/Uiowa-Applied-Topology/dgl_v1_mirror
+extra_css:
+    - https://unpkg.com/katex@0/dist/katex.min.css
+    - "admonitions.css"
+
+extra_javascript:
+    - https://unpkg.com/katex@0/dist/katex.min.js
+    - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+    - "extra.js"
+
+watch:
+    - docs
+    - source
+
+nav:
+    - Home: "./README.md"
+    - Use Cases:
+          - "use-cases/supply_language_specification.md"
+          - "use-cases/load_language_specification.md"
+          - "use-cases/language_specification_is_welldefined.md"
+          - "use-cases/log_state_information.md"
+          - "use-cases/execute_generation_of_language.md"
+          - "use-cases/execute_multiple_generations.md"
+          - "use-cases/report_portion_of_generation_string.md"
+          - "use-cases/execute_production.md"
+          - "use-cases/push_production_to_stack.md"
+          - "use-cases/pop_production_from_stack.md"
+          - "use-cases/execute_pure_production.md"
+          - "use-cases/execute_janet_production.md"
+          - "use-cases/execute_range_production.md"
+          - "use-cases/stop_generation.md"
+          - "use-cases/force_exit.md"
+          - "use-cases/force_terminate_production.md"
+    - PDGL Units: "*include ./source/*/mkdocs.yml"
+    - Source Documentation: "corelib/files.md"
+plugins:
+    - auto-refresh-build-pages:
+          update_message: "The page has been updated. Do you want to reload?"
+          yes_button_text: "Yes"
+          no_button_text: "No"
+          check_interval_seconds: 10
+    - mkdoxy:
+          projects:
+              corelib: # name of project must be alphanumeric + numbers (without spaces)
+                  src-dirs: ./source/ # path to source code (support multiple paths separated by space) => INPUT
+                  full-doc: True # if you want to generate full documentation
+                  doxy-cfg: # standard doxygen configuration (key: value)
+                      FILE_PATTERNS: "*.c *.h" # specify file patterns to filter out
+                      RECURSIVE: True # recursive search in source directories
+    - gh-admonitions:
+    - monorepo
+    - search:
+    - autorefs:
+    - bibtex:
+          bib_file: "docs/ref.bib"
+    - authors:
+          authors_file: ".authors.yml"
+
+markdown_extensions:
+    - attr_list
+    - footnotes
+    - pymdownx.arithmatex:
+          generic: true
+    - toc:
+          permalink: 
+          separator: "_"
+    - admonition
+    - pymdownx.details
+    - pymdownx.emoji:
+          emoji_index: !!python/name:material.extensions.emoji.twemoji
+          emoji_generator: !!python/name:material.extensions.emoji.to_svg
+          options:
+              custom_icons:
+                  - overrides/.icons
+    - pymdownx.superfences:
+          custom_fences:
+              - name: mermaid
+                class: mermaid
+                format: !!python/name:pymdownx.superfences.fence_code_format
+extra:
+    social:
+        - icon: fontawesome/brands/github-alt
+          link: https://github.com/Uiowa-Applied-Topology/dgl_v1_mirror

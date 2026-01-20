@@ -1,0 +1,6 @@
+wrap = 100
+
+[plugin.mkdocs]
+align_semantic_breaks_in_lists = true
+ignore_missing_references = true
+no_mkdocs_math = false
