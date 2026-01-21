@@ -70,6 +70,8 @@ vMAJOR.MINOR.PATCH
 ├── 📁 docs
 │   └── 📄 README.md
 ├── 📁 libraries
+│   ├── 📁 <libraries> 
+│   ├── 🛠️ CMakeLists.txt 
 │   └── 📄 Findlizard  
 ├── 📁 languages 
 │   └── <language definitions>  
@@ -100,9 +102,9 @@ vMAJOR.MINOR.PATCH
 
 #### Directories of interest
 
-- Source: This directory contains the C libraries for the pdgl.
-- Docs: This directory contains the high level documentation for the pdgl.
-- Languages: This directory contains language definitions for the pdgl.
+- Source: This directory contains the C libraries for the PDGL.
+- Docs: This directory contains the high level documentation for the PDGL.
+- Languages: This directory contains language definitions for the PDGL.
 
 ### Define a unit
 
@@ -110,7 +112,7 @@ A unit in this project shall be defined as a header file for a C library module.
 
 ### Quality
 
-The pdgl and its units shall fail safe, that is the pdgl and its units can fail but the failure must
+The PDGL and its units shall fail safe, that is the PDGL and its units can fail but the failure must
 be detectable.
 
 #### Unit testing
@@ -124,13 +126,13 @@ No integration test is expected. Integration tests are expected to be carried ou
 
 ### Requirements
 
-The pdgl reimplements portions of the original dgl by Maurer [@maurerDGLVersion22024] (source is
+The PDGL reimplements portions of the original dgl by Maurer [@maurerDGLVersion22024] (source is
 available on [Dr. Maurer's personal website](https://cs.baylor.edu/~maurer/dgl.php) and mirrored on
 [GitHub](https://github.com/Uiowa-Applied-Topology/dgl_v1_mirror)). The original dgl consumes a
 language definition for a context free grammar and produces a compilable `.c` source file. This
-workflow is a little cumbersome in practice. The pdgl intends to implement a single portable library
+workflow is a little cumbersome in practice. The PDGL intends to implement a single portable library
 that consumes a language definition and directly probabilistically generates words of that language.
-To that end the pdgl shall match the features and use cases of the original dgl. The pdgl however
+To that end the PDGL shall match the features and use cases of the original dgl. The PDGL however
 shall forgo the `dgl` language itself in favor of definitions of languages in `toml` strings.
 
 #### Functional Requirements
@@ -198,6 +200,8 @@ flowchart LR
     PPfS -. uses .-> sta
 ```
 
+###### Phase 1
+
 - [Execute Multiple Generations](use-cases/execute_multiple_generations.md)
 - [Execute Generation of Language](use-cases/execute_generation_of_language.md)
 - [Execute Production](use-cases/execute_production.md)
@@ -210,33 +214,36 @@ flowchart LR
 - [Supply Language Specification](use-cases/supply_language_specification.md)
 - [Load Language Specification](use-cases/load_language_specification.md)
 - [Language Specification is Well-defined](use-cases/language_specification_is_welldefined.md)
-- [Log State Information](use-cases/log_state_information.md)
 - [Stop Generation](use-cases/stop_generation.md)
 - [Force Exit](use-cases/force_exit.md)
 - [Force Terminate Production](use-cases/force_terminate_production.md)
 
+###### Phase 2
+
+- [Log State Information](use-cases/log_state_information.md)
+
 ### Non-Functional Requirements
 
-Not applicable.
+#### Colors
 
-## Technologies
+Diagrams included in documentation for features (use case and unit descriptions) are expected to use
+the [COLORS](https://clrs.cc) color palette.
 
-### Languages and Frameworks
+#### Technologies
 
-The runnable and data wrangler libraries will be written in C/C++ using clang for compiling and
-cmake as a build system. The runners are written with various tooling including C/C++, Python, and
-JavaScript.
+##### Languages and Frameworks
+
+The PDGL and its components shall be written in C using clang for compiling and cmake as a build
+system. By design the entry point shall be decoupled from core functionality. These are expected to
+be compilable with various tooling including C/C++, Python, and JavaScript. This requires all
+'external' interfaces to be C++ linkable.
 
 Unit testing of runnable and data wrangler libraries will use the
 [Unity](http://www.throwtheswitch.org/unity) and [Cmock](http://www.throwtheswitch.org/cmock)
 libraries for unit testing. Test indexing is handled by
 [CTest](https://cmake.org/cmake/help/latest/module/CTest.html).
 
-#### Code Style Guide
-
-The C/C++ code in this repository shall be formatted by the bundled uncrustify configuration.
-
-### Tools
+###### Tools
 
 - git
 - mermaid.js
@@ -253,7 +260,61 @@ The C/C++ code in this repository shall be formatted by the bundled uncrustify c
 - uncrustify
 - mdformat
 
-## Design and Documentation
+## Design
+
+### System Architecture
+
+```mermaid
+flowchart LR
+    ep["<< External >> 
+    Entry point"]
+    toml["TOML Parser"]
+    rsm["Resolution State Machine"]
+    io["I/O"]
+    log["Log"]
+    ps["Production Store"]
+    jp["Janet Production"]
+    pure["Pure Production"]
+    range["Range Production"]
+    ip["<< Interface >>
+    Production"]
+    ep -->|1..*| rsm
+    ep -->|1..1| ps 
+    ep -->|1..1| toml 
+    ep -->|1..1| io 
+    rsm -->|1..1| toml 
+    ip -->|1..1| io 
+    ip -->|1..1| log 
+    rsm -->|1..1| ps 
+    ep -->|1..1| log 
+    rsm -->|1..1| log 
+    ps -->|1..*| jp
+    ps -->|1..*| pure
+    ps -->|1..*| range
+    jp -. Implements .-> ip
+    pure -. Implements .-> ip 
+    range -. Implements .-> ip 
+```
+
+#### General Design Considerations
+
+##### Memory
+
+The PDGL is to be written in C, one major consideration when using a non-memory language like C is
+memory leaks. The allocation (and release) of memory at runtime is complicated and error prone. To
+mitigate the risk of a memory leak we will restrict runtime memory allocation where possible.
+Instead we will allocate memory at runtime or opt for passing of buffers.
+
+##### Patterns
+
+We will leverage the [strategy](https://refactoring.guru/design-patterns/strategy) pattern for
+defining generic productions with the interface described as the
+[Production Interface](./interfaces/production.md). We will also leverage the
+[prototype](https://refactoring.guru/design-patterns/prototype) pattern for managing configurations
+of various 'objects'. Meaning components should not maintain internal state, any state must be
+passed to components.
+
+### Documentation of implementation
 
 C/C++ code is documented with [Doxygen](https://www.doxygen.nl/), the Doxygen comments shall be
 parsed and output as XML. General documentation shall be recorded as markdown files in each module's
@@ -262,7 +323,6 @@ directory. Documentation shall be aggregated using the
 [Breathe](https://github.com/breathe-doc/breathe) to parse Doxygen XML into the general
 documentation.
 
-### Colors
+#### Code Style Guide
 
-Diagrams included in documentation for features (use case and unit descriptions) are expected to use
-the [COLORS](https://clrs.cc) color palette.
+The C/C++ code in this repository shall be formatted by the bundled uncrustify configuration.

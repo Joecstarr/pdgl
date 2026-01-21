@@ -62,6 +62,8 @@ nav:
           - "use-cases/stop_generation.md"
           - "use-cases/force_exit.md"
           - "use-cases/force_terminate_production.md"
+    - Interfaces:
+          - "interfaces/production.md"
     - PDGL Units: "*include ./source/*/mkdocs.yml"
     - Source Documentation: "corelib/files.md"
 plugins:
