@@ -59,6 +59,7 @@
               bison
               flex
               mermaid-cli
+              janet
             ];
 
             shellHook = ''
