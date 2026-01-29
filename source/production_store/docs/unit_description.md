@@ -112,3 +112,86 @@ stateDiagram-v2
 ```
 
 ## Validation
+
+### Add Function
+
+#### Positive Tests
+
+!!! test-card "A production is passed to the add function"
+
+    A production is passed to the add function.
+
+    **Inputs:**
+
+    - A production is passed to the add function with an empty store.
+    - A production is passed to the add function with a non-empty stores:
+        - The store has a value away from the hash of the supplied production
+        - The store has a value at the hash of the supplied production
+
+    **Expected Output:**
+
+    A positive response. The store is reflecting an additional element. New element is at the correct
+    hash and matches the supplied production.
+
+#### Negative Tests
+
+!!! test-card "A production already in the store is passed to the store"
+
+    A production already in the store is passed back to the store.
+
+    **Inputs:**
+
+    - A production and store with collision.
+
+    **Expected Output:**
+
+    A negative response.
+
+!!! test-card "A NULL pointer is passed to the function"
+
+    A NULL pointer is passed to the function.
+
+    **Inputs:**
+
+    - A null pointer for:
+        - store
+        - production
+
+    **Expected Output:**
+
+    A negative response.
+
+### Find Function
+
+#### Positive Tests
+
+!!! test-card "A production key is passed to the find function"
+
+    A production key is passed to the find function.
+
+    **Inputs:**
+
+    - A valid production which is:
+        - In the store.
+        - Not in the store.
+
+    **Expected Output:**
+
+    - A matching production.
+    - A null pointer.
+
+#### Negative Tests
+
+!!! test-card "A NULL pointer is passed to the function"
+
+    A NULL pointer is passed to the function.
+
+    **Inputs:**
+
+    - A null pointer for:
+        - store
+        - production key
+
+    **Expected Output:**
+
+    A negative response.
