@@ -1,4 +1,12 @@
-# Unit Description
+---
+title: Production Interface
+authors:
+  - joe_starr
+---
+
+[](){#prod_inter}
+
+## Unit Description
 
 ```mermaid
 classDiagram
@@ -16,19 +24,19 @@ classDiagram
     }
 ```
 
-## Functionality
+### Functionality
 
-### Public Structures
+#### Public Structures
 
-#### Production Configuration Structure
+##### Production Configuration Structure
 
 The production configuration structure defines the collection of data the component needs for an
 'instance'. A configuration should be considered equivalent to instantiating a class in a high-level
 language. This instance needs to contain all state information needed for that class.
 
-### Public Functions
+#### Public Functions
 
-#### Resolve Function
+##### Resolve Function
 
 When this function is invoked, the production process begins. The actual internal functionality is
 specific to the specific production. The function returns the string resulting from the production.
@@ -45,7 +53,7 @@ stateDiagram-v2
     wod -->  [*]
 ```
 
-#### Terminate Function
+##### Terminate Function
 
 When this function is invoked, the production executes a special terminal case. The actual internal
 functionality is specific to the specific production. The function returns the string resulting from
