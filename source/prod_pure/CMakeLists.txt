@@ -7,3 +7,4 @@ add_lizard_target(prod_pure_lib_lizard ALL ARGUMENTS --warnings_only)
 
 set_target_properties(prod_pure_lib PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES
                                                "C")
+add_subdirectory(test)

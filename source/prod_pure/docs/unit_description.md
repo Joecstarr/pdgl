@@ -60,3 +60,67 @@ The terminate function for the pure production follows the basic production flow
 one of the terminal strings from the list of terminals.
 
 ## Validation
+
+### Resolve Function
+
+#### Positive Tests
+
+!!! test-card "A valid configuration is passed to the function"
+
+    A valid configuration for the production is passed to the function.
+
+    **Inputs:**
+
+    - A valid configuration
+
+    **Expected Output:**
+
+    A positive response, with the one of the correct strings.
+
+#### Negative Tests
+
+!!! test-card "Bad Configuration"
+
+    A null configuration for the computation is passed to the function.
+
+    **Inputs:**
+
+    - A null configuration.
+    - A null transition list
+    - A zero length transition list
+
+    **Expected Output:**
+
+    A negative response.
+
+### Terminal Function
+
+#### Positive Tests
+
+!!! test-card "A valid configuration is passed to the function"
+
+    A valid configuration for the production is passed to the function.
+
+    **Inputs:**
+
+    - A valid configuration
+
+    **Expected Output:**
+
+    A positive response, with the one of the correct strings.
+
+#### Negative Tests
+
+!!! test-card "Bad Configuration"
+
+    A null configuration for the computation is passed to the function.
+
+    **Inputs:**
+
+    - A null configuration.
+    - A null terminal list
+    - A zero length terminal list
+
+    **Expected Output:**
+
+    A negative response.
