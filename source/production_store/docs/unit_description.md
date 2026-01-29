@@ -156,6 +156,9 @@ stateDiagram-v2
     - A null pointer for:
         - store
         - production
+        - production name
+        - production type
+        - production config
 
     **Expected Output:**
 

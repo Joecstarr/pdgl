@@ -1,0 +1,7 @@
+
+
+[[production]]
+name = "entry"
+type = "pure"
+transition = 10  
+terminals = ["terminal"]

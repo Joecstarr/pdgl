@@ -1,0 +1,4 @@
+[[production]]
+type = "pure"
+transitions = ["transition"]
+terminals = ["terminal"]

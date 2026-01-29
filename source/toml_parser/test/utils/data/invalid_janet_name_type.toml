@@ -1,0 +1,11 @@
+[[production]]
+name = "entry"
+type = "janet"
+transition = "transition"
+terminal = "terminal"
+
+[[production]]
+name = 10  
+type = "janet"
+transition = "transition"
+terminal = "terminal"

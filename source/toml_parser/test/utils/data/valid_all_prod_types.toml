@@ -1,0 +1,21 @@
+[[production]]
+name = "entry"
+type = "pure"
+transitions = ["transition", "transition1"]
+terminals = ["terminal", "terminal1"]
+
+[[production]]
+name = "range production"
+type = "range"
+lower_bound = -10
+upper_bound = 10
+
+[[production]]
+name = "janet production"
+type = "janet"
+transition = '''#transition script
+  (print "transition")
+'''
+terminal = '''#terminal script
+  (print "terminal")
+'''
