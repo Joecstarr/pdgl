@@ -36,8 +36,6 @@ static void test_prod_pure_terminal_negative_zero_term(void)
 
 static void test_prod_pure_terminal_negative_null_term(void)
 {
-    char  term1[]          = "term";
-    char *terms[]          = { term1 };
     char  trans1[]         = "trans";
     char *trans[]          = { trans1 };
     prod_pure_config_t cfg = { trans, 1, NULL, 1 };

@@ -3,7 +3,6 @@
 #include <pdgl_defs.h>
 #include "../../utils/test_utils_prod_janet.h"
 
-static void test_prod_janet_resolve_positive_null_param(void);
 
 void test_prod_janet_resolve_positive(void)
 {

@@ -96,8 +96,8 @@ typedef struct {
  *
  */
 typedef struct {
-    resmach_partial_t * const partials;
-    size_t                    stack_len;
+    resmach_partial_t *partials;
+    size_t             stack_len;
 } resmach_stack_t;
 
 
