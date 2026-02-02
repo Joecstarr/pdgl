@@ -449,3 +449,4 @@ DartConfiguration.tcl
 languages/wptt/hooks.c
 /.obsidian/**
 out.txt
+.emcache

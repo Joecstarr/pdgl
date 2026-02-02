@@ -10,8 +10,10 @@ target_link_libraries(
   prod_range_lib
   prod_janet_lib)
 
-add_lizard_target(toml_parser_lib_lizard ALL ARGUMENTS --warnings_only)
-
 set_target_properties(toml_parser_lib
                       PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C")
-add_subdirectory(test)
+
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Emscripten")
+  add_subdirectory(test)
+  add_lizard_target(toml_parser_lib_lizard ALL ARGUMENTS --warnings_only)
+endif(NOT CMAKE_BUILD_TYPE STREQUAL "Emscripten")

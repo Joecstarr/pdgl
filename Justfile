@@ -5,11 +5,14 @@ set export
 
 buildTrgt := "Release"
 buildTrgt_dbg := "Debug"
+buildTrgt_em := "Emscripten"
 buildDir := "./.build/Release"
 buildDir_dbg := "./.build/Debug"
+buildDir_em := "./.build/Emscripten"
 
 # Set up development environment
 bootstrap:
+    git submodule deinit -f . 
     git submodule update --init --recursive
     prek install -f
     if test ! -e .venv; then \
@@ -41,6 +44,14 @@ test_all: bootstrap
     source .venv/bin/activate && \
     cd {{buildDir}} && \
     ctest -C {{buildTrgt}} --output-on-failure
+
+build_em : bootstrap
+    if test -e {{buildDir_dbg}}; then \
+        rip {{buildDir_dbg}}; \
+    fi
+    source .venv/bin/activate && \
+    emcmake cmake -B{{buildDir_em}} -DCMAKE_BUILD_TYPE={{buildTrgt_em}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
+    cmake --build {{buildDir_em}}
 
 build_dbg : bootstrap
     if test -e {{buildDir_dbg}}; then \
