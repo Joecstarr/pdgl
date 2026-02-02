@@ -10,3 +10,6 @@
 [submodule "libraries/tomlc17"]
 	path = libraries/tomlc17
 	url = https://github.com/cktan/tomlc17.git
+[submodule "libraries/cxxopts"]
+	path = libraries/cxxopts
+	url = https://github.com/jarro2783/cxxopts.git
