@@ -4,6 +4,7 @@ authors:
   - joe_starr
 ---
 
+[](){#log_state_information}
 ## Primary actor
 
 The PDGL itself is the primary actor.

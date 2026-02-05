@@ -4,11 +4,9 @@ authors:
   - joe_starr
 ---
 
-# Portable Generation Language Based on Probabilistic Context Free Grammars
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ![./assets/logo.svg](./assets/logo.svg)
-
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Note to Reader
 
@@ -43,9 +41,9 @@ of issues and child issues:
 
 ### Version control
 
-The generator toolchain shall be kept under Git versioning. Development shall take place on branches
-with `main` on GitHub as a source of truth. GitHub pull requests shall serve as the arbiter for
-inclusion on main with the following quality gates:
+The toolchain shall be kept under Git versioning. Development shall take place on branches with
+`main` on GitHub as a source of truth. GitHub pull requests shall serve as the arbiter for inclusion
+on main with the following quality gates:
 
 - Compiling of source code.
 - Running of and passing unit test suite.
@@ -89,6 +87,20 @@ vMAJOR.MINOR.PATCH
 │       │   └── 📄 unit-description.md 
 │       ├── 🛠️ CMakeLists.txt 
 │       └── 📄 mkdocs.yml
+├── 📁 wrappers 
+│   └── 📁 <wrapper> 
+│       ├── 📁 test
+│       │   ├── 🇨test_<>.c 
+│       │   └── 🛠️ CMakeLists.txt 
+│       ├── 📁src
+│       │   ├── 🇨<>.c 
+│       │   └── 🇭<>.h
+│       ├── 📁 docs
+│       │   ├── 📁 media
+│       │   ├── 📄 index.md 
+│       │   └── 📄 unit-description.md 
+│       ├── 🛠️ CMakeLists.txt 
+│       └── 📄 mkdocs.yml
 ├── 📄 CITATION
 ├── 🛠️ CMakeLists.txt
 ├── ❄️ flake.lock
@@ -96,13 +108,13 @@ vMAJOR.MINOR.PATCH
 ├── 📄 Justfile
 ├── 📄 LICENSE
 ├── 📄 mkdocs.yml
-├── 🐍 requirements.txt
-└── 📄 ruff.toml
+└── 🐍 requirements.txt
 ```
 
-#### Directories of interest
+### Directories of interest
 
 - Source: This directory contains the C libraries for the PDGL.
+- Wrappers: This directory contains the C executable wrappers for the PDGL.
 - Docs: This directory contains the high level documentation for the PDGL.
 - Languages: This directory contains language definitions for the PDGL.
 
@@ -122,9 +134,10 @@ components.
 
 #### Integration testing
 
-No integration test is expected. Integration tests are expected to be carried out by wrappers.
+No integration test is expected for the library code. Integration tests are expected to be carried
+out by wrappers.
 
-### Requirements
+#### Requirements
 
 The PDGL reimplements portions of the original dgl by Maurer [@maurerDGLVersion22024] (source is
 available on [Dr. Maurer's personal website](https://cs.baylor.edu/~maurer/dgl.php) and mirrored on
@@ -135,18 +148,29 @@ that consumes a language definition and directly probabilistically generates wor
 To that end the PDGL shall match the features and use cases of the original dgl. The PDGL however
 shall forgo the `dgl` language itself in favor of definitions of languages in `toml` strings.
 
-#### Functional Requirements
+##### Functional Requirements
 
-##### Use Cases
+###### Use Cases
 
-Functional requirements for the toolchain are phrased as use cases which can be seen in the sidebar.
-The following use case diagram models the interdependence of those use cases.
+Functional requirements for the toolchain are phrased as use cases. The following use case diagram
+models the interdependence of those use cases.
 
 ```mermaid
 flowchart LR
+
     aU["👤 User"]
     aS["👤 PDGL"]
 
+subgraph wrap [Wrappers]
+subgraph cli [CLI]
+    egolfcl(["Execute Generation of Language From Command Line"])
+end
+subgraph wasm [WASM]
+    egolfb(["Execute Generation of Language From Browser"])
+end
+end
+
+subgraph lib [Libraries]
     SLS(["Supply Language Specification"])
     LL(["Load Language Specification"])
     LSWD(["Language Specification is Well-defined"])
@@ -169,11 +193,6 @@ flowchart LR
     err[("Stderr")]
     sta[("Resolution Stack")]
 
-    aU --> SLS
-    aS --> LSI 
-    aS --> SG 
-    aU --> EGL 
-    aU --> EMG
 
     SG -. include .-> FTP
     SG -. include .-> EX 
@@ -198,13 +217,21 @@ flowchart LR
     RPGS -. uses .-> scr
     PPtS -. uses .-> sta
     PPfS -. uses .-> sta
+end
+    aS --> LSI 
+    aS --> SG 
+    aU --> SLS
+    aU --> EGL 
+    aU --> EMG
+    aU --> egolfcl 
+    aU --> egolfb 
 ```
 
-###### Phase 1
+**Phase 1:**
 
 - [Execute Multiple Generations](use-cases/execute_multiple_generations.md)
 - [Execute Generation of Language](use-cases/execute_generation_of_language.md)
-- [Execute Production](use-cases/execute_production.md)
+- [Execute Production](use-cases/execute_production.md)panel-1-9
 - [Report Portion of Generation String](use-cases/report_portion_of_generation_string.md)
 - [Push Production to Stack](use-cases/push_production_to_stack.md)
 - [Pop Production from Stack](use-cases/pop_production_from_stack.md)
@@ -218,20 +245,30 @@ flowchart LR
 - [Force Exit](use-cases/force_exit.md)
 - [Force Terminate Production](use-cases/force_terminate_production.md)
 
-###### Phase 2
+**Phase 2:**
 
 - [Log State Information](use-cases/log_state_information.md)
 
-### Non-Functional Requirements
+##### Architectural Decisions
 
-#### Colors
+For the PDGL libraries the use cases should be sufficient to motivate and document behavior. When
+this is insufficient to document specific architectural decisions a collection of
+[MADR](https://github.com/adr/madr)[@Kopp2018] should be used to document the decisions.
+
+Wrappers may reference system use cases and/or define their own use cases. However,
+[MADR](https://github.com/adr/madr)[@Kopp2018] should serve as the primary documentation for the
+architecture of a wrapper.
+
+#### Non-Functional Requirements
+
+##### Colors
 
 Diagrams included in documentation for features (use case and unit descriptions) are expected to use
 the [COLORS](https://clrs.cc) color palette.
 
-#### Technologies
+##### Technologies
 
-##### Languages and Frameworks
+###### Languages and Frameworks
 
 The PDGL and its components shall be written in C using clang for compiling and cmake as a build
 system. By design the entry point shall be decoupled from core functionality. These are expected to
@@ -243,7 +280,7 @@ Unit testing of runnable and data wrangler libraries will use the
 libraries for unit testing. Test indexing is handled by
 [CTest](https://cmake.org/cmake/help/latest/module/CTest.html).
 
-###### Tools
+**Tools**:
 
 - git
 - mermaid.js
@@ -259,62 +296,9 @@ libraries for unit testing. Test indexing is handled by
 - prek
 - uncrustify
 - mdformat
+- MADR[@Kopp2018]
 
-## Design
-
-### System Architecture
-
-```mermaid
-flowchart LR
-    ep["<< External >> 
-    Entry point"]
-    toml["TOML Parser"]
-    rsm["Resolution State Machine"]
-    io["I/O"]
-    log["Log"]
-    ps["Production Store"]
-    jp["Janet Production"]
-    pure["Pure Production"]
-    range["Range Production"]
-    ip["<< Interface >>
-    Production"]
-    ep -->|1..*| rsm
-    ep -->|1..1| ps 
-    ep -->|1..1| toml 
-    ep -->|1..1| io 
-    rsm -->|1..1| toml 
-    ip -->|1..1| io 
-    ip -->|1..1| log 
-    rsm -->|1..1| ps 
-    ep -->|1..1| log 
-    rsm -->|1..1| log 
-    ps -->|1..*| jp
-    ps -->|1..*| pure
-    ps -->|1..*| range
-    jp -. Implements .-> ip
-    pure -. Implements .-> ip 
-    range -. Implements .-> ip 
-```
-
-#### General Design Considerations
-
-##### Memory
-
-The PDGL is to be written in C, one major consideration when using a non-memory language like C is
-memory leaks. The allocation (and release) of memory at runtime is complicated and error prone. To
-mitigate the risk of a memory leak we will restrict runtime memory allocation where possible.
-Instead we will allocate memory at runtime or opt for passing of buffers.
-
-##### Patterns
-
-We will leverage the [strategy](https://refactoring.guru/design-patterns/strategy) pattern for
-defining generic productions with the interface described as the
-[Production Interface](./interfaces/production.md). We will also leverage the
-[prototype](https://refactoring.guru/design-patterns/prototype) pattern for managing configurations
-of various 'objects'. Meaning components should not maintain internal state, any state must be
-passed to components.
-
-### Documentation of implementation
+###### Documentation of Implementation
 
 C/C++ code is documented with [Doxygen](https://www.doxygen.nl/), the Doxygen comments shall be
 parsed and output as XML. General documentation shall be recorded as markdown files in each module's
@@ -323,6 +307,6 @@ directory. Documentation shall be aggregated using the
 [Breathe](https://github.com/breathe-doc/breathe) to parse Doxygen XML into the general
 documentation.
 
-#### Code Style Guide
+###### Code Style Guide
 
 The C/C++ code in this repository shall be formatted by the bundled uncrustify configuration.

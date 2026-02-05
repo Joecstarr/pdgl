@@ -4,6 +4,7 @@ authors:
   - joe_starr
 ---
 
+[](){#force_exit}
 ## Primary actor
 
 N/A
