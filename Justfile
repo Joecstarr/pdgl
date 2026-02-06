@@ -37,7 +37,7 @@ build_rel : bootstrap
     cmake --build {{buildDir_rel}} -j 6
 
 # Test relese 
-test_re: bootstrap
+test_rel: bootstrap
     source .venv/bin/activate && \
     cd {{buildDir_rel}} && \
     ctest -C {{buildTrgt_rel}} --output-on-failure
@@ -95,6 +95,20 @@ launch_em_server:
 
 # Run Emscripten testing
 test_em: build_em launch_em_server
+    exit 0
+
+##################################################################################################
+####### Build All ################################################################################
+##################################################################################################
+
+# Build all versions
+build_all: build_em build_dbg build_rel 
+    @echo "🚀 Build everything"
+    exit 0
+
+# Run testing for all versions
+test_all: test_rel test_dbg 
+    @echo "🚀 tested everything"
     exit 0
 
 ##################################################################################################
