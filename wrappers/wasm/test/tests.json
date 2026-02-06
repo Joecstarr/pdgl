@@ -1,0 +1,169 @@
+[
+    {
+        "name": "Valid Configuration Paren",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "stack_size": 100,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": [
+            "(((()())))",
+            "()",
+            "(((((((())(((()))))()()(()))))))",
+            "(((())()()(()))())",
+            "(()()()((()(((()))))()(()(((()))()()(())))((())())(()()((((())))))))",
+            "((((())((())))))",
+            "((((((()()((((()(())()()))))(((((()))))())))()(()))))(())()((()))())",
+            "(((()))()((()(((((((()((((((()))((((()())((()((()((((())(())(((())))(())((((((()))((((())))())()())))(()()))(())(((((())))))()()))))))(()((())))(((()))))()(())((((())))))((((())((()))((())(()))()()(())))(()((()))(())))(((((((((((((()(())((()))(((())))(()))))))(((()())(()())((())))))))))((()))))))((((())(((()))(()((((((((()))()((())((((()())())))(((()))()((()))((()))(()))(((((()(()))()(())(())))))(())()((((()))()))(()((()(()))())((((())((((((())))((()))((((()))))))))))())(()()()(()((()))))(((()))))(())((())()))))))())))()((())(((()()()(((())))()(())))(()(((((())))())))()()))()()(()))(()((((()))(()())(()))(((()(((())))(()((((((())))))))(())(())(((()(((()())(())(((()))))(()))))()()()()()((((())))))((())(())((())))()((())))))())((()(()(((())((()))))(()()))(((())))()((())))))(((((((((())))))()(((())()(((((((())))((((())(((((()))))((())))())))))())))))))))))))))()())))((())))))))(()))((()))())",
+            "((()()))",
+            "(())"
+        ]
+    },
+    {
+        "name": "Valid Configuration Paren Small Stack",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"term\"]",
+        "stack_size": 1,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": [
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)"
+        ]
+    },
+    {
+        "name": "Valid Configuration Janet Small Stack",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\ntransition ='''(print \"trans\")''' \nterminal = '''(print \"term\")'''",
+        "stack_size": 1,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": [
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)",
+            "(term)"
+        ]
+    },
+    {
+        "name": "Valid Configuration Janet",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\ntransition ='''(print \"trans\")''' \nterminal = '''(print \"term\")'''",
+        "stack_size": 10,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": [
+            "(trans)",
+            "(trans)",
+            "(trans)",
+            "(trans)",
+            "(trans)",
+            "(trans)",
+            "(trans)",
+            "(trans)",
+            "(trans)",
+            "(trans)"
+        ]
+    },
+    {
+        "name": "Valid Configuration Range Single Int",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"range\"\nlower_bound = 10\nupper_bound = 10",
+        "stack_size": 1,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": ["(10)", "(10)", "(10)", "(10)", "(10)", "(10)", "(10)", "(10)", "(10)", "(10)"]
+    },
+    {
+        "name": "Valid Configurations Range Full",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"range\"\nlower_bound = -10\nupper_bound = 10",
+        "stack_size": 1,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": ["(2)", "(4)", "(-10)", "(9)", "(3)", "(2)", "(-9)", "(0)", "(2)", "(-7)"]
+    },
+    {
+        "name": "Invalid Configuration Bad Toml",
+        "lang": "[ss[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "stack_size": 100,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": [
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production."
+        ]
+    },
+    {
+        "name": "Invalid Configuration Bad Language No Entry",
+        "lang": "[[production]]\nname = \"ery\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "stack_size": 100,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": [
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production."
+        ]
+    },
+    {
+        "name": "Invalid Configuration Bad Language Invalid Pure",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminal = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "stack_size": 100,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": [
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production.",
+            "Error in Parsing the toml! Check your toml syntax and check you have an entry production."
+        ]
+    }
+]
