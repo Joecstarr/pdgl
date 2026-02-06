@@ -1,0 +1,10 @@
+site_name: WebAssembly
+nav:
+    - Unit Description: "unit_description.md"
+    - Use Cases:
+          - "use-case.md"
+    - Architectural Decisions:
+          - Compiler:
+                - "decisions/compiler/2026-02-03_00.md"
+          - Interface Options:
+                - "decisions/interface/2026-02-03_00.md"

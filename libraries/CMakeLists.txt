@@ -1,3 +1,6 @@
+# =================================================================================================
+# toml-c library
+# =================================================================================================
 block(SCOPE_FOR VARIABLES)
 unset(CMAKE_CXX_CPPCHECK)
 unset(CMAKE_C_CPPCHECK)
@@ -9,6 +12,22 @@ add_library(tomlc_lib STATIC ./tomlc17/src/tomlc17.c)
 target_include_directories(tomlc_lib PUBLIC ./tomlc17/src/)
 endblock()
 
+# =================================================================================================
+# cxxopts library
+# =================================================================================================
+block(SCOPE_FOR VARIABLES)
+unset(CMAKE_CXX_CPPCHECK)
+unset(CMAKE_C_CPPCHECK)
+
+add_library(cxxopts_lib INTERFACE)
+
+target_include_directories(cxxopts_lib INTERFACE ./cxxopts/include/)
+
+endblock()
+
+# =================================================================================================
+# fmem library
+# =================================================================================================
 block(SCOPE_FOR VARIABLES)
 unset(CMAKE_CXX_CPPCHECK)
 unset(CMAKE_C_CPPCHECK)
@@ -20,6 +39,9 @@ add_subdirectory(fmem)
 
 endblock()
 
+# =================================================================================================
+# janet library
+# =================================================================================================
 block(SCOPE_FOR VARIABLES)
 unset(CMAKE_CXX_CPPCHECK)
 unset(CMAKE_C_CPPCHECK)
@@ -27,11 +49,14 @@ unset(CMAKE_C_CPPCHECK)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 
-add_library(janet_lib STATIC ./janet/janet.c ./janet/shell.c)
+add_library(janet_lib STATIC ./janet/janet.c)
 target_include_directories(janet_lib PUBLIC janet)
 target_link_libraries(janet_lib m)
 endblock()
 
+# =================================================================================================
+# cmock library
+# =================================================================================================
 block(SCOPE_FOR VARIABLES)
 unset(CMAKE_CXX_CPPCHECK)
 unset(CMAKE_C_CPPCHECK)
@@ -45,6 +70,11 @@ target_link_libraries(cmock_lib unity_lib)
 
 endblock()
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
-include(FindLizard.cmake)
-find_package(Lizard)
+# =================================================================================================
+# Add lizard when not building for WASM
+# =================================================================================================
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Emscripten")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+  include(FindLizard.cmake)
+  find_package(Lizard)
+endif()

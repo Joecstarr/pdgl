@@ -37,8 +37,6 @@ static void test_prod_pure_resolve_negative_null_trans(void)
 {
     char  term1[]          = "term";
     char *terms[]          = { term1 };
-    char  trans1[]         = "trans";
-    char *trans[]          = { trans1 };
     prod_pure_config_t cfg = { NULL, 1, terms, 1 };
     const char *       out = prod_pure_resolve(&cfg);
 

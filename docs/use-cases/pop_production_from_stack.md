@@ -4,6 +4,7 @@ authors:
   - joe_starr
 ---
 
+[](){#pop_production_from_stack}
 ## Primary actor
 
 N/A

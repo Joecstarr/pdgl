@@ -1,0 +1,37 @@
+[[production]]
+name = "not the entry"
+type = "pure"
+transition = "transition"
+terminal = "terminal"
+
+[[production]]
+name = "range production"
+type = "range"
+lower_bound = -10
+upper_bound = 10
+
+[[production]]
+name = "janet production"
+type = "janet"
+transition = '''#transition script
+(defn print-greeting
+  [greetee]
+  (print "transition, " greetee "!"))
+
+(defn main
+  [& args]
+  (pp args) # pretty-prints the args tuple
+  (print (length args))
+  (print-greeting (get args 1)))
+'''
+terminal = '''#terminal script
+(defn print-greeting
+  [greetee]
+  (print "terminal, " greetee "!"))
+
+(defn main
+  [& args]
+  (pp args) # pretty-prints the args tuple
+  (print (length args))
+  (print-greeting (get args 1)))
+'''

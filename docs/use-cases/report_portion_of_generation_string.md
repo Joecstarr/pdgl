@@ -4,6 +4,7 @@ authors:
   - joe_starr
 ---
 
+[](){#report_portion_of_generation_string}
 ## Primary actor:
 
 _Actor that initiates usecase._

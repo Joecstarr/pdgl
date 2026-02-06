@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>PDGL WASM Test</title>
+
+        <link rel="stylesheet" href="hljs.css" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            rel="stylesheet"
+        />
+
+        <style>
+            body {
+                font-size: 1.5em;
+                max-width: 100% !important;
+            }
+            .fail::after {
+                /* Set the color */
+                color: var(--drac-red);
+
+                /* Required Font Awesome properties for pseudo-elements */
+                font-family: "Font Awesome 6 Free"; /* Use the correct font family */
+                font-weight: 900; /* Use the correct font weight (e.g., 900 for solid, 400 for regular) */
+                content: ""; /* The Unicode of the icon */
+                display: inline-block;
+                text-rendering: auto;
+                -webkit-font-smoothing: antialiased;
+                margin-left: 0.5em; /* Optional: add some spacing */
+            }
+            .pass::after {
+                /* Set the color */
+                color: var(--drac-green);
+
+                /* Required Font Awesome properties for pseudo-elements */
+                font-family: "Font Awesome 6 Free"; /* Use the correct font family */
+                font-weight: 900; /* Use the correct font weight (e.g., 900 for solid, 400 for regular) */
+                content: ""; /* The Unicode of the icon */
+                display: inline-block;
+                text-rendering: auto;
+                -webkit-font-smoothing: antialiased;
+                margin-left: 0.5em; /* Optional: add some spacing */
+            }
+        </style>
+        <script type="module">
+            import Pdgl_js from "./test.mjs";
+            import hljs from "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/es/highlight.min.js";
+            fetch("./tests.json")
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    data.map((item, didx) => {
+                        var pdgl = new Pdgl_js(item.lang, item.stack_size, item.seeds);
+                        pdgl.run().then(() => {
+                            let testList = document.querySelector("#tests");
+                            let newTest = document.createElement("li");
+                            let name = document.createElement("p");
+                            let fail = false;
+
+                            testList.appendChild(newTest);
+                            newTest.appendChild(name);
+                            name.textContent = "Test: " + item.name;
+                            let table = document.createElement("table");
+                            let th = document.createElement("tr");
+                            const output = document.createElement("th");
+                            const actual = document.createElement("th");
+                            const seeds = document.createElement("th");
+                            seeds.textContent = "Seed";
+                            output.textContent = "Expected Output";
+                            actual.textContent = "Actual Output";
+                            th.appendChild(seeds);
+                            th.appendChild(output);
+                            th.appendChild(actual);
+                            table.appendChild(th);
+
+                            item.output.map((output_item, idx) => {
+                                if (output_item != pdgl.lines[idx]) {
+                                    fail = true;
+                                }
+                                const row = document.createElement("tr");
+
+                                const cell0 = document.createElement("td");
+                                cell0.textContent = item.seeds[idx];
+                                row.appendChild(cell0);
+
+                                const cell1 = document.createElement("td");
+                                cell1.textContent = output_item;
+                                row.appendChild(cell1);
+
+                                const cell2 = document.createElement("td");
+                                cell2.textContent = pdgl.lines[idx];
+                                row.appendChild(cell2);
+
+                                table.appendChild(row);
+                            });
+                            if (fail) {
+                                let deets = document.createElement("details");
+                                let summary = document.createElement("summary");
+                                let hidecontent = document.createElement("div");
+                                let lang_p = document.createElement("pre");
+                                let lang_code = document.createElement("code");
+                                let stacksize = document.createElement("p");
+                                deets.appendChild(summary);
+                                deets.appendChild(hidecontent);
+                                hidecontent.appendChild(lang_p);
+                                lang_p.appendChild(lang_code);
+                                lang_code.textContent = item.lang;
+                                lang_code.classList.add("language-toml");
+                                hidecontent.appendChild(stacksize);
+                                stacksize.textContent = "Stack size: " + item.stacksize;
+                                hidecontent.appendChild(table);
+                                newTest.appendChild(deets);
+                                hljs.highlightElement(lang_code);
+                                name.classList.add("fail");
+                            } else {
+                                name.classList.add("pass");
+                            }
+                        });
+                    });
+                    // Use your data here
+                })
+                .catch((error) => {
+                    console.error("Error fetching JSON:", error);
+                });
+        </script>
+    </head>
+    <body>
+        <ol id="tests"></ol>
+    </body>
+</html>

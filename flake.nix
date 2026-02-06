@@ -27,6 +27,7 @@
               cppcheck
               doxygen
               heaptrack
+              emscripten
               gcc
               gdb
               git
@@ -48,6 +49,7 @@
               stdenv.cc.cc
               svg2pdf
               taglib
+              tombi
               tectonic
               uncrustify
               uv
@@ -64,6 +66,7 @@
 
             shellHook = ''
               prek install -f
+              export EM_CACHE="$PWD/.emcache"
               just bootstrap
               source .venv/bin/activate
               echo done!

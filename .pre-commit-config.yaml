@@ -1,12 +1,45 @@
 repos:
-    - repo: https://github.com/pre-commit/pre-commit-hooks # Enables fast path
-      rev: v4.5.0 # This is ignored for fast path detection
-      hooks:
-          - id: check-yaml
-          - id: check-case-conflict
     - repo: local
       hooks:
-          - id: format
-            name: format
+          - id: ruff
+            name: ruff
             language: system
-            entry: ./misc/pre-commit/justcheck.sh
+            entry: ruff format --check
+            files:
+                glob:
+                    - "**/*.py"
+          - id: docs
+            name: docs
+            language: system
+            entry: mdformat --check
+            exclude:
+                glob:
+                    - ".github/**/*.*"
+            files:
+                glob:
+                    - "**/*.md"
+          - id: uncrustify
+            name: uncrustify
+            language: system
+            entry: uncrustify -c .uncrustify.cfg --check
+            exclude:
+                glob:
+                    - "libraries/**/*.*"
+            files:
+                glob:
+                    - "**/*.c"
+                    - "**/*.h"
+                    - "**/*.hpp"
+                    - "**/*.cpp"
+          - id: cmake-format
+            name: cmake-format
+            language: system
+            entry: cmake-format --check
+            exclude:
+                glob:
+                    - "libraries/**/*.*"
+            files:
+                glob:
+                    - "**/CMakeLists.txt"
+                    - "libraries/CMakeLists.txt"
+                    - "libraries/CMakeLists.txt"

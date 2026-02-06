@@ -1,0 +1,8 @@
+site_name: Command Line
+nav:
+    - Unit Description: "unit_description.md"
+    - Use Cases:
+          - "use-case.md"
+    - Architectural Decisions:
+          - Interface Options:
+                - "decisions/interface/2026-02-03_00.md"

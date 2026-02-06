@@ -9,6 +9,7 @@
  */
 
 #include "prod_range.h"
+#include "stdlib.h"
 #include <stdio.h>
 #include <string.h>
 #include <pdgl_defs.h>

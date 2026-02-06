@@ -3,107 +3,201 @@ set export
 @_default:
     just --list
 
-buildTrgt := "Release"
-buildTrgt_dbg := "Debug"
-buildDir := "./.build/Release"
-buildDir_dbg := "./.build/Debug"
-
 # Set up development environment
 bootstrap:
+    git submodule deinit -f . 
     git submodule update --init --recursive
-    prek install -f
+    prek install -f -c .pre-commit-config.yaml
     if test ! -e .venv; then \
       uv venv --python 3.13 && uv pip install -r requirements.txt && \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-bibtex"; \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-author-plugin"; \
     fi
 
-test: bootstrap
-    uv run pytest
+##################################################################################################
+## Cmake      ####################################################################################
+##################################################################################################
 
-html: bootstrap
-    source .venv/bin/activate && \
-    mkdocs build -d .site
+##################################################################################################
+####### Release ##################################################################################
+##################################################################################################
+buildTrgt_rel := "Release"
+buildDir_rel := "./.build/Release"
 
-live: bootstrap
-    source .venv/bin/activate && \
-    mkdocs serve --livereload
-
-build_all : bootstrap
-    if test -e {{buildDir}}; then \
-        rip {{buildDir}}; \
+# Clean the relese build dir
+clean_rel: bootstrap
+    if test -e {{buildDir_rel}}; then \
+        rip {{buildDir_rel}}; \
     fi
-    source .venv/bin/activate && \
-    cmake -B{{buildDir}} -DCMAKE_BUILD_TYPE={{buildTrgt}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
-    cmake --build {{buildDir}}
 
-test_all: bootstrap
+# Build for release 
+build_rel : bootstrap
     source .venv/bin/activate && \
-    cd {{buildDir}} && \
-    ctest -C {{buildTrgt}} --output-on-failure
+    cmake -B{{buildDir_rel}} -DCMAKE_BUILD_TYPE={{buildTrgt_rel}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
+    cmake --build {{buildDir_rel}} -j 6
 
-build_dbg : bootstrap
+# Test relese 
+test_rel: bootstrap
+    source .venv/bin/activate && \
+    cd {{buildDir_rel}} && \
+    ctest -C {{buildTrgt_rel}} --output-on-failure
+
+##################################################################################################
+####### Debug   ##################################################################################
+##################################################################################################
+buildTrgt_dbg := "Debug"
+buildDir_dbg := "./.build/Debug"
+
+# Clean the debug build dir
+clean_dbg: bootstrap
     if test -e {{buildDir_dbg}}; then \
         rip {{buildDir_dbg}}; \
     fi
+
+# Build for debug 
+build_dbg : bootstrap
     source .venv/bin/activate && \
     cmake -B{{buildDir_dbg}} -DCMAKE_BUILD_TYPE={{buildTrgt_dbg}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
-    cmake --build {{buildDir_dbg}}
+    cmake --build {{buildDir_dbg}} -j 6
 
+# Test debug 
 test_dbg: bootstrap
     source .venv/bin/activate && \
     cd {{buildDir_dbg}} && \
     ctest -C {{buildTrgt_dbg}}
 
+##################################################################################################
+####### Emscripten  ##############################################################################
+##################################################################################################
+
+buildTrgt_em := "Emscripten"
+buildDir_em := "./.build/Emscripten"
+
+
+# Clean the Emscripten build dir
+clean_em: bootstrap
+    if test -e {{buildDir_em}}; then \
+        rip {{buildDir_em}}; \
+    fi
+
+# Build for Emscripten 
+build_em : bootstrap
+    source .venv/bin/activate && \
+    emcmake cmake -B{{buildDir_em}} -DCMAKE_BUILD_TYPE={{buildTrgt_em}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
+    cmake --build {{buildDir_em}}
+
+# Launch Emscripten test server 
+[working-directory: '.build/Emscripten/pdgl_wasm_test_data']
+launch_em_server:  
+    @echo "🚀 Check port 1313"
+    source ../../../.venv/bin/activate && \
+    python -m reloadserver 1313
+
+# Run Emscripten testing
+test_em: build_em launch_em_server
+    exit 0
+
+##################################################################################################
+####### Build All ################################################################################
+##################################################################################################
+
+# Build all versions
+build_all: build_em build_dbg build_rel 
+    @echo "🚀 Build everything"
+    exit 0
+
+# Run testing for all versions
+test_all: test_rel test_dbg 
+    @echo "🚀 tested everything"
+    exit 0
+
+##################################################################################################
+## mkdocs     ####################################################################################
+##################################################################################################
+
+# Build docs 
+html: bootstrap
+    source .venv/bin/activate && \
+    mkdocs build -d ./.build/docs
+
+# Luanch live docs 
+live: bootstrap
+    @echo "🚀 Check port 8000"
+    source .venv/bin/activate && \
+    mkdocs serve --livereload --dev-addr 0.0.0.0:8000
+
+##################################################################################################
+## formatting  ###################################################################################
+##################################################################################################
+
+##################################################################################################
+####### cmake format #############################################################################
+##################################################################################################
+
+# Run cmake-format
 do-cmakeformat:
     find ./source/ -name 'CMakeLists.txt' -exec cmake-format -i {} \;
     cmake-format -i ./libraries/CMakeLists.txt
 
-check-cmakeformat:
-    find ./source/ -name 'CMakeLists.txt' -exec cmake-format --check {} \;
-    cmake-format --check ./libraries/CMakeLists.txt
-    @echo "🚀 Checked the cmake"
-    exit 0
+##################################################################################################
+####### cppcheck sytle ###########################################################################
+##################################################################################################
 
+# Clear cppcheck results
+clear-cppcheck: build_rel
+    mkdir -p ./.build/cppcheck
+
+# Build cppckeck html 
 report-cppcheck:
-    mkdir -p {{buildDir}}/cppcheck
-    cppcheck --project={{buildDir}}/compile_commands.json -q -ilibraries/**/*  --enable=all --std=c89   --inline-suppr            --suppressions-list=cppcheck.supp --xml 2> {{buildDir}}/cppcheck/err.xml
-    cppcheck-htmlreport --file={{buildDir}}/cppcheck/err.xml --report-dir={{buildDir}}/cppcheck --source-dir=.
+    cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all --std=c89 --inline-suppr --suppressions-list=cppcheck.supp --xml 2> ./.build/cppcheck/err.xml
+    cppcheck-htmlreport --file=./.build/cppcheck/err.xml --report-dir=./.build/cppcheck --source-dir=.
 
-open-cppcheck: report-cppcheck
-    chromium {{buildDir}}/cppcheck/index.html
+# Server cppcheck results
+[working-directory: '.build/cppcheck']
+serve-cppcheck: build_rel clear-cppcheck report-cppcheck
+    @echo "🚀 Check port 1314"
+    source ../../.venv/bin/activate && \
+    python -m reloadserver 1314
 
-check-cppcheck:
-    cppcheck --project={{buildDir}}/compile_commands.json -q -ilibraries/**/*  --enable=all  --std=c89     --inline-suppr      --error-exitcode=1       --suppressions-list=cppcheck.supp 
+# check cppcheck fail on warning
+check-cppcheck: build_rel
+    cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all  --std=c89     --inline-suppr      --error-exitcode=1       --suppressions-list=cppcheck.supp 
 
+##################################################################################################
+####### uncrustify format ########################################################################
+##################################################################################################
+
+# Run uncrustify 
 do-uncrustify:
     find ./source -iname "*.c"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.h"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.cpp" -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+
+##################################################################################################
+####### mdformat format ##########################################################################
+##################################################################################################
     
-check-uncrustify:
-    find ./source -iname "*.c"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --check "$0" || kill $PPID' \{\} \;
-    find ./source -iname "*.h"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --check "$0" || kill $PPID' \{\} \;
-    find ./source -iname "*.cpp" -exec  sh -c 'uncrustify -c .uncrustify.cfg --check "$0" || kill $PPID' \{\} \;
-    @echo "🚀 Checked the source"
-    exit 0
-
-check-mdformat: 
-    source .venv/bin/activate && \
-    mdformat docs --check && \
-    mdformat source --check 
-    @echo "🚀 Checked the Markdown"
-    exit 0
-
+# Run mdformat 
 do-mdformat:
     source .venv/bin/activate && \
     mdformat  docs && \
     mdformat source
 
-check: check-mdformat check-cmakeformat check-uncrustify check-cppcheck 
+##################################################################################################
+####### check everything #########################################################################
+##################################################################################################
+
+# Check all style and formatting. Fail on warning.  
+check: check-cppcheck 
+    prek run --all-files
     @echo "🚀 Checked the files"
     exit 0
 
-format: do-mdformat do-cmakeformat do-uncrustify check
+##################################################################################################
+####### all format ###############################################################################
+##################################################################################################
+
+# Run all formatting.  
+format: do-mdformat do-cmakeformat do-uncrustify 
     @echo "🚀 Formated the files"
     exit 0
