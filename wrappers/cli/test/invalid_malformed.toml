@@ -1,0 +1,6 @@
+
+ss[production]]
+name = "entry"
+type = "pure"
+transition = "transition"
+terminal = "terminal"
