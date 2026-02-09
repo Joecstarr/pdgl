@@ -52,32 +52,32 @@ nav:
     - Manual:
           - "manual/manual.md"
     - Documentation:
-          - Libraries:
+          - System:
                 - "lib_docs.md"
-                - Units: "*include ./source/*/mkdocs.yml"
-                - Doxygen: "lib/files.md"
-          - Wrappers:
-                - Modules: "*include ./wrappers/*/mkdocs.yml"
-                - Doxygen: "wrap/files.md"
-          - System Use Cases:
-                - "use-cases/supply_language_specification.md"
-                - "use-cases/load_language_specification.md"
-                - "use-cases/language_specification_is_welldefined.md"
-                - "use-cases/log_state_information.md"
-                - "use-cases/execute_generation_of_language.md"
-                - "use-cases/execute_multiple_generations.md"
-                - "use-cases/report_portion_of_generation_string.md"
-                - "use-cases/execute_production.md"
-                - "use-cases/push_production_to_stack.md"
-                - "use-cases/pop_production_from_stack.md"
-                - "use-cases/execute_pure_production.md"
-                - "use-cases/execute_janet_production.md"
-                - "use-cases/execute_range_production.md"
-                - "use-cases/stop_generation.md"
-                - "use-cases/force_exit.md"
-                - "use-cases/force_terminate_production.md"
-          - Interfaces:
-                - "interfaces/production.md"
+                - Use Cases:
+                      - "use-cases/supply_language_specification.md"
+                      - "use-cases/load_language_specification.md"
+                      - "use-cases/language_specification_is_welldefined.md"
+                      - "use-cases/log_state_information.md"
+                      - "use-cases/execute_generation_of_language.md"
+                      - "use-cases/execute_multiple_generations.md"
+                      - "use-cases/report_portion_of_generation_string.md"
+                      - "use-cases/execute_production.md"
+                      - "use-cases/push_production_to_stack.md"
+                      - "use-cases/pop_production_from_stack.md"
+                      - "use-cases/execute_pure_production.md"
+                      - "use-cases/execute_janet_production.md"
+                      - "use-cases/execute_range_production.md"
+                      - "use-cases/stop_generation.md"
+                      - "use-cases/force_exit.md"
+                      - "use-cases/force_terminate_production.md"
+                - Interfaces:
+                      - "interfaces/production.md"
+          - Libraries: "*include ./source/*/mkdocs.yml"
+          - Wrappers: "*include ./wrappers/*/mkdocs.yml"
+    - Doxygen:
+          - Libraries: "lib/files.md"
+          - Wrappers: "wrap/files.md"
 plugins:
     - auto-refresh-build-pages:
           update_message: "The page has been updated. Do you want to reload?"
@@ -91,13 +91,17 @@ plugins:
                   full-doc: True # if you want to generate full documentation
                   doxy-cfg: # standard doxygen configuration (key: value)
                       FILE_PATTERNS: "*.c *.h" # specify file patterns to filter out
+                      EXCLUDE_PATTERNS: "*/test/*" # specify file patterns to filter out
                       RECURSIVE: True # recursive search in source directories
+                      MARKDOWN_SUPPORT: True
               wrap: # name of project must be alphanumeric + numbers (without spaces)
                   src-dirs: ./wrappers/ # path to source code (support multiple paths separated by space) => INPUT
                   full-doc: True # if you want to generate full documentation
                   doxy-cfg: # standard doxygen configuration (key: value)
                       FILE_PATTERNS: "*.cpp *.h *.c *.hpp" # specify file patterns to filter out
+                      EXCLUDE_PATTERNS: "*/test/*" # specify file patterns to filter out
                       RECURSIVE: True # recursive search in source directories
+                      MARKDOWN_SUPPORT: True
     - gh-admonitions:
     - monorepo
     - search:
