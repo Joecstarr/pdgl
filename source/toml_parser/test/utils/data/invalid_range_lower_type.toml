@@ -1,6 +1,5 @@
-
 [[production]]
 name = "entry"
 type = "range"
-lower_bound =""
+lower_bound = ""
 upper_bound = 10

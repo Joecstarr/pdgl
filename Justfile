@@ -35,14 +35,14 @@ clean_win: bootstrap
 build_win : bootstrap
     source .venv/bin/activate && \
     cmake -DCMAKE_TOOLCHAIN_FILE=./misc/cmake/mingw-toolchain.cmake -B{{buildDir_win}} -DCMAKE_BUILD_TYPE={{buildTrgt_win}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
-    cmake --build {{buildDir_win}} -j 6
+    cmake --build {{buildDir_win}} -j 
 
 
 # Test windows 
 test_wine: bootstrap
     source .venv/bin/activate && \
     cd {{buildDir_win}} && \
-    find . -iname "test*.exe"   -exec  sh -c 'wine64 $0 || kill $PPID' \{\} \;
+    find . -iname "test*.exe" -exec  sh -c 'wine64 $0 || kill $PPID' \{\} \;
 
 ##################################################################################################
 ####### Release ##################################################################################
@@ -60,7 +60,7 @@ clean_rel: bootstrap
 build_rel : bootstrap
     source .venv/bin/activate && \
     cmake  -DCMAKE_TOOLCHAIN_FILE=./misc/cmake/musl-toolchain.cmake -B{{buildDir_rel}} -DCMAKE_BUILD_TYPE={{buildTrgt_rel}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
-    cmake --build {{buildDir_rel}} -j 6
+    cmake --build {{buildDir_rel}} -j 
 
 # Test release 
 test_rel: bootstrap
@@ -84,7 +84,7 @@ clean_dbg: bootstrap
 build_dbg : bootstrap
     source .venv/bin/activate && \
     cmake -DCMAKE_TOOLCHAIN_FILE=./misc/cmake/musl-toolchain.cmake -B{{buildDir_dbg}} -DCMAKE_BUILD_TYPE={{buildTrgt_dbg}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
-    cmake --build {{buildDir_dbg}} -j 6
+    cmake --build {{buildDir_dbg}} -j 
 
 # Test debug 
 test_dbg: bootstrap
@@ -133,7 +133,7 @@ build_all: build_em build_dbg build_rel build_win
     exit 0
 
 # Run testing for all versions
-test_all: test_rel test_dbg test_wine
+test_all: test_rel test_dbg 
     @echo "🚀 tested everything"
     exit 0
 

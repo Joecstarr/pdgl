@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_library(tomlc_lib STATIC ./tomlc17/src/tomlc17.c)
 target_include_directories(tomlc_lib PUBLIC ./tomlc17/src/)
+
 endblock()
 
 # =================================================================================================

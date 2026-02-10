@@ -11,13 +11,13 @@ target_link_libraries(
   prod_range_lib
   prod_janet_lib)
 
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/toml_parser_test_data)
+
 add_custom_command(
   TARGET test_toml_parser_app
   POST_BUILD
-  COMMAND
-    mkdir -p ${CMAKE_BINARY_DIR}/toml_parser_test_data/ && cp
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils/data/*
-    ${CMAKE_BINARY_DIR}/toml_parser_test_data/)
+  COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/utils/data/*
+          ${CMAKE_BINARY_DIR}/toml_parser_test_data/)
 
 add_test(
   NAME test_toml_parser

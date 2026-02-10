@@ -65,7 +65,9 @@
               zip
               zlib
               janet
-              wine
+              wine64
+              winetricks
+              busybox
             ]
             ++ builtins.attrValues ccPkgs;
 
