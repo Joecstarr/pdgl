@@ -1,11 +1,11 @@
-/*!
- *  @file prod_janet.c
+/**
+ *  \file prod_janet.c
  *
- *  @brief Defines the functionality of a janet production, allowing for injection of arbitrary
- *janet code.
+ *  \brief Defines the functionality of a Janet production, allowing for injection of arbitrary
+ *Janet code.
  *
  *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 
@@ -20,7 +20,9 @@
 /************************** Extern ***************************************************************/
 /*************************************************************************************************/
 
-extern unsigned int        init_script_janet_len;
+/**
+ * \brief An external reference to a build time created byte array of `./init_script.janet`.
+ */
 extern const unsigned char init_script_janet[];
 
 /*************************************************************************************************/
@@ -45,6 +47,9 @@ STATIC_INLINE Janet prod_janet_pdglcout(int32_t argc, Janet *argv);
 /*************************************************************************************************/
 
 
+/**
+ * \brief A collection of c functions to pass to the Janet environment at init.
+ */
 static const JanetReg cfuns[] = {
     { "out", prod_janet_pdglcout, "Print function that pushes data onto the output string." },
     { NULL,  NULL,                NULL                                                      }
@@ -55,7 +60,7 @@ static const JanetReg cfuns[] = {
 /*************************************************************************************************/
 /************************** Public Function Definitions ******************************************/
 /*************************************************************************************************/
-
+/* Docstring in header */
 const char * prod_janet_resolve(const void *config)
 {
     const char *retval = NULL;
@@ -66,9 +71,9 @@ const char * prod_janet_resolve(const void *config)
         if ((0 != typed_cfg->out_str_len) && (NULL != typed_cfg->out_str))
         {
             typed_cfg->out_str[0] = '\0';
-            if (NULL != typed_cfg->transition_str)
+            if (NULL != typed_cfg->trans_str)
             {
-                retval = prod_janet_execute(config, typed_cfg->transition_str);
+                retval = prod_janet_execute(config, typed_cfg->trans_str);
             }
         }
     }
@@ -76,6 +81,7 @@ const char * prod_janet_resolve(const void *config)
     return retval;
 }
 
+/* Docstring in header */
 const char * prod_janet_terminate(const void *config)
 {
     const char *retval = NULL;
@@ -100,6 +106,16 @@ const char * prod_janet_terminate(const void *config)
 /************************** Private Function Definitions *****************************************/
 /*************************************************************************************************/
 
+/**
+ * \brief Execute a production in a Janet VM
+ *
+ * Create a Janet VM with an overloaded print statement. Pass the current production script to the
+ *Janet VM and run the script.
+ *
+ * \param config The current production configuration. Must be cast to the Janet type.
+ * \param script The script to execute one of transition or terminal.
+ * \return A pointer to the output string. NULL on error.
+ */
 static char * prod_janet_execute(const void *config, const char *script)
 {
     {
@@ -112,13 +128,13 @@ static char * prod_janet_execute(const void *config, const char *script)
         Janet        module_cache;
         Janet        result;
 
-/* Initialize the virtual machine. Do this before any calls to Janet functions. */
+        /* Initialize the virtual machine. Do this before any calls to Janet functions. */
         janet_init();
 
         env     = janet_core_env(NULL);
         sub_env = janet_table(0);
 
-        /* Build new c module with print out funciton overloaded*/
+        /* Build new c module with print out function overloaded*/
         janet_cfuns(sub_env, "pdglc", cfuns);
         janet_def(sub_env, "cfg_ptr", janet_wrap_pointer((void *)config),
                   "Pointer to the configuration being worked on.");
@@ -126,13 +142,12 @@ static char * prod_janet_execute(const void *config, const char *script)
         janet_table_put(janet_unwrap_table(module_cache), janet_cstringv("pdglc"),
                         janet_wrap_table(sub_env));
 
-        /* Replace the stderr of the janet environment with a c string. */
+        /* Replace the standard error of the Janet environment with a c string. */
         errBuffer = janet_buffer(DEFS_PDGL_MAX_STRING_SIZE);
         janet_setdyn("err", janet_wrap_buffer(errBuffer));
 
-        /* Make sure the result isn't garbage collected*/
-        janet_gcroot(result);
-        /*Run the startup script to overload the print function*/
+
+        /* Run the startup script to overload the print function*/
 
         /*@@@NOTE: I have no idea if this is a good way to do this. It seems to work and should be
          * invisible to a user. Submit a bug if there's an issue.*/
@@ -140,12 +155,14 @@ static char * prod_janet_execute(const void *config, const char *script)
         if (0 == janet_dostring(env, script_str, "main",
                                 &result))
         {
+            /* Make sure the result isn't garbage collected*/
+            janet_gcroot(result);
             if (0 == janet_dostring(env, script, "main", &result))
             {
                 retval = typed_cfg->out_str;
             }
         }
-        /* something went wrong since the retval is still NULL. Report that error.*/
+        /* Something went wrong since `retval` is still NULL. Report that error.*/
         if (NULL == retval)
         {
             janet_stacktrace(janet_current_fiber(), result);
@@ -156,27 +173,45 @@ static char * prod_janet_execute(const void *config, const char *script)
         /* Make sure the result is garbage collected*/
         janet_gcunroot(result);
 
-        /* Clean up the janet VM*/
+        /* Clean up the Janet VM*/
         janet_deinit();
 
         return retval;
     }
 }
 
+/**
+ * \brief Parse a print calling back from Janet to c.
+ *
+ * From inside a Janet VM call back into the PDGL c code. Add the first argument to the output
+ *string buffer of the config pointed to by the second argument.
+ *
+ * \param argc A count of arguments.
+ * \param argv A list of void pointers to argument.
+ * \return Pass back to the Janet VM a nil value.
+ */
 /* cppcheck-suppress constParameterCallback*/
 STATIC_INLINE Janet prod_janet_pdglcout(int32_t argc, Janet *argv)
 {
-    janet_fixarity(argc, 2);
-    const char *text = janet_getcstring(argv, 0);
-    const prod_janet_config_t *typed_cfg = (const prod_janet_config_t *)janet_getpointer(argv, 1);
-    size_t cur_out_len = strlen(typed_cfg->out_str);
+    const char *text = NULL;
+    const prod_janet_config_t *typed_cfg = NULL;
+    size_t cur_out_len = 0;
 
+    /* Ensure exactly two arguments*/
+    janet_fixarity(argc, 2);
+    /* Parse the first argument into a string*/
+    text = janet_getcstring(argv, 0);
+    /* Parse the second argument into a prod_janet_config_t pointer*/
+    typed_cfg   = (const prod_janet_config_t *)janet_getpointer(argv, 1);
+    cur_out_len = strlen(typed_cfg->out_str);
+
+    /* If there is room left in the output buffer for the production. */
     if (0 < cur_out_len - (strlen(typed_cfg->out_str) + strlen(text)))
     {
         char *end = typed_cfg->out_str + cur_out_len;
         sprintf(end, "%s", text);
     }
-    else
+    else/* Otherwise, panic. */
     {
         janet_panicf("Buffer is out of space!");
     }
