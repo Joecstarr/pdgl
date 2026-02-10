@@ -1,10 +1,9 @@
-/*!
- *  @file prod_range.c
+/**
+ *  \file prod_range.c
  *
- *  @brief Defines the functionality of a range production, yielding an integer in a given range.
+ *  \brief Defines the functionality of a range production, yielding an integer in a given range.
  *
- *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 
@@ -29,6 +28,8 @@
 /*************************************************************************************************/
 /************************** Public Function Definitions ******************************************/
 /*************************************************************************************************/
+
+/* Docstring in header */
 /* cppcheck-suppress staticFunction */
 const char * prod_range_resolve(const void *config)
 {
@@ -49,6 +50,7 @@ const char * prod_range_resolve(const void *config)
     return NULL;
 }
 
+/* Docstring in header */
 const char * prod_range_terminate(const void *config)
 {
     return prod_range_resolve(config);
