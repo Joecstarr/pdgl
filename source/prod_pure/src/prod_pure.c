@@ -1,10 +1,10 @@
-/*!
- *  @file prod_pure.c
+/**
+ *  \file prod_pure.c
  *
- *  @brief Defines the functionality of a pure production.
+ *  \brief Defines the functionality of a pure production.
  *
  *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 
@@ -30,6 +30,7 @@
 /************************** Public Function Definitions ******************************************/
 /*************************************************************************************************/
 
+/* Docstring in header */
 const char * prod_pure_resolve(const void *config)
 {
     const char *retval = NULL;
@@ -38,16 +39,17 @@ const char * prod_pure_resolve(const void *config)
     {
         const prod_pure_config_t *typed_cfg = (const prod_pure_config_t *)config;
 
-        if ((0 < typed_cfg->transition_len) && (NULL != typed_cfg->transition_list))
+        if ((0 < typed_cfg->trans_len) && (NULL != typed_cfg->trans_list))
         {
-            size_t idx = rand() % typed_cfg->transition_len;
+            size_t idx = rand() % typed_cfg->trans_len;
 
-            retval = typed_cfg->transition_list[idx];
+            retval = typed_cfg->trans_list[idx];
         }
     }
     return retval;
 }
 
+/* Docstring in header */
 const char * prod_pure_terminate(const void *config)
 {
     const char *retval = NULL;

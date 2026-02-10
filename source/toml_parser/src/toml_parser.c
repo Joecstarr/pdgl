@@ -1,10 +1,10 @@
-/*!
- *  @file toml_parser.c
+/**
+ *  \file toml_parser.c
  *
- *  @brief  Parses a toml string into a production store and frees a store created with the module.
+ *  \brief Parses a TOML string into a production store and frees a store created with the module.
  *
  *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 
@@ -29,37 +29,69 @@
 /************************** Private Function Declarations ****************************************/
 /*************************************************************************************************/
 STATIC_INLINE prodstr_obj_t * tomlprsr_prod_pure_builder(toml_datum_t tbl);
-STATIC_INLINE prodstr_obj_t * tomlprsr_prod_range_builder(toml_datum_t tbl);
-STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl);
+STATIC_INLINE void tomlprsr_prod_pure_free(prodstr_obj_t *prd);
 STATIC_INLINE char ** tomlprsr_prod_pure_builder_list(toml_datum_t ary);
 STATIC_INLINE void tomlprsr_prod_range_free(prodstr_obj_t *prd);
+STATIC_INLINE prodstr_obj_t * tomlprsr_prod_range_builder(toml_datum_t tbl);
 STATIC_INLINE void tomlprsr_prod_janet_free(prodstr_obj_t *prd);
-STATIC_INLINE void tomlprsr_prod_pure_free(prodstr_obj_t *prd);
+STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl);
 
 
 /*************************************************************************************************/
 /************************** Local Variables ******************************************************/
 /*************************************************************************************************/
 
+/**
+ *\typedef prod_builder_funptr_t
+ *
+ * \brief Function pointer for production builder functions.
+ */
 typedef prodstr_obj_t * (*prod_builder_funptr_t)(toml_datum_t tbl);
 
+/**
+ *\typedef prod_free_funptr_t
+ *
+ * \brief Function pointer for production free functions.
+ */
+typedef void (*prod_free_funptr_t)(prodstr_obj_t *prd);
 
-static const size_t          num_of_prod_builders     = 3;
-static prod_builder_funptr_t registed_prod_builders[] = { &tomlprsr_prod_pure_builder,
-                                                          &tomlprsr_prod_janet_builder,
-                                                          &tomlprsr_prod_range_builder };
+/**
+ * \class prodstr_builder_set_t
+ * \brief Structure for a production object type specific data.
+ *
+ * The data needed to abstract a the building of a production object away from its specific type.
+ */
+typedef struct {
+    char *                type;  /**< A pointer to the string representing the type of object.*/
+    prod_builder_funptr_t build; /**< A function pointer to the build function for the object.*/
+    prod_free_funptr_t    free;  /**< A function pointer to the free function for the object.*/
+}prodstr_builder_set_t;
+
+
+/**
+ * \brief List of productions configured for building a production store.
+ */
+static prodstr_builder_set_t registed_prod_builders[] = {
+    { PROD_PURE_NAME,  &tomlprsr_prod_pure_builder,  &tomlprsr_prod_pure_free  },
+    { PROD_JANET_NAME, &tomlprsr_prod_janet_builder, &tomlprsr_prod_janet_free },
+    { PROD_RANGE_NAME, &tomlprsr_prod_range_builder, &tomlprsr_prod_range_free },
+    { NULL,            NULL,                         NULL                      }
+    /* This list must be null terminated*/
+};
 
 
 
 /*************************************************************************************************/
 /************************** Public Function Definitions ******************************************/
 /*************************************************************************************************/
+/* Docstring in header*/
 prodstr_store_t *const tomlprsr_parse(const char *toml_data)
 {
     prodstr_store_t *store = NULL;
 
     if (NULL != toml_data)
     {
+        /* try to parse the input TOML*/
         toml_result_t tbl = toml_parse(toml_data, strlen(toml_data));
 
         if (true == tbl.ok)
@@ -68,6 +100,7 @@ prodstr_store_t *const tomlprsr_parse(const char *toml_data)
             size_t               i        = 0;
             const prodstr_obj_t *entry    = NULL;
             prodstr_obj_t **     prd_buff = NULL;
+            /* Allocate a new production store*/
             store = (prodstr_store_t *)malloc((sizeof(prodstr_store_t)));
 
             if (NULL == store)
@@ -75,7 +108,8 @@ prodstr_store_t *const tomlprsr_parse(const char *toml_data)
                 toml_free(tbl);
                 return NULL;
             }
-            store->production_count = 0;
+            /* Initialize the store table*/
+            store->count = 0;
             for (i = 0; i < PRODSTR_TABLE_SIZE; i++)
             {
                 store->table[i] = NULL;
@@ -89,6 +123,8 @@ prodstr_store_t *const tomlprsr_parse(const char *toml_data)
                 return NULL;
             }
 
+            /* Get a buffer of pointers to production object to make freeing easier if we find a
+             * failure*/
             prd_buff = calloc(arr.u.arr.size, sizeof(prodstr_obj_t *));
 
             if (NULL == prd_buff)
@@ -98,23 +134,34 @@ prodstr_store_t *const tomlprsr_parse(const char *toml_data)
                 return NULL;
             }
 
+            /* For each item in the TOML array */
             for (i = 0; i < arr.u.arr.size; i++)
             {
-                toml_datum_t prod  = arr.u.arr.elem[i];
-                size_t       j     = 0;
-                bool         added = false;
+                toml_datum_t           prod    = arr.u.arr.elem[i];
+                prodstr_builder_set_t *builder = registed_prod_builders;
+                bool added = false;
                 prd_buff[i] = NULL;
-                for (j = 0; j < num_of_prod_builders; j++)
+                /* For each configured production type*/
+                while (NULL != builder->type)
                 {
-                    prd_buff[i] = registed_prod_builders[j](prod);
-                    if (NULL != prd_buff[i])
+                    toml_datum_t type = toml_seek(prod, "type");
+                    if (DEFS_PDGL_STRING_MATCH == strcmp(type.u.s, builder->type))
                     {
-                        added = prodstr_add(store, prd_buff[i]);
-                        break;
+                        /* Try to parse the production as the jth type*/
+                        prd_buff[i] = builder->build(prod);
+                        if (NULL != prd_buff[i])
+                        {
+                            /* Parsed successfully add to store.*/
+                            added = prodstr_add(store, prd_buff[i]);
+                            break;
+                        }
                     }
+                    builder++;
                 }
+                /* If we failed to add a production on the last attempt */
                 if (false == added)
                 {
+                    /* Free everything and report an error state */
                     size_t k;
                     for (k = 0; k < arr.u.arr.size; k++)
                     {
@@ -126,9 +173,12 @@ prodstr_store_t *const tomlprsr_parse(const char *toml_data)
                 }
             }
 
+            /* Free the production temp buffer, and free the TOML table. */
             free(prd_buff);
             toml_free(tbl);
 
+            /* We have exhausted all the productions in the array. Now ensure that there is a
+             * production with the entry symbol.*/
             entry = prodstr_find(store, DEFS_PDGL_ENTRY_SYMBOL);
             if (NULL == entry)
             {
@@ -140,27 +190,27 @@ prodstr_store_t *const tomlprsr_parse(const char *toml_data)
     return store;
 }
 
+/* Docstring in header*/
 void tomlprsr_free(prodstr_store_t *store)
 {
     size_t i;
 
+    /* For each table */
     for (i = 0; i < PRODSTR_TABLE_SIZE; i++)
     {
         prodstr_obj_t *obj = store->table[i];
         while (NULL != obj)
         {
-            prodstr_obj_t *nextobj = obj->next;
-            if (DEFS_PDGL_STRING_MATCH == strcmp(obj->type, PROD_PURE_NAME))
+            prodstr_builder_set_t *builder = registed_prod_builders;
+            prodstr_obj_t *        nextobj = obj->next;
+            /* For each configured production type*/
+            while (NULL != builder->type)
             {
-                tomlprsr_prod_pure_free(obj);
-            }
-            else if (DEFS_PDGL_STRING_MATCH == strcmp(obj->type, PROD_JANET_NAME))
-            {
-                tomlprsr_prod_janet_free(obj);
-            }
-            else if (DEFS_PDGL_STRING_MATCH == strcmp(obj->type, PROD_RANGE_NAME))
-            {
-                tomlprsr_prod_range_free(obj);
+                if (DEFS_PDGL_STRING_MATCH == strcmp(obj->type, builder->type))
+                {
+                    builder->free(obj);
+                }
+                builder++;
             }
             obj = nextobj;
         }
@@ -173,32 +223,130 @@ void tomlprsr_free(prodstr_store_t *store)
 /************************** Private Function Definitions *****************************************/
 /*************************************************************************************************/
 
-STATIC_INLINE void tomlprsr_prod_range_free(prodstr_obj_t *prd)
+/*************************************************************************************************/
+/**************************   Pure Production Functions   *****************************************/
+/*************************************************************************************************/
+
+/**
+ * \brief Builder function for a pure production
+ *
+ * Parses a pure production from TOML to a prodstr_obj_t configured as a pure production.
+ *
+ * \param tbl TOML production data to parse
+ * \return A pointer to a prodstr_obj_t when successful and a NULL pointer when unsuccessful.
+ */
+STATIC_INLINE prodstr_obj_t * tomlprsr_prod_pure_builder(toml_datum_t tbl)
 {
-    if (NULL != prd)
+    toml_datum_t type        = toml_seek(tbl, "type");
+    toml_datum_t name        = toml_seek(tbl, "name");
+    toml_datum_t transitions = toml_seek(tbl, "transitions");
+    toml_datum_t terminals   = toml_seek(tbl, "terminals");
+
+    if ((TOML_STRING == name.type) &&
+        (TOML_ARRAY == transitions.type) &&
+        (TOML_ARRAY == terminals.type))
     {
-        prod_range_config_t *config = (prod_range_config_t *)prd->config;
-        free(config->out_str);
-        free(prd->name);
-        free(prd->type);
+        size_t cur_str_len         = 0;
+        prod_pure_config_t *config = NULL;
+        prodstr_obj_t *     prd    = NULL;
+        char **trans_buff          = NULL;
+        char **term_buff           = NULL;
+
+        char *cur_str = NULL;
+
+
+        config = (prod_pure_config_t *)malloc(sizeof(prod_pure_config_t));
+        if (NULL == config)
+        {
+            return NULL;
+        }
+
+        config->trans_len  = transitions.u.arr.size;
+        config->term_len   = terminals.u.arr.size;
+        config->term_list  = NULL;
+        config->trans_list = NULL;
+
+
+        prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
+        if (NULL == prd)
+        {
+            free(config);
+            return NULL;
+        }
+
+        prd->name   = NULL;
+        prd->config = (void *)config;
+        prd->next   = NULL;
+        prd->res    = &prod_pure_resolve;
+        prd->term   = &prod_pure_terminate;
+
+        cur_str_len = strlen(name.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
+        {
+            free(config);
+            free(prd);
+            return NULL;
+        }
+
+        strcpy(cur_str, name.u.s);
+        prd->name = cur_str;
+        cur_str   = NULL;
+
+        cur_str_len = strlen(type.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
+        {
+            free(prd->name);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+        strcpy(cur_str, type.u.s);
+        prd->type = cur_str;
+        cur_str   = NULL;
+
+
+        trans_buff = tomlprsr_prod_pure_builder_list(transitions);
+        if (NULL == trans_buff)
+        {
+            free(prd->name);
+            free(prd->type);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+        config->trans_list = trans_buff;
+
+        term_buff = tomlprsr_prod_pure_builder_list(terminals);
+        if (NULL == term_buff)
+        {
+            size_t i;
+            for (i = 0; i < config->trans_len; i++)
+            {
+                free(config->trans_list[i]);
+            }
+            free(config->trans_list);
+            free(prd->name);
+            free(prd->type);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+        config->term_list = term_buff;
+
+        return prd;
     }
-    free(prd);
+
+    return NULL;
 }
 
-STATIC_INLINE void tomlprsr_prod_janet_free(prodstr_obj_t *prd)
-{
-    if (NULL != prd)
-    {
-        prod_janet_config_t *config = (prod_janet_config_t *)prd->config;
-        free(config->out_str);
-        free(config->term_str);
-        free(config->transition_str);
-        free(prd->name);
-        free(prd->type);
-    }
-    free(prd);
-}
-
+/**
+ * \brief Free an allocated pure production.
+ *
+ * \param prd The production object to free.
+ */
 STATIC_INLINE void tomlprsr_prod_pure_free(prodstr_obj_t *prd)
 {
     if (NULL != prd)
@@ -209,12 +357,12 @@ STATIC_INLINE void tomlprsr_prod_pure_free(prodstr_obj_t *prd)
         {
             free(config->term_list[i]);
         }
-        for (i = 0; i < config->transition_len; i++)
+        for (i = 0; i < config->trans_len; i++)
         {
-            free(config->transition_list[i]);
+            free(config->trans_list[i]);
         }
 
-        free(config->transition_list);
+        free(config->trans_list);
         free(config->term_list);
         free(config);
         free(prd->name);
@@ -223,6 +371,14 @@ STATIC_INLINE void tomlprsr_prod_pure_free(prodstr_obj_t *prd)
     free(prd);
 }
 
+/**
+ * \brief Parse TOML array into a list of strings for a pure production.
+ *
+ * Parse the given TOML array of strings into an array of c strings for a pure production.
+ *
+ * \param ary A TOML array of strings.
+ * \return A list of strings when successful and a NULL pointer when unsuccessful.
+ */
 STATIC_INLINE char ** tomlprsr_prod_pure_builder_list(toml_datum_t ary)
 {
     size_t i = 0;
@@ -285,325 +441,269 @@ STATIC_INLINE char ** tomlprsr_prod_pure_builder_list(toml_datum_t ary)
     return buff;
 }
 
-STATIC_INLINE prodstr_obj_t * tomlprsr_prod_pure_builder(toml_datum_t tbl)
-{
-    toml_datum_t type = toml_seek(tbl, "type");
+/*************************************************************************************************/
+/**************************   Range Production Functions   ***************************************/
+/*************************************************************************************************/
 
 
-    if (DEFS_PDGL_STRING_MATCH == strcmp(type.u.s, PROD_PURE_NAME))
-    {
-        toml_datum_t name        = toml_seek(tbl, "name");
-        toml_datum_t transitions = toml_seek(tbl, "transitions");
-        toml_datum_t terminals   = toml_seek(tbl, "terminals");
-        if (
-            (TOML_STRING == name.type) &&
-            (TOML_ARRAY == transitions.type) &&
-            (TOML_ARRAY == terminals.type))
-        {
-            size_t cur_str_len         = 0;
-            prod_pure_config_t *config = NULL;
-            prodstr_obj_t *     prd    = NULL;
-            char **trans_buff          = NULL;
-            char **term_buff           = NULL;
-
-            char *cur_str = NULL;
-
-
-            config = (prod_pure_config_t *)malloc(sizeof(prod_pure_config_t));
-            if (NULL == config)
-            {
-                return NULL;
-            }
-
-            config->transition_len  = transitions.u.arr.size;
-            config->term_len        = terminals.u.arr.size;
-            config->term_list       = NULL;
-            config->transition_list = NULL;
-
-
-            prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
-            if (NULL == prd)
-            {
-                free(config);
-                return NULL;
-            }
-
-            prd->name   = NULL;
-            prd->config = (void *)config;
-            prd->next   = NULL;
-            prd->res    = &prod_pure_resolve;
-            prd->term   = &prod_pure_terminate;
-
-            cur_str_len = strlen(name.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
-            {
-                free(config);
-                free(prd);
-                return NULL;
-            }
-
-            strcpy(cur_str, name.u.s);
-            prd->name = cur_str;
-            cur_str   = NULL;
-
-            cur_str_len = strlen(type.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
-            {
-                free(prd->name);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-            strcpy(cur_str, type.u.s);
-            prd->type = cur_str;
-            cur_str   = NULL;
-
-
-            trans_buff = tomlprsr_prod_pure_builder_list(transitions);
-            if (NULL == trans_buff)
-            {
-                free(prd->name);
-                free(prd->type);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-            config->transition_list = trans_buff;
-
-            term_buff = tomlprsr_prod_pure_builder_list(terminals);
-            if (NULL == term_buff)
-            {
-                size_t i;
-                for (i = 0; i < config->transition_len; i++)
-                {
-                    free(config->transition_list[i]);
-                }
-                free(config->transition_list);
-                free(prd->name);
-                free(prd->type);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-            config->term_list = term_buff;
-
-            return prd;
-        }
-    }
-    return NULL;
-}
-
+/**
+ * \brief Builder function for a range production
+ *
+ * Parses a pure production from TOML to a prodstr_obj_t configured as a range production.
+ *
+ * \param tbl TOML production data to parse
+ * \return A pointer to a prodstr_obj_t when successful and a NULL pointer when unsuccessful.
+ */
 STATIC_INLINE prodstr_obj_t * tomlprsr_prod_range_builder(toml_datum_t tbl)
 {
-    toml_datum_t type = toml_seek(tbl, "type");
+    toml_datum_t type       = toml_seek(tbl, "type");
+    toml_datum_t name       = toml_seek(tbl, "name");
+    toml_datum_t lowerbound = toml_seek(tbl, "lower_bound");
+    toml_datum_t upperbound = toml_seek(tbl, "upper_bound");
 
-    if (DEFS_PDGL_STRING_MATCH == strcmp(type.u.s, PROD_RANGE_NAME))
+    if (
+        (TOML_STRING == name.type) &&
+        (TOML_INT64 == lowerbound.type) &&
+        (TOML_INT64 == upperbound.type))
     {
-        toml_datum_t name       = toml_seek(tbl, "name");
-        toml_datum_t lowerbound = toml_seek(tbl, "lower_bound");
-        toml_datum_t upperbound = toml_seek(tbl, "upper_bound");
-        if (
-            (TOML_STRING == name.type) &&
-            (TOML_INT64 == lowerbound.type) &&
-            (TOML_INT64 == upperbound.type))
+        size_t cur_str_len          = 0;
+        prod_range_config_t *config = NULL;
+        prodstr_obj_t *      prd    = NULL;
+        char *cur_str = NULL;
+
+        config = (prod_range_config_t *)malloc(sizeof(prod_range_config_t));
+
+        if (NULL == config)
         {
-            size_t cur_str_len          = 0;
-            prod_range_config_t *config = NULL;
-            prodstr_obj_t *      prd    = NULL;
-            char *cur_str = NULL;
-
-            config = (prod_range_config_t *)malloc(sizeof(prod_range_config_t));
-
-            if (NULL == config)
-            {
-                return NULL;
-            }
-
-            config->lower_bound = lowerbound.u.int64;
-            config->upper_bound = upperbound.u.int64;
-            config->out_str     = NULL;
-            config->out_str_len = DEFS_PDGL_MAX_STRING_SIZE;
-
-
-            prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
-            if (NULL == prd)
-            {
-                free(config);
-                return NULL;
-            }
-
-            prd->name   = NULL;
-            prd->config = (void *)config;
-            prd->next   = NULL;
-            prd->res    = &prod_range_resolve;
-            prd->term   = &prod_range_terminate;
-
-            cur_str_len = strlen(name.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
-            {
-                free(config);
-                free(prd);
-                return NULL;
-            }
-
-            strcpy(cur_str, name.u.s);
-            prd->name = cur_str;
-            cur_str   = NULL;
-
-            cur_str_len = strlen(type.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
-            {
-                free(prd->name);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-            strcpy(cur_str, type.u.s);
-            prd->type = cur_str;
-            cur_str   = NULL;
-
-            config->out_str = (char *)calloc(DEFS_PDGL_MAX_STRING_SIZE, sizeof(char));
-            if (NULL == config->out_str)
-            {
-                free(prd->name);
-                free(prd->type);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-
-            return prd;
+            return NULL;
         }
+
+        config->lower_bound = lowerbound.u.int64;
+        config->upper_bound = upperbound.u.int64;
+        config->out_str     = NULL;
+        config->out_str_len = DEFS_PDGL_MAX_STRING_SIZE;
+
+
+        prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
+        if (NULL == prd)
+        {
+            free(config);
+            return NULL;
+        }
+
+        prd->name   = NULL;
+        prd->config = (void *)config;
+        prd->next   = NULL;
+        prd->res    = &prod_range_resolve;
+        prd->term   = &prod_range_terminate;
+
+        cur_str_len = strlen(name.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
+        {
+            free(config);
+            free(prd);
+            return NULL;
+        }
+
+        strcpy(cur_str, name.u.s);
+        prd->name = cur_str;
+        cur_str   = NULL;
+
+        cur_str_len = strlen(type.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
+        {
+            free(prd->name);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+        strcpy(cur_str, type.u.s);
+        prd->type = cur_str;
+        cur_str   = NULL;
+
+        config->out_str = (char *)calloc(DEFS_PDGL_MAX_STRING_SIZE, sizeof(char));
+        if (NULL == config->out_str)
+        {
+            free(prd->name);
+            free(prd->type);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+
+        return prd;
     }
 
     return NULL;
 }
 
+/**
+ * \brief Free an allocated range production.
+ *
+ * \param prd The production object to free.
+ */
+STATIC_INLINE void tomlprsr_prod_range_free(prodstr_obj_t *prd)
+{
+    if (NULL != prd)
+    {
+        prod_range_config_t *config = (prod_range_config_t *)prd->config;
+        free(config->out_str);
+        free(prd->name);
+        free(prd->type);
+    }
+    free(prd);
+}
+
+/*************************************************************************************************/
+/**************************   Janet Production Functions   ***************************************/
+/*************************************************************************************************/
+
+/**
+ * \brief Builder function for a Janet production
+ *
+ * Parses a pure production from TOML to a prodstr_obj_t configured as a Janet production.
+ *
+ * \param tbl TOML production data to parse
+ * \return A pointer to a prodstr_obj_t when successful and a NULL pointer when unsuccessful.
+ */
 STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl)
 {
     /* #lizard forgives(cyclomatic_complexity) */
-    toml_datum_t type = toml_seek(tbl, "type");
+    toml_datum_t type       = toml_seek(tbl, "type");
+    toml_datum_t name       = toml_seek(tbl, "name");
+    toml_datum_t transition = toml_seek(tbl, "transition");
+    toml_datum_t terminal   = toml_seek(tbl, "terminal");
 
-    if (DEFS_PDGL_STRING_MATCH == strcmp(type.u.s, PROD_JANET_NAME))
+    if ((TOML_STRING == name.type) &&
+        (TOML_STRING == transition.type) &&
+        (TOML_STRING == terminal.type))
     {
-        toml_datum_t name       = toml_seek(tbl, "name");
-        toml_datum_t transition = toml_seek(tbl, "transition");
-        toml_datum_t terminal   = toml_seek(tbl, "terminal");
-        if ((TOML_STRING == name.type) &&
-            (TOML_STRING == transition.type) &&
-            (TOML_STRING == terminal.type))
+        size_t cur_str_len          = 0;
+        prod_janet_config_t *config = NULL;
+        prodstr_obj_t *      prd    = NULL;
+        char *cur_str = NULL;
+
+
+        config = (prod_janet_config_t *)malloc(sizeof(prod_janet_config_t));
+        if (NULL == config)
         {
-            size_t cur_str_len          = 0;
-            prod_janet_config_t *config = NULL;
-            prodstr_obj_t *      prd    = NULL;
-            char *cur_str = NULL;
-
-
-            config = (prod_janet_config_t *)malloc(sizeof(prod_janet_config_t));
-            if (NULL == config)
-            {
-                return NULL;
-            }
-            config->out_str        = NULL;
-            config->out_str_len    = DEFS_PDGL_MAX_STRING_SIZE;
-            config->term_str       = NULL;
-            config->transition_str = NULL;
-
-
-            prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
-            if (NULL == prd)
-            {
-                free(config);
-                return NULL;
-            }
-
-            prd->name   = NULL;
-            prd->config = (void *)config;
-            prd->next   = NULL;
-            prd->res    = &prod_janet_resolve;
-            prd->term   = &prod_janet_terminate;
-
-
-            cur_str_len = strlen(name.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
-            {
-                free(config);
-                free(prd);
-                return NULL;
-            }
-
-            strcpy(cur_str, name.u.s);
-            prd->name = cur_str;
-            cur_str   = NULL;
-
-            cur_str_len = strlen(type.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
-            {
-                free(prd->name);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-            strcpy(cur_str, type.u.s);
-            prd->type = cur_str;
-            cur_str   = NULL;
-
-            config->out_str = (char *)calloc(DEFS_PDGL_MAX_STRING_SIZE, sizeof(char));
-            if (NULL == config->out_str)
-            {
-                free(prd->name);
-                free(prd->type);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-
-            *config->out_str = '\0';
-
-            cur_str_len = strlen(transition.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_STRING_SIZE))
-            {
-                free(prd->name);
-                free(prd->type);
-                free(config->out_str);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-            strcpy(cur_str, transition.u.s);
-            config->transition_str = cur_str;
-            cur_str = NULL;
-
-            cur_str_len = strlen(terminal.u.s) + 1;
-            cur_str     = (char *)calloc(cur_str_len, sizeof(char));
-
-            if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_STRING_SIZE))
-            {
-                free(prd->name);
-                free(prd->type);
-                free(config->out_str);
-                free(config->transition_str);
-                free(config);
-                free(prd);
-                return NULL;
-            }
-            strcpy(cur_str, terminal.u.s);
-            config->term_str = cur_str;
-            cur_str          = NULL;
-
-            return prd;
+            return NULL;
         }
+        config->out_str     = NULL;
+        config->out_str_len = DEFS_PDGL_MAX_STRING_SIZE;
+        config->term_str    = NULL;
+        config->trans_str   = NULL;
+
+
+        prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
+        if (NULL == prd)
+        {
+            free(config);
+            return NULL;
+        }
+
+        prd->name   = NULL;
+        prd->config = (void *)config;
+        prd->next   = NULL;
+        prd->res    = &prod_janet_resolve;
+        prd->term   = &prod_janet_terminate;
+
+
+        cur_str_len = strlen(name.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
+        {
+            free(config);
+            free(prd);
+            return NULL;
+        }
+
+        strcpy(cur_str, name.u.s);
+        prd->name = cur_str;
+        cur_str   = NULL;
+
+        cur_str_len = strlen(type.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_NAME_SIZE))
+        {
+            free(prd->name);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+        strcpy(cur_str, type.u.s);
+        prd->type = cur_str;
+        cur_str   = NULL;
+
+        config->out_str = (char *)calloc(DEFS_PDGL_MAX_STRING_SIZE, sizeof(char));
+        if (NULL == config->out_str)
+        {
+            free(prd->name);
+            free(prd->type);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+
+        *config->out_str = '\0';
+
+        cur_str_len = strlen(transition.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_STRING_SIZE))
+        {
+            free(prd->name);
+            free(prd->type);
+            free(config->out_str);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+        strcpy(cur_str, transition.u.s);
+        config->trans_str = cur_str;
+        cur_str           = NULL;
+
+        cur_str_len = strlen(terminal.u.s) + 1;
+        cur_str     = (char *)calloc(cur_str_len, sizeof(char));
+
+        if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_STRING_SIZE))
+        {
+            free(prd->name);
+            free(prd->type);
+            free(config->out_str);
+            free(config->trans_str);
+            free(config);
+            free(prd);
+            return NULL;
+        }
+        strcpy(cur_str, terminal.u.s);
+        config->term_str = cur_str;
+        cur_str          = NULL;
+
+        return prd;
     }
     return NULL;
+}
+
+/**
+ * \brief Free an allocated Janet production.
+ *
+ * \param prd The production object to free.
+ */
+STATIC_INLINE void tomlprsr_prod_janet_free(prodstr_obj_t *prd)
+{
+    if (NULL != prd)
+    {
+        prod_janet_config_t *config = (prod_janet_config_t *)prd->config;
+        free(config->out_str);
+        free(config->term_str);
+        free(config->trans_str);
+        free(prd->name);
+        free(prd->type);
+    }
+    free(prd);
 }

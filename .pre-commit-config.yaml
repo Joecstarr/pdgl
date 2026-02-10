@@ -43,3 +43,31 @@ repos:
                     - "**/CMakeLists.txt"
                     - "libraries/CMakeLists.txt"
                     - "libraries/CMakeLists.txt"
+          - id: doxygen
+            name: doxygen
+            language: system
+            entry: just check-doxygen
+            pass_filenames: false
+            exclude:
+                glob:
+                    - "libraries/**/*.*"
+            files:
+                glob:
+                    - "**/*.c"
+                    - "**/*.h"
+                    - "**/*.cpp"
+                    - "**/*.hpp"
+          - id: check-cppcheck
+            name: cppcheck
+            language: system
+            entry: just check-cppcheck
+            pass_filenames: false
+            exclude:
+                glob:
+                    - "libraries/**/*.*"
+            files:
+                glob:
+                    - "**/*.c"
+                    - "**/*.h"
+                    - "**/*.cpp"
+                    - "**/*.hpp"

@@ -1,10 +1,10 @@
-/*!
- *  @file test_utils_production_store.h
+/**
+ *  \file test_utils_production_store.h
  *
- *  @brief
+ *  \brief
  *
  *
- *  @author    Joe Starr
+ *  \author    Joe Starr
  *
  */
 

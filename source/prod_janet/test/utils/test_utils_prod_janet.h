@@ -1,10 +1,10 @@
-/*!
- *  @file test_utils_prod_janet.h
+/**
+ *  \file test_utils_prod_janet.h
  *
- *  @brief
+ *  \brief
  *
  *
- *  @author    Joe Starr
+ *  \author    Joe Starr
  *
  */
 

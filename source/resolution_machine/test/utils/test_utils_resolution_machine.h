@@ -1,10 +1,10 @@
-/*!
- *  @file test_utils_resolution_machine.h
+/**
+ *  \file test_utils_resolution_machine.h
  *
- *  @brief
+ *  \brief
  *
  *
- *  @author    Joe Starr
+ *  \author    Joe Starr
  *
  */
 
@@ -19,12 +19,12 @@
 /*************************** Defines ******************************************/
 /******************************************************************************/
 
-/*!
- * @brief
+/**
+ * \brief
  *
  */
 typedef struct {
-    char *transition_str;
+    char *trans_str;
     char *term_str;
 } test_resmach_prod_config_t;
 /******************************************************************************/

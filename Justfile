@@ -131,6 +131,32 @@ live: bootstrap
 ##################################################################################################
 
 ##################################################################################################
+####### Doxygen Style ############################################################################
+##################################################################################################
+
+
+# Generate warnings from doxygen 
+warning-doxygen:
+    -doxygen misc/doxy/.doxyconfig | python ./misc/doxy/make_doxywarnhtml.py 
+
+# Cyclically Generate warnings from doxygen 
+c-warning-doxygen:
+    -watch -n 3 just warning-doxygen
+
+# Server cppcheck results
+[working-directory: '.build/doxygen/warnings']
+serve-doxygen: bootstrap warning-doxygen 
+    @echo "🚀 Check port 1315"
+    source ../../../.venv/bin/activate && \
+    python -m reloadserver 1315
+
+# Run cmake-format
+check-doxygen:
+    mkdir -p .build/doxygen
+    rip .build/doxygen
+    doxygen misc/doxy/.doxyconfig
+
+##################################################################################################
 ####### cmake format #############################################################################
 ##################################################################################################
 
@@ -150,7 +176,7 @@ clear-cppcheck: build_rel
 # Build cppckeck html 
 report-cppcheck:
     cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all --std=c89 --inline-suppr --suppressions-list=cppcheck.supp --xml 2> ./.build/cppcheck/err.xml
-    cppcheck-htmlreport --file=./.build/cppcheck/err.xml --report-dir=./.build/cppcheck --source-dir=.
+    cppcheck-htmlreport --file=./.build/cppcheck/err.xml --report-dir=./.build/cppcheck --source-dir=. 
 
 # Server cppcheck results
 [working-directory: '.build/cppcheck']
@@ -188,7 +214,7 @@ do-mdformat:
 ##################################################################################################
 
 # Check all style and formatting. Fail on warning.  
-check: check-cppcheck 
+check: 
     prek run --all-files
     @echo "🚀 Checked the files"
     exit 0

@@ -1,10 +1,10 @@
 /*!
- *  @file main.cpp
+ *  \file main.cpp
  *
- *  @brief Wrapper for CLI usage of the PDGL toolchain
+ *  \brief Wrapper for CLI usage of the PDGL toolchain
  *
  *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 
@@ -20,6 +20,11 @@
 #include <iostream>
 #include <random>
 
+/**
+ * \class PDGL_cli
+ * \brief Wrapper class for the PDGL core library functionality
+ *
+ */
 class PDGL_cli {
 public:
     PDGL_cli(const std::string *input, size_t stack_size, size_t seed);
@@ -30,32 +35,57 @@ public:
 private:
     void init(const std::string *input, size_t stack_size, size_t seed);
 
-    const std::string *language;
-    prodstr_store_t *store;
-    resmach_stack_t *stack;
-    size_t stack_size;
-    size_t seed;
+    const std::string *language;                                         /**< Language specification
+                                                                          * TOML data. */
+    prodstr_store_t *store;                                              /**< Pointer to a
+                                                                          * production store for the
+                                                                          * language.*/
+    resmach_stack_t *stack;                                              /**< A stack used for
+                                                                          * storage of partial
+                                                                          * resolutions. */
+    size_t stack_size;                                                   /**< Size to configure the
+                                                                          * stack to. */
+    size_t seed;                                                         /**< Unsigned integer used
+                                                                          * to seed the random
+                                                                          * number generator. */
 };
 
+/**
+ * \brief Deconstructor frees c library pointers.
+ */
 PDGL_cli::~PDGL_cli()
 {
     for (size_t i = 0; i < this->stack_size; i++)
     {
         delete this->stack->partials[i].buff;
     }
+
     if (nullptr != this->store)
     {
         tomlprsr_free(this->store);
     }
+
     delete[] this->stack->partials;
     delete this->stack;
 }
 
+/**
+ * \brief Constructor with all possible configurable items.
+ *
+ * \param input A pointer to a language string containing TOML data.
+ * \param stack_size The size of the stack to configure.
+ * \param seed The seed to use to seed random.
+ */
 PDGL_cli::PDGL_cli(const std::string *input, size_t stack_size, size_t seed)
 {
     this->init(input, stack_size, seed);
 }
 
+/**
+ * \brief constructor with minimal configurable items.
+ *
+ * \param input A pointer to a language string containing TOML data.
+ */
 PDGL_cli::PDGL_cli(const std::string *input)
 {
     std::random_device rd;
@@ -63,6 +93,13 @@ PDGL_cli::PDGL_cli(const std::string *input)
     this->init(input, 100, rd());
 }
 
+/**
+ * \brief Private constructor logic.
+ *
+ * \param input A pointer to a language string containing TOML data.
+ * \param stack_size The size of the stack to configure.
+ * \param seed The seed to use to seed random.
+ */
 void PDGL_cli::init(const std::string *input, size_t stack_size, size_t seed)
 {
     this->seed             = seed;
@@ -80,17 +117,25 @@ void PDGL_cli::init(const std::string *input, size_t stack_size, size_t seed)
     }
 }
 
+/**
+ * \brief Run the generation of a word in the configured language.
+ *
+ * \return True when successful, false when failure.
+ */
 bool PDGL_cli::run()
 {
+    /* Parse the TOML */
     this->store = tomlprsr_parse(static_cast <const char *>(this->language->c_str()));
     if (nullptr != this->store)
     {
         srand(this->seed);
 
+        /* Run the machine */
         unsigned int ret_val = resmach_execute(this->store, this->stack, stdout);
 
         if (ret_val != RESMACH_EXECUTE_SUCCESS)
         {
+            /* When error happens, diagnose it and report. */
             std::string error_rpt = "";
             if ((ret_val & RESMACH_EXECUTE_NO_ENTRY) == RESMACH_EXECUTE_NO_ENTRY)
             {
@@ -113,6 +158,13 @@ bool PDGL_cli::run()
     return true;
 }
 
+/**
+ * \brief Main calling routine.
+ *
+ * \param argc A count of arguments.
+ * \param argv A list of void pointers to argument.
+ * \return An exit code 0 indicating success or failure otherwise.
+ */
 int main(int argc, char **argv)
 {
     cxxopts::Options options("test", "A brief description");
@@ -137,6 +189,8 @@ int main(int argc, char **argv)
     std::random_device rd;
     std::string        language;
 
+    /*@@@NOTE: I'm not sure if this is really a great way to do this. It requires feeding of an EOF
+     * symbol. */
     do{
         std::string temp;
         std::getline(std::cin, temp);
