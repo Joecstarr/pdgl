@@ -152,6 +152,7 @@ serve-doxygen: bootstrap warning-doxygen
 
 # Run cmake-format
 check-doxygen:
+    mkdir -p .build/doxygen
     rip .build/doxygen
     doxygen misc/doxy/.doxyconfig
 
