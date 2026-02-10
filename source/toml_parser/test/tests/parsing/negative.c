@@ -65,7 +65,7 @@ static void test_parsing_negative_extra_values(void)
     TEST_ASSERT_NOT_NULL(pure);
     prod_pure_config_t *pure_cfg = (prod_pure_config_t *)pure->config;
     TEST_ASSERT_EQUAL_STRING(pure_cfg->term_list[0], "terminal");
-    TEST_ASSERT_EQUAL_STRING(pure_cfg->transition_list[0], "transition");
+    TEST_ASSERT_EQUAL_STRING(pure_cfg->trans_list[0], "transition");
 
     test_toml_parser_release_store(store);
 }
