@@ -1,10 +1,10 @@
-/*!
- *  @file prod_pure.h
+/**
+ *  \file prod_pure.h
  *
- *  @brief Defines the functionality of a pure production.
+ *  \brief Defines the functionality of a pure production.
  *
  *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 
@@ -15,11 +15,15 @@
 /*************************** Includes ************************************************************/
 /*************************************************************************************************/
 
+#include <stddef.h>
+
 /*************************************************************************************************/
 /*************************** Defines *************************************************************/
 /*************************************************************************************************/
 
-#include <stddef.h>
+/**
+ * \brief The type identifier for the `pure` production type.
+ */
 #define PROD_PURE_NAME    ("pure")
 
 /*************************************************************************************************/
@@ -31,15 +35,16 @@ extern "C"
 {
 #endif
 
-/*!
- * @brief
+/**
+ * \struct prod_pure_config_t
+ * \brief Configuration type for a pure production.
  *
  */
 typedef struct {
-    char **transition_list;
-    size_t transition_len;
-    char **term_list;
-    size_t term_len;
+    char **trans_list; /**< List of strings serving as possible transitions in the production.*/
+    size_t trans_len;  /**< The number of transition strings in the list.*/
+    char **term_list;  /**< List of strings serving as possible terminals in the production.*/
+    size_t term_len;   /**< The number of terminal strings in the list.*/
 } prod_pure_config_t;
 
 
@@ -56,7 +61,24 @@ extern "C"
 #endif
 
 
+/**
+ * \brief The resolve function for the pure production type.
+ *
+ * Resolve at random a transition string.
+ *
+ * \param config A configuration of a production.
+ * \return A pointer to the output of the resolution.
+ */
 const char * prod_pure_resolve(const void *config);
+
+/**
+ * \brief The resolve function for the pure production type.
+ *
+ * Terminate at random with a terminal string.
+ *
+ * \param config A configuration of a production.
+ * \return A pointer to the output of the resolution.
+ */
 const char * prod_pure_terminate(const void *config);
 
 #ifdef __cplusplus
