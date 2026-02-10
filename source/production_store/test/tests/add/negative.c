@@ -56,7 +56,7 @@ static void test_add_negative_null_config(void)
     bool result = prodstr_add(&production_store, &prd);
 
     TEST_ASSERT_EQUAL_UINT(false, result);
-    TEST_ASSERT_EQUAL_UINT(1, production_store.production_count);
+    TEST_ASSERT_EQUAL_UINT(1, production_store.count);
 }
 
 static void test_add_negative_null_type(void)
@@ -94,7 +94,7 @@ static void test_add_negative_null_type(void)
     bool result = prodstr_add(&production_store, &prd);
 
     TEST_ASSERT_EQUAL_UINT(false, result);
-    TEST_ASSERT_EQUAL_UINT(1, production_store.production_count);
+    TEST_ASSERT_EQUAL_UINT(1, production_store.count);
     free(config);
 }
 
@@ -133,7 +133,7 @@ static void test_add_negative_null_name(void)
     bool result = prodstr_add(&production_store, &prd);
 
     TEST_ASSERT_EQUAL_UINT(false, result);
-    TEST_ASSERT_EQUAL_UINT(1, production_store.production_count);
+    TEST_ASSERT_EQUAL_UINT(1, production_store.count);
     free(config);
 }
 
@@ -218,6 +218,6 @@ void test_add_negative_col()
     bool result = prodstr_add(&production_store, &prd);
 
     TEST_ASSERT_EQUAL_UINT(false, result);
-    TEST_ASSERT_EQUAL_UINT(1, production_store.production_count);
+    TEST_ASSERT_EQUAL_UINT(1, production_store.count);
     free(config);
 }

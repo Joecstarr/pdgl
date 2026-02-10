@@ -1,10 +1,10 @@
-/*!
- *  @file production_store.c
+/**
+ *  \file production_store.c
  *
- *  @brief  Describes the storage used for productions of a language.
+ *  \brief Describes the storage used for productions of a language.
  *
  *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 
@@ -31,6 +31,7 @@ STATIC_INLINE size_t prodstr_hash(const void *buf, size_t buflength);
 /************************** Public Function Definitions ******************************************/
 /*************************************************************************************************/
 
+/* Docstring in header*/
 bool prodstr_add(prodstr_store_t *store, prodstr_obj_t *prd)
 {
     if (NULL == store)
@@ -55,9 +56,12 @@ bool prodstr_add(prodstr_store_t *store, prodstr_obj_t *prd)
     }
     else
     {
+        /* Hash the name*/
         size_t hash = prodstr_hash(prd->name, strlen(prd->name));
+        /* If the bucket for hash is full add to the linked list*/
         if (NULL != store->table[hash])
         {
+            /* Make sure nothing in the list shares the name*/
             prodstr_obj_t *tblprd = store->table[hash];
             do{
                 if (0 == strcmp(tblprd->name, prd->name))
@@ -66,15 +70,19 @@ bool prodstr_add(prodstr_store_t *store, prodstr_obj_t *prd)
                 }
                 tblprd = tblprd->next;
             }while (NULL != tblprd);
+
+            /* Set current head to next of new production*/
             prodstr_obj_t *old_obj = store->table[hash];
             prd->next = old_obj;
         }
+        /* Add production to table at hash*/
         store->table[hash] = prd;
-        store->production_count++;
+        store->count++;
         return true;
     }
 }
 
+/* Docstring in header*/
 const prodstr_obj_t * prodstr_find(const prodstr_store_t *store,
                                    const char *name)
 {
@@ -107,11 +115,13 @@ const prodstr_obj_t * prodstr_find(const prodstr_store_t *store,
 /*************************************************************************************************/
 
 /**
- * @brief https://en.wikipedia.org/wiki/Adler-32
+ * \brief Hash an input buffer into an unsigned int.
  *
- * @param buf
- * @param buflength
- * @return
+ * Hash with the input buffer with [Adler-32](https://en.wikipedia.org/wiki/Adler-32).
+ *
+ * \param buf The buffer to hash.
+ * \param buflength The number of bytes to include in the hash.
+ * \return An unsigned int in the range of $0<h<$PRODSTR_TABLE_SIZE.
  */
 size_t prodstr_hash(const void *buf, size_t buflength)
 {

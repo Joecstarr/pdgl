@@ -51,7 +51,7 @@ static void test_add_nonempty_store_col(void)
 
     bool result = prodstr_add(&production_store, &prd);
 
-    TEST_ASSERT_EQUAL_UINT(2, production_store.production_count);
+    TEST_ASSERT_EQUAL_UINT(2, production_store.count);
     TEST_ASSERT_EQUAL_UINT(true, result);
     const prodstr_obj_t *store_prd = production_store.table[196];
     TEST_ASSERT_NOT_NULL(store_prd);
@@ -96,7 +96,7 @@ static void test_add_nonempty_store_no_col(void)
 
     bool result = prodstr_add(&production_store, &prd);
 
-    TEST_ASSERT_EQUAL_UINT(2, production_store.production_count);
+    TEST_ASSERT_EQUAL_UINT(2, production_store.count);
     TEST_ASSERT_EQUAL_UINT(true, result);
     const prodstr_obj_t *store_prd = production_store.table[122];
     TEST_ASSERT_NOT_NULL(store_prd);
@@ -114,7 +114,7 @@ static void test_add_empty_store(void)
 
     bool result = prodstr_add(&production_store, &prd);
 
-    TEST_ASSERT_EQUAL_UINT(1, production_store.production_count);
+    TEST_ASSERT_EQUAL_UINT(1, production_store.count);
     TEST_ASSERT_EQUAL_UINT(true, result);
     const prodstr_obj_t *store_prd = production_store.table[122];
     TEST_ASSERT_NOT_NULL(store_prd);
