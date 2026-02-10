@@ -1,10 +1,10 @@
 /*!
- *  @file main.cpp
+ *  \file main.cpp
  *
- *  @brief Wrapper for browser (WASM) usage of the PDGL toolchain
+ *  \brief Wrapper for browser (WASM) usage of the PDGL toolchain
  *
  *
- *  @author    Joe Starr
+ *  \author Joe Starr
  *
  */
 #include <cstddef>
@@ -26,26 +26,37 @@
 using namespace emscripten;
 #endif
 
+/**
+ * \class PDGL_wasm
+ * \brief Wrapper class for the PDGL core library functionality.
+ *
+ */
 class PDGL_wasm {
 public:
-/* cppcheck-suppress passedByValue */
+    /* cppcheck-suppress passedByValue */
     PDGL_wasm(std::string input, size_t stack_size, size_t seed);
-/* cppcheck-suppress passedByValue */
+    /* cppcheck-suppress passedByValue */
     explicit PDGL_wasm(std::string input);
     ~PDGL_wasm();
     bool run();
 
 private:
-/* cppcheck-suppress passedByValue */
+    /* cppcheck-suppress passedByValue */
     void init(std::string input, size_t stack_size, size_t seed);
 
-    std::string language;
-    prodstr_store_t *store;
-    resmach_stack_t *stack;
-    size_t stack_size;
-    size_t seed;
+    std::string language;                                  /**< Language specification TOML data. */
+    prodstr_store_t *store;                                /**< Pointer to a production store for
+                                                            * the language.*/
+    resmach_stack_t *stack;                                /**< A stack used for storage of partial
+                                                            * resolutions. */
+    size_t stack_size;                                     /**< Size to configure the stack to. */
+    size_t seed;                                           /**< Unsigned integer used to seed the
+                                                            * random number generator. */
 };
 
+/**
+ * \brief constructor for the WASM wrapper class.
+ */
 PDGL_wasm::~PDGL_wasm()
 {
     for (size_t i = 0; i < this->stack_size; i++)
@@ -60,12 +71,24 @@ PDGL_wasm::~PDGL_wasm()
     delete this->stack;
 }
 
+/**
+ * \brief Constructor with all possible configurable items.
+ *
+ * \param input A language string as TOML data.
+ * \param stack_size The size of the stack to configure.
+ * \param seed The seed to use to seed random.
+ */
 /* cppcheck-suppress passedByValue */
 PDGL_wasm::PDGL_wasm(std::string input, size_t stack_size, size_t seed)
 {
     this->init(input, stack_size, seed);
 }
 
+/**
+ * \brief constructor with minimal configurable items.
+ *
+ * \param input a language string as TOML data.
+ */
 /* cppcheck-suppress passedByValue */
 PDGL_wasm::PDGL_wasm(std::string input)
 {
@@ -74,6 +97,13 @@ PDGL_wasm::PDGL_wasm(std::string input)
     this->init(input, 100, rd());
 }
 
+/**
+ * \brief Private constructor logic.
+ *
+ * \param input A language string as TOML data.
+ * \param stack_size The size of the stack to configure.
+ * \param seed The seed to use to seed random.
+ */
 /* cppcheck-suppress passedByValue */
 void PDGL_wasm::init(std::string input, size_t stack_size, size_t seed)
 {
@@ -92,17 +122,25 @@ void PDGL_wasm::init(std::string input, size_t stack_size, size_t seed)
     }
 }
 
+/**
+ * \brief Run the generation of a word in the configured language.
+ *
+ * \return True when successful, false when failure.
+ */
 bool PDGL_wasm::run()
 {
+    /* Parse the TOML */
     this->store = tomlprsr_parse(static_cast <const char *>(this->language.c_str()));
     if (nullptr != this->store)
     {
         srand(this->seed);
 
+        /* Run the machine */
         unsigned int ret_val = resmach_execute(this->store, this->stack, stdout);
 
         if (ret_val != RESMACH_EXECUTE_SUCCESS)
         {
+            /* When error happens, diagnose it and report. */
             std::string error_rpt = "";
             if ((ret_val & RESMACH_EXECUTE_NO_ENTRY) == RESMACH_EXECUTE_NO_ENTRY)
             {
@@ -126,6 +164,10 @@ bool PDGL_wasm::run()
 }
 
 #ifdef ENABLE_EMSCRIPTEN
+
+/**
+ * \brief Bind the interfaces of the PDGL_wasm class to JavaScript.
+ */
 EMSCRIPTEN_BINDINGS(notewptt)
 {
     /*  clang-format off  */
@@ -137,6 +179,10 @@ EMSCRIPTEN_BINDINGS(notewptt)
 }
 #else
 
+/**
+ * \brief Testing function
+ *\return Always zero
+ */
 int main()
 {
     std::random_device rd;
