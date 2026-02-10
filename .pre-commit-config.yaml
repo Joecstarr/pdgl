@@ -42,7 +42,6 @@ repos:
                 glob:
                     - "**/CMakeLists.txt"
                     - "libraries/CMakeLists.txt"
-                    - "libraries/CMakeLists.txt"
           - id: doxygen
             name: doxygen
             language: system

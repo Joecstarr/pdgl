@@ -16,34 +16,7 @@
 /******************************************************************************/
 /****************************** Pre processor Switches ************************/
 /******************************************************************************/
-#ifndef __PYX_EXTERN_C
-#ifdef _WIN32
-#ifndef _CRT_SECURE_NO_WARNINGS
 
-/** For portability we're using the old style "unsafe" string interfaces. We can suppress warning on
- * windows. */
-#define _CRT_SECURE_NO_WARNINGS    (1u)
-#else
-#if (_CRT_SECURE_NO_WARNINGS != 1u)
-#error \
-    "Something has gone wrong. We want this define to be 1 and it's already not"
-#else
-#endif
-#endif
-#ifndef _CRT_DEPRECATE_TEXT
-
-/** For portability we're using the old style "unsafe" string interfaces. We can suppress warning on
- * windows. */
-#define _CRT_DEPRECATE_TEXT    (1u)
-#else
-#if (_CRT_DEPRECATE_TEXT != 1u)
-#error \
-    "Something has gone wrong. We want this define to be 1 and it's already not"
-#else
-#endif
-#endif
-#endif
-#endif
 
 #ifndef STATIC_INLINE
 #if defined(__GNUC__) || defined(__cplusplus) || \

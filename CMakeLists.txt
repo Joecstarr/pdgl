@@ -24,10 +24,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Emscripten")
   set(Python3_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/.venv/bin/python)
   set(Python3_FIND_VIRTUALENV "ONLY")
   set(ENV{VIRTUAL_ENV} "${CMAKE_CURRENT_SOURCE_DIR}/.venv")
-  find_package(
-    Python
-    COMPONENTS Interpreter Development.Module
-    REQUIRED)
+  find_package(Python REQUIRED)
   find_program(CYTHON "cython")
 endif(NOT CMAKE_BUILD_TYPE STREQUAL "Emscripten")
 

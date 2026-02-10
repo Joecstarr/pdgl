@@ -19,12 +19,38 @@ bootstrap:
 ##################################################################################################
 
 ##################################################################################################
+####### Windows ##################################################################################
+##################################################################################################
+buildTrgt_win := "Windows"
+buildDir_win := "./.build/Windows"
+
+
+# Clean the windows build dir
+clean_win: bootstrap
+    if test -e {{buildDir_win}}; then \
+        rip {{buildDir_win}}; \
+    fi
+
+# Build for windows 
+build_win : bootstrap
+    source .venv/bin/activate && \
+    cmake -DCMAKE_TOOLCHAIN_FILE=./misc/cmake/mingw-toolchain.cmake -B{{buildDir_win}} -DCMAKE_BUILD_TYPE={{buildTrgt_win}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
+    cmake --build {{buildDir_win}} -j 6
+
+
+# Test windows 
+test_wine: bootstrap
+    source .venv/bin/activate && \
+    cd {{buildDir_win}} && \
+    find . -iname "test*.exe"   -exec  sh -c 'wine64 $0 || kill $PPID' \{\} \;
+
+##################################################################################################
 ####### Release ##################################################################################
 ##################################################################################################
 buildTrgt_rel := "Release"
 buildDir_rel := "./.build/Release"
 
-# Clean the relese build dir
+# Clean the release build dir
 clean_rel: bootstrap
     if test -e {{buildDir_rel}}; then \
         rip {{buildDir_rel}}; \
@@ -33,10 +59,10 @@ clean_rel: bootstrap
 # Build for release 
 build_rel : bootstrap
     source .venv/bin/activate && \
-    cmake -B{{buildDir_rel}} -DCMAKE_BUILD_TYPE={{buildTrgt_rel}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
+    cmake  -DCMAKE_TOOLCHAIN_FILE=./misc/cmake/musl-toolchain.cmake -B{{buildDir_rel}} -DCMAKE_BUILD_TYPE={{buildTrgt_rel}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
     cmake --build {{buildDir_rel}} -j 6
 
-# Test relese 
+# Test release 
 test_rel: bootstrap
     source .venv/bin/activate && \
     cd {{buildDir_rel}} && \
@@ -57,7 +83,7 @@ clean_dbg: bootstrap
 # Build for debug 
 build_dbg : bootstrap
     source .venv/bin/activate && \
-    cmake -B{{buildDir_dbg}} -DCMAKE_BUILD_TYPE={{buildTrgt_dbg}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
+    cmake -DCMAKE_TOOLCHAIN_FILE=./misc/cmake/musl-toolchain.cmake -B{{buildDir_dbg}} -DCMAKE_BUILD_TYPE={{buildTrgt_dbg}} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja && \
     cmake --build {{buildDir_dbg}} -j 6
 
 # Test debug 
@@ -102,12 +128,12 @@ test_em: build_em launch_em_server
 ##################################################################################################
 
 # Build all versions
-build_all: build_em build_dbg build_rel 
+build_all: build_em build_dbg build_rel build_win
     @echo "🚀 Build everything"
     exit 0
 
 # Run testing for all versions
-test_all: test_rel test_dbg 
+test_all: test_rel test_dbg test_wine
     @echo "🚀 tested everything"
     exit 0
 
@@ -164,6 +190,8 @@ check-doxygen:
 do-cmakeformat:
     find ./source/ -name 'CMakeLists.txt' -exec cmake-format -i {} \;
     cmake-format -i ./libraries/CMakeLists.txt
+    cmake-format -i CMakeLists.txt
+
 
 ##################################################################################################
 ####### cppcheck sytle ###########################################################################

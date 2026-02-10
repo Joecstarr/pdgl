@@ -34,7 +34,6 @@ unset(CMAKE_C_CPPCHECK)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
-
 add_subdirectory(fmem)
 
 endblock()
@@ -52,6 +51,11 @@ set(CMAKE_CXX_STANDARD 11)
 add_library(janet_lib STATIC ./janet/janet.c)
 target_include_directories(janet_lib PUBLIC janet)
 target_link_libraries(janet_lib m)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  target_link_libraries(janet_lib ws2_32 kernel32 psapi wsock32)
+endif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+
 endblock()
 
 # =================================================================================================

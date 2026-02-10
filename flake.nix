@@ -1,76 +1,86 @@
+#https://ziap.github.io/blog/nixos-cross-compilation/
 {
   description = "Flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
   };
 
   outputs =
     { self, nixpkgs }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs { inherit system; };
     in
     {
 
-      devShells.${system}.default =
-        pkgs.mkShell.override
-          {
-            # Override stdenv in order to change compiler:
-          }
-          {
-            buildInputs = with pkgs; [
+      devShell.${system} =
+        let
+          targetName = {
+            mingw = "x86_64-w64-mingw32";
+            musl = "x86_64-unknown-linux-musl";
+          };
+
+          # Generate the cross compilation packages import
+          pkgsCross = builtins.mapAttrs (
+            name: value:
+            import pkgs.path {
+              system = system;
+              crossSystem = {
+                config = value;
+              };
+            }
+          ) targetName;
+
+          # Grab the corresponding C compiler binaries
+          ccPkgs = builtins.mapAttrs (name: value: value.stdenv.cc) pkgsCross;
+          cc = builtins.mapAttrs (name: value: "${value}/bin/${targetName.${name}}-cc") ccPkgs;
+        in
+        pkgs.mkShell {
+          buildInputs =
+            with pkgs;
+            [
               act
               clang-tools
+              cmake-format
               cmake
               codespell
               cppcheck
               doxygen
               heaptrack
               emscripten
-              gcc
               gdb
-              git
-              git-crypt
-              graphviz
-              gtest
-              imagemagick
-              inkscape
               just
               ninja
               prettier
-              openssl
               prek
               python313
               python313Packages.lizard
               rip2
               ruff
-              stdenv.cc.cc.lib
-              stdenv.cc.cc
-              svg2pdf
-              taglib
               tombi
-              tectonic
               uncrustify
               uv
               wget
               zip
               zlib
-              cmake-format
-              gsl
-              bison
-              flex
-              mermaid-cli
               janet
-            ];
+              wine
+            ]
+            ++ builtins.attrValues ccPkgs;
 
-            shellHook = ''
-              prek install -f
-              export EM_CACHE="$PWD/.emcache"
-              just bootstrap
-              source .venv/bin/activate
-              echo done!
-            '';
-          };
+          CCFLAGS = builtins.map (a: "-L ${a}/lib") [
+            pkgsCross.mingw.windows.pthreads
+          ];
+
+          shellHook = ''
+            prek install -f
+            export EM_CACHE="$PWD/.emcache"
+            export WINEPREFIX=$(pwd)/.wine/
+            just bootstrap
+            source .venv/bin/activate
+            echo done!
+          '';
+        };
     };
 }
