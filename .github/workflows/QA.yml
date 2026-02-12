@@ -1,4 +1,4 @@
-name: CMake
+name: QA Pipeline
 
 on:
     pull_request:
@@ -8,7 +8,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    build:
+    build-linux:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -39,7 +39,43 @@ jobs:
                   nix develop --command \
                     just test_all
 
-            - name: Docs html
+            - name: Build html
               run: |
                   nix develop --command \
                     just html
+
+    build-windows:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+                  fetch-depth: 0 # GitHub Actions example:
+
+            - uses: MinoruSekine/setup-scoop@v4.0.2
+              name: Install scoop with uutils-coreutils
+              with:
+                  buckets: extras
+                  apps: uutils-coreutils
+
+            - name: Install python requirements
+              run: pip install -r requirements.txt
+
+            - name: Install lizard
+              run: pip install lizard
+
+            - name: Install xxd and findutils
+              run: choco install xxd
+
+            - name: Build cmake
+              shell: cmd
+              run: cmake -B.\.build\Release -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_COLOR_DIAGNOSTICS=TRUE -G Ninja
+
+            - name: Build source
+              shell: cmd
+              run: cmake --build .\.build\Release -j
+
+            - name: run tests
+              shell: cmd
+              run: |
+                  python .\misc\test\win_runner.py

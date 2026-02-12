@@ -451,3 +451,4 @@ languages/wptt/hooks.c
 out.txt
 .emcache
 *.zst 
+.wine
