@@ -67,7 +67,7 @@
               janet
               wine64
               winetricks
-              busybox
+              tinyxxd
             ]
             ++ builtins.attrValues ccPkgs;
 
