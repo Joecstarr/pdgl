@@ -118,4 +118,4 @@ jobs:
               uses: softprops/action-gh-release@v2
               with:
                   files: |
-                      .build\Release\pdgl_cli.exe
+                      .build/Release/pdgl_cli.exe
