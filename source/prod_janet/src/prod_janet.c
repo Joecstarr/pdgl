@@ -71,9 +71,9 @@ const char * prod_janet_resolve(const void *config)
         if ((0 != typed_cfg->out_str_len) && (NULL != typed_cfg->out_str))
         {
             typed_cfg->out_str[0] = '\0';
-            if (NULL != typed_cfg->trans_str)
+            if (NULL != typed_cfg->repl_str)
             {
-                retval = prod_janet_execute(config, typed_cfg->trans_str);
+                retval = prod_janet_execute(config, typed_cfg->repl_str);
             }
         }
     }
@@ -113,7 +113,7 @@ const char * prod_janet_terminate(const void *config)
  *Janet VM and run the script.
  *
  * \param config The current production configuration. Must be cast to the Janet type.
- * \param script The script to execute one of transition or terminal.
+ * \param script The script to execute one of replacement or terminal.
  * \return A pointer to the output string. NULL on error.
  */
 static char * prod_janet_execute(const void *config, const char *script)

@@ -191,13 +191,13 @@ int main()
     std::string str =  "[[production]] \n\
                         name = \"entry\" \n\
                         type = \"pure\" \n\
-                        transitions = [\"%{a}\"] \n\
+                        replacements = [\"%{a}\"] \n\
                         terminals = [\"\"] \n\
                         \n\
                         [[production]] \n\
                         name = \"a\" \n\
                         type = \"pure\" \n\
-                        transitions = [\"(%{a})\", \"%{a}%{a}\", \"\"] \n\
+                        replacements = [\"(%{a})\", \"%{a}%{a}\", \"\"] \n\
                         terminals = [\"\"]";
     /* clang-format on */
     for (size_t i = 0; i < 10; i++)

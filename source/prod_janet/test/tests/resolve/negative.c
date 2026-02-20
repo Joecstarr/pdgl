@@ -19,7 +19,7 @@ void test_prod_janet_resolve_negative(void)
 
 STATIC_INLINE void test_prod_janet_resolve_negative_zero_len_out(void)
 {
-    char script_tr[] = "(print `transition` )";
+    char script_tr[] = "(print `replacement` )";
     char script_te[] = "(print `terminal` )";
     char out[DEFS_PDGL_MAX_STRING_SIZE] = { '\0' };
     prod_janet_config_t cof             = { script_tr, script_te, out, 0 };
@@ -30,7 +30,7 @@ STATIC_INLINE void test_prod_janet_resolve_negative_zero_len_out(void)
 
 STATIC_INLINE void test_prod_janet_resolve_negative_null_out(void)
 {
-    char script_tr[]           = "(print `transition` )";
+    char script_tr[]           = "(print `replacement` )";
     char script_te[]           = "(print `terminal` )";
     prod_janet_config_t cof    = { script_tr, script_te, NULL, DEFS_PDGL_MAX_STRING_SIZE };
     const char *        output = prod_janet_resolve(&cof);

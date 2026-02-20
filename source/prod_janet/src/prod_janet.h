@@ -41,7 +41,7 @@ extern "C"
  * \brief Configuration type for a Janet production.
  */
 typedef struct {
-    char * trans_str;   /**< A pointer to the transition script as a string.*/
+    char * repl_str;    /**< A pointer to the replacement script as a string.*/
     char * term_str;    /**< A pointer to the termination script as a string.*/
     char * out_str;     /**< A pointer to an output string buffer.*/
     size_t out_str_len; /**< The length of the output buffer.*/

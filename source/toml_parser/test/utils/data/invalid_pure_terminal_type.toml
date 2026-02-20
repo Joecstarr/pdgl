@@ -1,5 +1,5 @@
 [[production]]
 name = "entry"
 type = "pure"
-transitions = ["transition"]
+replacements = ["replacement"]
 terminal = 10 

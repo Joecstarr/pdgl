@@ -1,7 +1,7 @@
 [[production]]
 name = "not the entry"
 type = "pure"
-transition = "transition"
+replacement = "replacement"
 terminal = "terminal"
 
 [[production]]
@@ -13,10 +13,10 @@ upper_bound = 10
 [[production]]
 name = "janet production"
 type = "janet"
-transition = '''#transition script
+replacement = '''#replacement script
 (defn print-greeting
   [greetee]
-  (print "transition, " greetee "!"))
+  (print "replacement, " greetee "!"))
 
 (defn main
   [& args]

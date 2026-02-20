@@ -70,7 +70,7 @@ static void test_execute_positive_valid_inputs(void)
     fflush(stream);
     fmem_mem(&fm, (void *)&buffer, &bufferSize);
 
-    TEST_ASSERT_EQUAL_STRING_MESSAGE(entry_cfg.trans_str, buffer, "");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE(entry_cfg.repl_str, buffer, "");
     fmem_term(&fm);
 }
 

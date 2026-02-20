@@ -24,7 +24,7 @@
  *
  */
 typedef struct {
-    char *trans_str;
+    char *repl_str;
     char *term_str;
 } test_resmach_prod_config_t;
 /******************************************************************************/

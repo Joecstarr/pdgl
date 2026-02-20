@@ -127,7 +127,7 @@ should be documented in Doxygen comments at declaration.
 
     - The following configurations of TOML:
         - Missing terminal string
-        - Missing transition string
+        - Missing replacement string
         - Missing name
         - Name is an int
         - Terminal string is an int
@@ -163,7 +163,7 @@ should be documented in Doxygen comments at declaration.
 
     - The following configurations of TOML:
         - Missing terminal string
-        - Missing transition string
+        - Missing replacement string
         - Missing name
         - Name is an int
         - Terminal script is an int

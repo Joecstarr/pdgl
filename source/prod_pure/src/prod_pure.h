@@ -41,10 +41,10 @@ extern "C"
  *
  */
 typedef struct {
-    char **trans_list; /**< List of strings serving as possible transitions in the production.*/
-    size_t trans_len;  /**< The number of transition strings in the list.*/
-    char **term_list;  /**< List of strings serving as possible terminals in the production.*/
-    size_t term_len;   /**< The number of terminal strings in the list.*/
+    char **repl_list; /**< List of strings serving as possible replacements in the production.*/
+    size_t repl_len;  /**< The number of replacement strings in the list.*/
+    char **term_list; /**< List of strings serving as possible terminals in the production.*/
+    size_t term_len;  /**< The number of terminal strings in the list.*/
 } prod_pure_config_t;
 
 
@@ -64,7 +64,7 @@ extern "C"
 /**
  * \brief The resolve function for the pure production type.
  *
- * Resolve at random a transition string.
+ * Resolve at random a replacement string.
  *
  * \param config A configuration of a production.
  * \return A pointer to the output of the resolution.

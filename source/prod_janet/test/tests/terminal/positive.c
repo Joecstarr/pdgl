@@ -6,7 +6,7 @@
 
 void test_prod_janet_terminal_positive(void)
 {
-    char script_tr[] = "(for i 0 10 (print `transition` ))";
+    char script_tr[] = "(for i 0 10 (print `replacement` ))";
     char script_te[] = "(for i 0 10 (print `a` ))";
     char out[DEFS_PDGL_MAX_STRING_SIZE] = { '\0' };
     prod_janet_config_t cof             = { script_tr, script_te, out, DEFS_PDGL_MAX_STRING_SIZE };

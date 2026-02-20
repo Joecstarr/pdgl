@@ -19,6 +19,11 @@ add_custom_command(
   COMMAND cp ${CMAKE_CURRENT_SOURCE_DIR}/utils/data/*
           ${CMAKE_BINARY_DIR}/toml_parser_test_data/)
 
+add_custom_command(
+  TARGET test_toml_parser_app
+  POST_BUILD
+  COMMAND touch ${CMAKE_CURRENT_SOURCE_DIR}/tests/parsing/positive.c)
+
 add_test(
   NAME test_toml_parser
   COMMAND test_toml_parser_app
