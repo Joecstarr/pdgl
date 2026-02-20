@@ -2,5 +2,5 @@
 [[production]]
 name = "entry"
 type = "janet"
-transition =10 
+replacement =10 
 terminal = "terminal"

@@ -39,11 +39,11 @@ const char * prod_pure_resolve(const void *config)
     {
         const prod_pure_config_t *typed_cfg = (const prod_pure_config_t *)config;
 
-        if ((0 < typed_cfg->trans_len) && (NULL != typed_cfg->trans_list))
+        if ((0 < typed_cfg->repl_len) && (NULL != typed_cfg->repl_list))
         {
-            size_t idx = rand() % typed_cfg->trans_len;
+            size_t idx = rand() % typed_cfg->repl_len;
 
-            retval = typed_cfg->trans_list[idx];
+            retval = typed_cfg->repl_list[idx];
         }
     }
     return retval;

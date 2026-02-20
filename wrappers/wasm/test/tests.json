@@ -1,7 +1,7 @@
 [
     {
         "name": "Valid Configuration Paren",
-        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
         "stack_size": 100,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -22,7 +22,7 @@
     },
     {
         "name": "Valid Configuration Paren Small Stack",
-        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"term\"]",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"term\"]",
         "stack_size": 1,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -43,7 +43,7 @@
     },
     {
         "name": "Valid Configuration Janet Small Stack",
-        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\ntransition ='''(print \"trans\")''' \nterminal = '''(print \"term\")'''",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\nreplacement ='''(print \"trans\")''' \nterminal = '''(print \"term\")'''",
         "stack_size": 1,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -64,7 +64,7 @@
     },
     {
         "name": "Valid Configuration Janet",
-        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\ntransition ='''(print \"trans\")''' \nterminal = '''(print \"term\")'''",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\nreplacement ='''(print \"trans\")''' \nterminal = '''(print \"term\")'''",
         "stack_size": 10,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -85,7 +85,7 @@
     },
     {
         "name": "Valid Configuration Range Single Int",
-        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"range\"\nlower_bound = 10\nupper_bound = 10",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"range\"\nlower_bound = 10\nupper_bound = 10",
         "stack_size": 1,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -95,7 +95,7 @@
     },
     {
         "name": "Valid Configurations Range Full",
-        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"range\"\nlower_bound = -10\nupper_bound = 10",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"range\"\nlower_bound = -10\nupper_bound = 10",
         "stack_size": 1,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -105,7 +105,7 @@
     },
     {
         "name": "Invalid Configuration Bad Toml",
-        "lang": "[ss[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "lang": "[ss[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
         "stack_size": 100,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -126,7 +126,7 @@
     },
     {
         "name": "Invalid Configuration Bad Language No Entry",
-        "lang": "[[production]]\nname = \"ery\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "lang": "[[production]]\nname = \"ery\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
         "stack_size": 100,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
@@ -147,7 +147,7 @@
     },
     {
         "name": "Invalid Configuration Bad Language Invalid Pure",
-        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\"]\nterminal = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\ntransitions = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminal = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\", \"%{paren set}%{paren set}\", \"\"]\nterminals = [\"\"]",
         "stack_size": 100,
         "seeds": [
             1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,

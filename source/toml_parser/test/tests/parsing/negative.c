@@ -12,20 +12,20 @@ static void test_parsing_negative_range_lower(void);
 static void test_parsing_negative_range_upper(void);
 static void test_parsing_negative_pure_name(void);
 static void test_parsing_negative_pure_terminal(void);
-static void test_parsing_negative_pure_transition(void);
+static void test_parsing_negative_pure_replacement(void);
 static void test_parsing_negative_janet_name(void);
 static void test_parsing_negative_janet_terminal(void);
-static void test_parsing_negative_janet_transition(void);
+static void test_parsing_negative_janet_replacement(void);
 static void test_parsing_negative_extra_values(void);
 static void test_parsing_negative_range_name_type(void);
 static void test_parsing_negative_range_lower_type(void);
 static void test_parsing_negative_range_upper_type(void);
 static void test_parsing_negative_pure_name_type(void);
 static void test_parsing_negative_pure_terminal_type(void);
-static void test_parsing_negative_pure_transition_type(void);
+static void test_parsing_negative_pure_replacement_type(void);
 static void test_parsing_negative_janet_name_type(void);
 static void test_parsing_negative_janet_terminal_type(void);
-static void test_parsing_negative_janet_transition_type(void);
+static void test_parsing_negative_janet_replacement_type(void);
 static void test_parsing_negative_no_entry(void);
 
 void test_parsing_negative(void)
@@ -37,20 +37,20 @@ void test_parsing_negative(void)
     RUN_TEST(test_parsing_negative_range_upper);
     RUN_TEST(test_parsing_negative_pure_name);
     RUN_TEST(test_parsing_negative_pure_terminal);
-    RUN_TEST(test_parsing_negative_pure_transition);
+    RUN_TEST(test_parsing_negative_pure_replacement);
     RUN_TEST(test_parsing_negative_janet_name);
     RUN_TEST(test_parsing_negative_janet_terminal);
-    RUN_TEST(test_parsing_negative_janet_transition);
+    RUN_TEST(test_parsing_negative_janet_replacement);
     RUN_TEST(test_parsing_negative_extra_values);
     RUN_TEST(test_parsing_negative_range_name_type);
     RUN_TEST(test_parsing_negative_range_lower_type);
     RUN_TEST(test_parsing_negative_range_upper_type);
     RUN_TEST(test_parsing_negative_pure_name_type);
     RUN_TEST(test_parsing_negative_pure_terminal_type);
-    RUN_TEST(test_parsing_negative_pure_transition_type);
+    RUN_TEST(test_parsing_negative_pure_replacement_type);
     RUN_TEST(test_parsing_negative_janet_name_type);
     RUN_TEST(test_parsing_negative_janet_terminal_type);
-    RUN_TEST(test_parsing_negative_janet_transition_type);
+    RUN_TEST(test_parsing_negative_janet_replacement_type);
     RUN_TEST(test_parsing_negative_no_entry);
 }
 
@@ -65,7 +65,7 @@ static void test_parsing_negative_extra_values(void)
     TEST_ASSERT_NOT_NULL(pure);
     prod_pure_config_t *pure_cfg = (prod_pure_config_t *)pure->config;
     TEST_ASSERT_EQUAL_STRING(pure_cfg->term_list[0], "terminal");
-    TEST_ASSERT_EQUAL_STRING(pure_cfg->trans_list[0], "transition");
+    TEST_ASSERT_EQUAL_STRING(pure_cfg->repl_list[0], "replacement");
 
     test_toml_parser_release_store(store);
 }
@@ -118,9 +118,9 @@ static void test_parsing_negative_pure_terminal(void)
     TEST_ASSERT_NULL(store);
 }
 
-static void test_parsing_negative_pure_transition(void)
+static void test_parsing_negative_pure_replacement(void)
 {
-    char *toml_data = test_toml_parser_read_test_file("invalid_pure_transition.toml");
+    char *toml_data = test_toml_parser_read_test_file("invalid_pure_replacement.toml");
     prodstr_store_t *const store = tomlprsr_parse(toml_data);
 
     TEST_ASSERT_NULL(store);
@@ -142,9 +142,9 @@ static void test_parsing_negative_janet_terminal(void)
     TEST_ASSERT_NULL(store);
 }
 
-static void test_parsing_negative_janet_transition(void)
+static void test_parsing_negative_janet_replacement(void)
 {
-    char *toml_data = test_toml_parser_read_test_file("invalid_janet_transition.toml");
+    char *toml_data = test_toml_parser_read_test_file("invalid_janet_replacement.toml");
     prodstr_store_t *const store = tomlprsr_parse(toml_data);
 
     TEST_ASSERT_NULL(store);
@@ -205,9 +205,9 @@ static void test_parsing_negative_pure_terminal_type(void)
     TEST_ASSERT_NULL(store);
 }
 
-static void test_parsing_negative_pure_transition_type(void)
+static void test_parsing_negative_pure_replacement_type(void)
 {
-    char *toml_data = test_toml_parser_read_test_file("invalid_pure_transition_type.toml");
+    char *toml_data = test_toml_parser_read_test_file("invalid_pure_replacement_type.toml");
     prodstr_store_t *const store = tomlprsr_parse(toml_data);
 
     TEST_ASSERT_NULL(store);
@@ -229,9 +229,9 @@ static void test_parsing_negative_janet_terminal_type(void)
     TEST_ASSERT_NULL(store);
 }
 
-static void test_parsing_negative_janet_transition_type(void)
+static void test_parsing_negative_janet_replacement_type(void)
 {
-    char *toml_data = test_toml_parser_read_test_file("invalid_janet_transition_type.toml");
+    char *toml_data = test_toml_parser_read_test_file("invalid_janet_replacement_type.toml");
     prodstr_store_t *const store = tomlprsr_parse(toml_data);
 
     TEST_ASSERT_NULL(store);

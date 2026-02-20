@@ -1,11 +1,11 @@
 [[production]]
 name = "entry"
 type = "pure"
-transitions = ["transition"]
+replacements = ["replacement"]
 terminals = ["terminal"]
 
 [[production]]
 name = 10  
 type = "pure"
-transitions = ["transition"]
+replacements = ["replacement"]
 terminals = ["terminal"]

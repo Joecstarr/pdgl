@@ -1,11 +1,11 @@
 [[production]]
 name = "entry"
 type = "janet"
-transition = "transition"
+replacement = "replacement"
 terminal = "terminal"
 
 [[production]]
 name = 10  
 type = "janet"
-transition = "transition"
+replacement = "replacement"
 terminal = "terminal"

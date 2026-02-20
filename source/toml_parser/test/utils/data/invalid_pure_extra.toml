@@ -1,6 +1,6 @@
 [[production]]
 name = "entry"
 type = "pure"
-transitions = ["transition"]
+replacements = ["replacement"]
 terminals = ["terminal"]
 extra = "oh no I should be ignored"

@@ -4,7 +4,7 @@ const char * test_resmach_prod_resolve(const void *config)
 {
     const test_resmach_prod_config_t *typed_cfg = (const test_resmach_prod_config_t *)config;
 
-    return typed_cfg->trans_str;
+    return typed_cfg->repl_str;
 }
 
 const char * test_resmach_prod_terminate(const void *config)

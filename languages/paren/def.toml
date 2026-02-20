@@ -1,11 +1,11 @@
 [[production]]
 name = "entry"
 type = "pure"
-transitions = ["(%{paren set})"]
+replacements = ["(%{paren set})"]
 terminals = [""]
 
 [[production]]
 name = "paren set"
 type = "pure"
-transitions = ["(%{paren set})", "%{paren set}%{paren set}", ""]
+replacements = ["(%{paren set})", "%{paren set}%{paren set}", ""]
 terminals = [""]

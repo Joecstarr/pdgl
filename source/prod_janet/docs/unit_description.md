@@ -13,7 +13,7 @@ classDiagram
    class prod_janet{ }
     
    class prod_janet_config_t{
-   char * transition_script
+   char * replacement_script
    char* term_script
    char* output_string
    size_t output_string_size
@@ -42,7 +42,7 @@ replacement production.
 
 This includes:
 
-- A pointer to transition script C string.
+- A pointer to replacement script C string.
 - A pointer to terminal script C string.
 - A pointer to a C string buffer used for output.
 - The length of the output buffer.
@@ -51,7 +51,7 @@ This includes:
 
 #### Resolve Function
 
-The resolution function executes the transition Janet script contained in the configuration
+The resolution function executes the replacement Janet script contained in the configuration
 returning the printed value to the calling routine.
 
 ```mermaid
@@ -104,7 +104,7 @@ stateDiagram-v2
     **Inputs:**
 
     - A null configuration.
-    - A null transition script
+    - A null replacement script
     - A null output string
     - A zero length output string
 

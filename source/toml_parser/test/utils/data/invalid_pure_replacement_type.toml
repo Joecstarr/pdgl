@@ -3,5 +3,5 @@
 [[production]]
 name = "entry"
 type = "pure"
-transition = 10  
+replacement = 10  
 terminals = ["terminal"]

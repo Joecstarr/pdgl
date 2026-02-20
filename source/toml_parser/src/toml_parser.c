@@ -237,19 +237,19 @@ void tomlprsr_free(prodstr_store_t *store)
  */
 STATIC_INLINE prodstr_obj_t * tomlprsr_prod_pure_builder(toml_datum_t tbl)
 {
-    toml_datum_t type        = toml_seek(tbl, "type");
-    toml_datum_t name        = toml_seek(tbl, "name");
-    toml_datum_t transitions = toml_seek(tbl, "transitions");
-    toml_datum_t terminals   = toml_seek(tbl, "terminals");
+    toml_datum_t type         = toml_seek(tbl, "type");
+    toml_datum_t name         = toml_seek(tbl, "name");
+    toml_datum_t replacements = toml_seek(tbl, "replacements");
+    toml_datum_t terminals    = toml_seek(tbl, "terminals");
 
     if ((TOML_STRING == name.type) &&
-        (TOML_ARRAY == transitions.type) &&
+        (TOML_ARRAY == replacements.type) &&
         (TOML_ARRAY == terminals.type))
     {
         size_t cur_str_len         = 0;
         prod_pure_config_t *config = NULL;
         prodstr_obj_t *     prd    = NULL;
-        char **trans_buff          = NULL;
+        char **repl_buff           = NULL;
         char **term_buff           = NULL;
 
         char *cur_str = NULL;
@@ -261,10 +261,10 @@ STATIC_INLINE prodstr_obj_t * tomlprsr_prod_pure_builder(toml_datum_t tbl)
             return NULL;
         }
 
-        config->trans_len  = transitions.u.arr.size;
-        config->term_len   = terminals.u.arr.size;
-        config->term_list  = NULL;
-        config->trans_list = NULL;
+        config->repl_len  = replacements.u.arr.size;
+        config->term_len  = terminals.u.arr.size;
+        config->term_list = NULL;
+        config->repl_list = NULL;
 
 
         prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
@@ -308,8 +308,8 @@ STATIC_INLINE prodstr_obj_t * tomlprsr_prod_pure_builder(toml_datum_t tbl)
         cur_str   = NULL;
 
 
-        trans_buff = tomlprsr_prod_pure_builder_list(transitions);
-        if (NULL == trans_buff)
+        repl_buff = tomlprsr_prod_pure_builder_list(replacements);
+        if (NULL == repl_buff)
         {
             free(prd->name);
             free(prd->type);
@@ -317,17 +317,17 @@ STATIC_INLINE prodstr_obj_t * tomlprsr_prod_pure_builder(toml_datum_t tbl)
             free(prd);
             return NULL;
         }
-        config->trans_list = trans_buff;
+        config->repl_list = repl_buff;
 
         term_buff = tomlprsr_prod_pure_builder_list(terminals);
         if (NULL == term_buff)
         {
             size_t i;
-            for (i = 0; i < config->trans_len; i++)
+            for (i = 0; i < config->repl_len; i++)
             {
-                free(config->trans_list[i]);
+                free(config->repl_list[i]);
             }
-            free(config->trans_list);
+            free(config->repl_list);
             free(prd->name);
             free(prd->type);
             free(config);
@@ -357,12 +357,12 @@ STATIC_INLINE void tomlprsr_prod_pure_free(prodstr_obj_t *prd)
         {
             free(config->term_list[i]);
         }
-        for (i = 0; i < config->trans_len; i++)
+        for (i = 0; i < config->repl_len; i++)
         {
-            free(config->trans_list[i]);
+            free(config->repl_list[i]);
         }
 
-        free(config->trans_list);
+        free(config->repl_list);
         free(config->term_list);
         free(config);
         free(prd->name);
@@ -572,13 +572,13 @@ STATIC_INLINE void tomlprsr_prod_range_free(prodstr_obj_t *prd)
 STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl)
 {
     /* #lizard forgives(cyclomatic_complexity) */
-    toml_datum_t type       = toml_seek(tbl, "type");
-    toml_datum_t name       = toml_seek(tbl, "name");
-    toml_datum_t transition = toml_seek(tbl, "transition");
-    toml_datum_t terminal   = toml_seek(tbl, "terminal");
+    toml_datum_t type        = toml_seek(tbl, "type");
+    toml_datum_t name        = toml_seek(tbl, "name");
+    toml_datum_t replacement = toml_seek(tbl, "replacement");
+    toml_datum_t terminal    = toml_seek(tbl, "terminal");
 
     if ((TOML_STRING == name.type) &&
-        (TOML_STRING == transition.type) &&
+        (TOML_STRING == replacement.type) &&
         (TOML_STRING == terminal.type))
     {
         size_t cur_str_len          = 0;
@@ -595,7 +595,7 @@ STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl)
         config->out_str     = NULL;
         config->out_str_len = DEFS_PDGL_MAX_STRING_SIZE;
         config->term_str    = NULL;
-        config->trans_str   = NULL;
+        config->repl_str    = NULL;
 
 
         prd = (prodstr_obj_t *)malloc(sizeof(prodstr_obj_t));
@@ -651,7 +651,7 @@ STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl)
 
         *config->out_str = '\0';
 
-        cur_str_len = strlen(transition.u.s) + 1;
+        cur_str_len = strlen(replacement.u.s) + 1;
         cur_str     = (char *)calloc(cur_str_len, sizeof(char));
 
         if ((NULL == cur_str) || (cur_str_len > DEFS_PDGL_MAX_STRING_SIZE))
@@ -663,9 +663,9 @@ STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl)
             free(prd);
             return NULL;
         }
-        strcpy(cur_str, transition.u.s);
-        config->trans_str = cur_str;
-        cur_str           = NULL;
+        strcpy(cur_str, replacement.u.s);
+        config->repl_str = cur_str;
+        cur_str          = NULL;
 
         cur_str_len = strlen(terminal.u.s) + 1;
         cur_str     = (char *)calloc(cur_str_len, sizeof(char));
@@ -675,7 +675,7 @@ STATIC_INLINE prodstr_obj_t * tomlprsr_prod_janet_builder(toml_datum_t tbl)
             free(prd->name);
             free(prd->type);
             free(config->out_str);
-            free(config->trans_str);
+            free(config->repl_str);
             free(config);
             free(prd);
             return NULL;
@@ -701,7 +701,7 @@ STATIC_INLINE void tomlprsr_prod_janet_free(prodstr_obj_t *prd)
         prod_janet_config_t *config = (prod_janet_config_t *)prd->config;
         free(config->out_str);
         free(config->term_str);
-        free(config->trans_str);
+        free(config->repl_str);
         free(prd->name);
         free(prd->type);
     }

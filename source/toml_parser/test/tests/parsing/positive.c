@@ -26,11 +26,11 @@ void test_parsing_positive(void)
     TEST_ASSERT_NOT_NULL(pure);
     const prod_pure_config_t *pure_cfg = (prod_pure_config_t *)pure->config;
     TEST_ASSERT_EQUAL_STRING(pure_cfg->term_list[0], "terminal");
-    TEST_ASSERT_EQUAL_STRING(pure_cfg->trans_list[0], "transition");
+    TEST_ASSERT_EQUAL_STRING(pure_cfg->repl_list[0], "replacement");
     TEST_ASSERT_EQUAL_STRING(pure_cfg->term_list[1], "terminal1");
-    TEST_ASSERT_EQUAL_STRING(pure_cfg->trans_list[1], "transition1");
+    TEST_ASSERT_EQUAL_STRING(pure_cfg->repl_list[1], "replacement1");
     TEST_ASSERT_EQUAL_INT(pure_cfg->term_len, 2);
-    TEST_ASSERT_EQUAL_INT(pure_cfg->trans_len, 2);
+    TEST_ASSERT_EQUAL_INT(pure_cfg->repl_len, 2);
 
     TEST_ASSERT_EQUAL_PTR(&prod_pure_resolve, pure->res);
     TEST_ASSERT_EQUAL_PTR(&prod_pure_terminate, pure->term);
@@ -40,8 +40,8 @@ void test_parsing_positive(void)
     const prod_janet_config_t *janet_cfg = (prod_janet_config_t *)janet->config;
     TEST_ASSERT_EQUAL_STRING(janet_cfg->term_str,
                              "#terminal script\n  (print \"terminal\")\n");
-    TEST_ASSERT_EQUAL_STRING(janet_cfg->trans_str,
-                             "#transition script\n  (print \"transition\")\n");
+    TEST_ASSERT_EQUAL_STRING(janet_cfg->repl_str,
+                             "#replacement script\n  (print \"replacement\")\n");
     TEST_ASSERT_EQUAL_PTR(&prod_janet_resolve, janet->res);
     TEST_ASSERT_EQUAL_PTR(&prod_janet_terminate, janet->term);
 
