@@ -68,6 +68,8 @@
               wine64
               winetricks
               tinyxxd
+              jsonschema-cli
+              toml2json
             ]
             ++ builtins.attrValues ccPkgs;
 
