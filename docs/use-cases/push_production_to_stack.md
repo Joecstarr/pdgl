@@ -5,7 +5,7 @@ authors:
 ---
 
 [](){#push_production_to_stack}
-## Primary actor
+## Primary Actor
 
 N/A
 

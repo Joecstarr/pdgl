@@ -5,7 +5,7 @@ authors:
 ---
 
 [](){#force_exit}
-## Primary actor
+## Primary Actor
 
 N/A
 

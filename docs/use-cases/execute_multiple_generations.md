@@ -5,7 +5,7 @@ authors:
 ---
 
 [](){#execute_multiple_generations}
-## Primary actor
+## Primary Actor
 
 The primary actor for the use case is the user.
 

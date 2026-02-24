@@ -5,7 +5,7 @@ authors:
 ---
 
 [](){#load_language_specification}
-## Primary actor
+## Primary Actor
 
 N/A
 
@@ -23,5 +23,5 @@ No preconditions.
 
 ## Scenario:
 
-1. User supplies a language specification to the PDGL.
+1. The user supplies a language specification to the PDGL.
 1. The language specification is loaded into a collection of productions.

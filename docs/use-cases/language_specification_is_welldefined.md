@@ -6,22 +6,23 @@ authors:
 
 [](){#language_specification_is_welldefined}
 
-## Primary actor:
+## Primary Actor:
 
-_Actor that initiates usecase._
+N/A
 
 ## Trigger:
 
-_What does the actor do to "start" the usecase?_
+An upstream actor requests the validation of a language specification.
 
 ## Goal:
 
-_What is the usecase trying to accomplish?_
+An input language specification is validated.
 
 ## Preconditions:
 
-_What assumptions are made when executing usecase?_
+A language specification is loaded.
 
 ## Scenario:
 
-_What happens in the usecase?_
+1. The user supplies a language specification to the PDGL.
+1. The language specification is validated for consistency.
