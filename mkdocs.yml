@@ -26,8 +26,10 @@ theme:
         - navigation.tabs
         - navigation.tabs.sticky
         - navigation.sections
+        - navigation.indexes
         - toc.follow
         - navigation.top
+        - content.code.copy
 repo_name: joecstarr/pdgl
 repo_url: https://github.com/joecstarr/pdgl
 extra_css:
@@ -49,8 +51,22 @@ watch:
 
 nav:
     - Home: "./README.md"
-    - Manual:
-          - "manual/manual.md"
+    - User Guide:
+          - What Does this Thing Do?:
+                - "manual/whatis/index.md"
+                - "manual/whatis/prelim.md"
+                - "manual/whatis/what.md"
+                - "manual/whatis/why.md"
+          - Languages:
+                - "manual/productions/toml.md"
+                - Production Types:
+                      - Pure Production: "manual/productions/pure/prod.md"
+                      - Range Production: "manual/productions/range/prod.md"
+                      - Janet Production: "manual/productions/janet/prod.md"
+          - Generation:
+                - "manual/getting.md"
+                - "manual/running.md"
+                - "manual/building.md"
     - Documentation:
           - System:
                 - "lib_docs.md"
@@ -75,7 +91,7 @@ nav:
                       - "interfaces/production.md"
           - Libraries: "*include ./source/*/mkdocs.yml"
           - Wrappers: "*include ./wrappers/*/mkdocs.yml"
-    - Doxygen:
+    - Code Comments:
           - Libraries: "lib/files.md"
           - Wrappers: "wrap/files.md"
 plugins:
@@ -102,7 +118,6 @@ plugins:
                       EXCLUDE_PATTERNS: "*/test/*" # specify file patterns to filter out
                       RECURSIVE: True # recursive search in source directories
                       MARKDOWN_SUPPORT: True
-    - gh-admonitions:
     - monorepo
     - search:
     - autorefs:
@@ -119,7 +134,6 @@ markdown_extensions:
     - toc:
           permalink: 
           separator: "_"
-    - admonition
     - pymdownx.details
     - pymdownx.emoji:
           emoji_index: !!python/name:material.extensions.emoji.twemoji
@@ -132,6 +146,17 @@ markdown_extensions:
               - name: mermaid
                 class: mermaid
                 format: !!python/name:pymdownx.superfences.fence_code_format
+    - pymdownx.highlight:
+          use_pygments: true
+          anchor_linenums: true
+          pygments_lang_class: true
+          linenums: true
+          linenums_style: pymdownx-inline
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.blocks.caption
+    - md_in_html
+    - gfm_admonition
 extra:
     social:
         - icon: fontawesome/brands/github-alt

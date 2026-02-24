@@ -133,49 +133,49 @@ language specification TOML files can be found in the `language` directory or in
 
 #### Positive tests
 
-!!! test-card "Valid configuration"
-
-    The tool is configured for generation of 10 words.
-
-    **Inputs:**
-
-    - A valid configuration:
-        - The paired paren lanaguage specification
-        - 10 words
-        - Stack size is 100
-    - A valid configuration:
-        - The paired paren lanaguage specification
-        - 10 words
-        - Stack size is 1
-
-    **Expected Output:**
-
-    - Output is valid
+> [!test-card] "Valid configuration"
+>
+> The tool is configured for generation of 10 words.
+>
+> **Inputs:**
+>
+> - A valid configuration:
+>     - The paired paren lanaguage specification
+>     - 10 words
+>     - Stack size is 100
+> - A valid configuration:
+>     - The paired paren lanaguage specification
+>     - 10 words
+>     - Stack size is 1
+>
+> **Expected Output:**
+>
+> - Output is valid
 
 #### Negative tests
 
-!!! test-card "Detect memory leaks"
+> [!test-card] "Detect memory leaks"
+>
+> The tool is configured for generation of 100000 words. Execution is profiled by heaptrack.
+>
+> **Inputs:**
+>
+> - A valid configuration:
+>     - The paired paren lanaguage specification
+>     - 100000 words
+>
+> **Expected Output:**
+>
+> - No memory leaks detected in heaptrack
 
-    The tool is configured for generation of 100000 words. Execution is profiled by heaptrack.
-
-    **Inputs:**
-
-    - A valid configuration:
-        - The paired paren lanaguage specification
-        - 100000 words
-
-    **Expected Output:**
-
-    - No memory leaks detected in heaptrack
-
-!!! test-card "Invalid language configured"
-
-    The tool is configured for generation of 10 word but with Invalid language specification.
-
-    **Inputs:**
-
-    - An invalid language specification is configured.
-
-    **Expected Output:**
-
-    - Error in toml is reported.
+> [!test-card] "Invalid language configured"
+>
+> The tool is configured for generation of 10 word but with Invalid language specification.
+>
+> **Inputs:**
+>
+> - An invalid language specification is configured.
+>
+> **Expected Output:**
+>
+> - Error in toml is reported.

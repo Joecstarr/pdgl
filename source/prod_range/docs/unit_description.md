@@ -65,46 +65,46 @@ stateDiagram-v2
 
 #### Positive Tests
 
-!!! test-card "Valid Configuration"
-
-    A valid configuration for the production is passed to the function.
-
-    **Inputs:**
-
-    - A valid configuration with:
-        - Upper == Lower
-        - Lower $<$ Upper
-
-    **Expected Output:**
-
-    A positive response and correct string.
+> [!test-card] "Valid Configuration"
+>
+> A valid configuration for the production is passed to the function.
+>
+> **Inputs:**
+>
+> - A valid configuration with:
+>     - Upper == Lower
+>     - Lower $<$ Upper
+>
+> **Expected Output:**
+>
+> A positive response and correct string.
 
 #### Negative Tests
 
-!!! test-card "Bad Configuration"
+> [!test-card] "Bad Configuration"
+>
+> An invalid configuration for the production is passed to the function.
+>
+> **Inputs:**
+>
+> - A null string.
+> - Upper $<$ Lower
+>
+> **Expected Output:**
+>
+> A negative response.
 
-    An invalid configuration for the production is passed to the function.
-
-    **Inputs:**
-
-    - A null string.
-    - Upper $<$ Lower
-
-    **Expected Output:**
-
-    A negative response.
-
-!!! test-card "Null Configuration"
-
-    A null configuration for the production is passed to the function.
-
-    **Inputs:**
-
-    - A null configuration
-
-    **Expected Output:**
-
-    A negative response.
+> [!test-card] "Null Configuration"
+>
+> A null configuration for the production is passed to the function.
+>
+> **Inputs:**
+>
+> - A null configuration
+>
+> **Expected Output:**
+>
+> A negative response.
 
 ### Terminate Function
 

@@ -64,6 +64,16 @@
     },
     {
         "name": "Valid Configuration Janet",
+        "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\nreplacement ='''#replacement script\n(def f (file/open \"filename\" :w))\n(file/write f \"Hello World!\")\n(file/flush f)\n(file/close f)'''\nterminal = '''(print \"term\")'''",
+        "stack_size": 10,
+        "seeds": [
+            1011101011, 67, 8675309, 13371337, 42, 60547569686054756968, 2484345508, 5058425662,
+            84438769628443876962, 7183876962
+        ],
+        "output": ["()", "()", "()", "()", "()", "()", "()", "()", "()", "()"]
+    },
+    {
+        "name": "Valid Configuration Janet With File Write",
         "lang": "[[production]]\nname = \"entry\"\ntype = \"pure\"\nreplacements = [\"(%{paren set})\"]\nterminals = [\"\"]\n\n[[production]]\nname = \"paren set\"\ntype = \"janet\"\nreplacement ='''(print \"trans\")''' \nterminal = '''(print \"term\")'''",
         "stack_size": 10,
         "seeds": [

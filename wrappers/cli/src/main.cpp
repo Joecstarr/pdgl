@@ -51,7 +51,7 @@ private:
 };
 
 /**
- * \brief Deconstructor frees c library pointers.
+ * \brief Deconstructor frees C library pointers.
  */
 PDGL_cli::~PDGL_cli()
 {

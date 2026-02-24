@@ -7,7 +7,6 @@ tqdm
 rich
 mkdocs-material
 mdx-include 
-mkdocs-github-admonitions-plugin
 mkdocs-redirects
 cairosvg
 mkdocs-autorefs
