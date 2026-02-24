@@ -5,7 +5,7 @@ authors:
 ---
 
 [](){#execute_generation_of_language}
-## Primary actor
+## Primary Actor
 
 The primary actor for the use case is the user.
 

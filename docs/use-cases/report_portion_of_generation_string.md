@@ -5,22 +5,25 @@ authors:
 ---
 
 [](){#report_portion_of_generation_string}
-## Primary actor:
 
-_Actor that initiates usecase._
+## Primary Actor:
+
+N/A
 
 ## Trigger:
 
-_What does the actor do to "start" the usecase?_
+An upstream actor processes a printable section.
 
 ## Goal:
 
-_What is the usecase trying to accomplish?_
+Report a completed portion of a processed word.
 
 ## Preconditions:
 
-_What assumptions are made when executing usecase?_
+The derivation of a word has been started.
 
 ## Scenario:
 
-_What happens in the usecase?_
+1. A derivation has been started.
+1. A portion of a replacement has been processed.
+1. The processed portion is reported.

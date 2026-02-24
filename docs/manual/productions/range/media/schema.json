@@ -1,0 +1,22 @@
+{
+    "$id": "pure_production-schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "type": {
+            "const": "range"
+        },
+        "upper_bound": {
+            "type": "integer"
+        },
+        "lower_bound": {
+            "type": "integer"
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 4
+}

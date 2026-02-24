@@ -1,0 +1,19 @@
+[[production]]
+name = "entry"
+type = "pure"
+replacements = ["%{janet prod}"]
+terminals = [""]
+
+[[production]]
+name = "janet prod"
+type = "janet"
+replacement = '''#replacement script
+  (def f (file/open "filename" :w))
+  (file/write f "Hello World!")
+  (file/flush f)
+  (file/close f)
+  (print "terminal")
+'''
+terminal = '''#terminal script
+  (print "terminal")
+'''

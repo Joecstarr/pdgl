@@ -452,3 +452,4 @@ out.txt
 .emcache
 *.zst 
 .wine
+*.orig

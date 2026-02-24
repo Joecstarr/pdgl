@@ -1,0 +1,19 @@
+[[production]]
+name = "entry"
+type = "pure"
+replacements = ["%{janet prod}"]
+terminals = [""]
+
+[[production]]
+name = "janet prod"
+type = "janet"
+replacement = '''#replacement script
+  (def number (math/random))
+  (print (string 
+    number
+    )
+  )
+'''
+terminal = '''#terminal script
+  (print "terminal")
+'''

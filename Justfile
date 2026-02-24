@@ -12,6 +12,7 @@ bootstrap:
       uv venv --python 3.13 && uv pip install -r requirements.txt && \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-bibtex"; \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-author-plugin"; \
+      uv pip install "git+https://github.com/Joecstarr/markdown-gfm-admonition"; \
     fi
 
 ##################################################################################################

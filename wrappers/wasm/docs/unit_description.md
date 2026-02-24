@@ -114,13 +114,15 @@ with detailed failure results:
     1. Expected output
     1. Actual output
 
-!!! note "Note:"
+> [!note] "Note:"
 
-    The build and launch steps are bundled in the command:
+````
+The build and launch steps are bundled in the command:
 
-    ```sh
-    just test_em
-    ```
+```sh
+just test_em
+```
+````
 
 [](){#test-schema}
 #### Test Schema
@@ -168,63 +170,63 @@ with detailed failure results:
 
 ### Positive tests
 
-!!! test-card "Valid configurations"
-
-    The tool is configured for generation of 10 words.
-
-    **Inputs:**
-
-    - A valid configuration:
-        - The paired paren lanaguage specification
-        - 10 words
-        - Stack size is 100
-    - A valid configuration:
-        - The paired paren lanaguage specification
-        - 10 words
-        - Stack size is 1
-    - A valid configuration:
-        - The paired paren lanaguage specification with `%{parent set}` as a range production
-        - 10 words
-        - Stack size is 100
-    - A valid configuration:
-        - The paired paren lanaguage specification with `%{parent set}` as a range production
-        - 10 words
-        - Stack size is 1
-    - A valid configuration:
-        - The paired paren lanaguage specification with `%{parent set}` as a janet production
-        - 10 words
-        - Stack size is 100
-    - A valid configuration:
-        - The paired paren lanaguage specification with `%{parent set}` as a janet production
-        - 10 words
-        - Stack size is 1
-
-    **Expected Output:**
-
-    - Output is valid and expected for supplied seeds
+> [!test-card] "Valid configurations"
+>
+> The tool is configured for generation of 10 words.
+>
+> **Inputs:**
+>
+> - A valid configuration:
+>     - The paired paren lanaguage specification
+>     - 10 words
+>     - Stack size is 100
+> - A valid configuration:
+>     - The paired paren lanaguage specification
+>     - 10 words
+>     - Stack size is 1
+> - A valid configuration:
+>     - The paired paren lanaguage specification with `%{parent set}` as a range production
+>     - 10 words
+>     - Stack size is 100
+> - A valid configuration:
+>     - The paired paren lanaguage specification with `%{parent set}` as a range production
+>     - 10 words
+>     - Stack size is 1
+> - A valid configuration:
+>     - The paired paren lanaguage specification with `%{parent set}` as a janet production
+>     - 10 words
+>     - Stack size is 100
+> - A valid configuration:
+>     - The paired paren lanaguage specification with `%{parent set}` as a janet production
+>     - 10 words
+>     - Stack size is 1
+>
+> **Expected Output:**
+>
+> - Output is valid and expected for supplied seeds
 
 ### Negative tests
 
-!!! test-card "Malformed TOML"
+> [!test-card] "Malformed TOML"
+>
+> The tool is configured for generation with malformed language specification.
+>
+> **Inputs:**
+>
+> - A malformed valid configuration
+>
+> **Expected Output:**
+>
+> Tool yields and error
 
-    The tool is configured for generation with malformed language specification.
-
-    **Inputs:**
-
-    - A malformed valid configuration
-
-    **Expected Output:**
-
-    Tool yields and error
-
-!!! test-card "Invalid language configured"
-
-    The tool is configured for generation of 10 word but with Invalid language specification.
-
-    **Inputs:**
-
-    - An invalid language specification is configured.
-
-    **Expected Output:**
-
-    - Error in toml is reported.
+> [!test-card] "Invalid language configured"
+>
+> The tool is configured for generation of 10 word but with Invalid language specification.
+>
+> **Inputs:**
+>
+> - An invalid language specification is configured.
+>
+> **Expected Output:**
+>
+> - Error in toml is reported.

@@ -1,0 +1,28 @@
+{
+    "$id": "janet_production-schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+        },
+        "type": {
+            "type": "string",
+            "const": "janet"
+        },
+        "replacement": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 3000
+        },
+        "terminal": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 3000
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 4
+}

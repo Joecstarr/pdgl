@@ -1,0 +1,16 @@
+[[production]]
+name = "entry"
+type = "pure"
+replacements = ["%{janet prod}"]
+terminals = [""]
+
+[[production]]
+name = "janet prod"
+type = "janet"
+replacement = '''#replacement script
+(import ./docs/manual/productions/janet/media/3/script :as scr)
+(scr/dothething)
+'''
+terminal = '''#terminal script
+  (print "terminal")
+'''

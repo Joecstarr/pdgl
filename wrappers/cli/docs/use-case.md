@@ -4,7 +4,7 @@ authors:
   - joe_starr
 ---
 
-## Primary actor
+## Primary Actor
 
 The primary actor for the use case is the user.
 

@@ -32,7 +32,7 @@ classDiagram
 
 The production configuration structure defines the collection of data the component needs for an
 'instance'. A configuration should be considered equivalent to instantiating a class in a high-level
-language. This instance needs to contain all state information needed for that class.
+language. This instance needs to contain all state information required for that class.
 
 #### Public Functions
 

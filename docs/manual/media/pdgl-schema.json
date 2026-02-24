@@ -1,0 +1,30 @@
+{
+    "$id": "PDGL-schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Schema for a PDGL compatable grammar file.",
+
+    "type": "object",
+    "properties": {
+        "production": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    { "$ref": "../productions/pure/media/schema.json" },
+                    { "$ref": "../productions/range/media/schema.json" },
+                    { "$ref": "../productions/janet/media/schema.json" }
+                ]
+            },
+            "contains": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "const": "entry"
+                    }
+                }
+            },
+            "minLength": 1
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 1
+}

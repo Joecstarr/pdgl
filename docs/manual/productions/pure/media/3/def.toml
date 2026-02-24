@@ -1,0 +1,11 @@
+[[production]]
+name = "entry"
+type = "pure"
+replacements = ["%{prod}"]
+terminals = [""]
+
+[[production]]
+name = "prod"
+type = "pure"
+replacements = ["1", "2", "3"]
+terminals = [""]

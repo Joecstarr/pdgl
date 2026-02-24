@@ -139,56 +139,56 @@ stateDiagram-v2
 
 #### Positive Tests
 
-!!! test-card "Valid inputs supplied to function"
+> [!test-card] "Valid inputs supplied to function"
+>
+> A valid store and stack are passed to the function.
+>
+> **Inputs:**
+>
+> A valid store and stack are passed to the function.
+>
+> **Expected Output:**
+>
+> The correct output is seen on the output stream.
 
-    A valid store and stack are passed to the function.
-
-    **Inputs:**
-
-    A valid store and stack are passed to the function.
-
-    **Expected Output:**
-
-    The correct output is seen on the output stream.
-
-!!! test-card "Induce a terminal resolution"
-
-    A valid store and stack are passed to the function. The combination induces a terminal resolution.
-
-    **Inputs:**
-
-    A valid store and stack.
-
-    **Expected Output:**
-
-    The correct output is seen on the output stream.
+> [!test-card] "Induce a terminal resolution"
+>
+> A valid store and stack are passed to the function. The combination induces a terminal resolution.
+>
+> **Inputs:**
+>
+> A valid store and stack.
+>
+> **Expected Output:**
+>
+> The correct output is seen on the output stream.
 
 #### Negative Tests
 
-!!! test-card "Null inputs supplied to the function"
+> [!test-card] "Null inputs supplied to the function"
+>
+> A null configuration is passed to the function.
+>
+> **Inputs:**
+>
+> - A null pointer is passed to the function:
+>     - For the store
+>     - For the stack
+>     - For the stream
+>
+> **Expected Output:**
+>
+> A negative response.
 
-    A null configuration is passed to the function.
-
-    **Inputs:**
-
-    - A null pointer is passed to the function:
-        - For the store
-        - For the stack
-        - For the stream
-
-    **Expected Output:**
-
-    A negative response.
-
-!!! test-card "Correctly formatted production symbol but not in store"
-
-    A valid configuration is passed to the function. A production contains a reference to a nonexistent
-    production.
-
-    **Inputs:**
-
-    A configuration as described.
-
-    **Expected Output:**
-
-    A negative response.
+> [!test-card] "Correctly formatted production symbol but not in store"
+>
+> A valid configuration is passed to the function. A production contains a reference to a
+> nonexistent production.
+>
+> **Inputs:**
+>
+> A configuration as described.
+>
+> **Expected Output:**
+>
+> A negative response.

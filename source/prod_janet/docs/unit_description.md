@@ -83,64 +83,64 @@ stateDiagram-v2
 
 #### Positive Tests
 
-!!! test-card "A valid configuration is passed to the function"
-
-    A valid configuration for the production is passed to the function.
-
-    **Inputs:**
-
-    - A valid configuration
-
-    **Expected Output:**
-
-    A positive response, with the one of the correct strings.
+> [!test-card] "A valid configuration is passed to the function"
+>
+> A valid configuration for the production is passed to the function.
+>
+> **Inputs:**
+>
+> - A valid configuration
+>
+> **Expected Output:**
+>
+> A positive response, with the one of the correct strings.
 
 #### Negative Tests
 
-!!! test-card "Bad Configuration"
-
-    A null configuration for the computation is passed to the function.
-
-    **Inputs:**
-
-    - A null configuration.
-    - A null replacement script
-    - A null output string
-    - A zero length output string
-
-    **Expected Output:**
-
-    A negative response.
+> [!test-card] "Bad Configuration"
+>
+> A null configuration for the computation is passed to the function.
+>
+> **Inputs:**
+>
+> - A null configuration.
+> - A null replacement script
+> - A null output string
+> - A zero length output string
+>
+> **Expected Output:**
+>
+> A negative response.
 
 ### Terminal Function
 
 #### Positive Tests
 
-!!! test-card "A valid configuration is passed to the function"
-
-    A valid configuration for the production is passed to the function.
-
-    **Inputs:**
-
-    - A valid configuration
-
-    **Expected Output:**
-
-    A positive response, with the one of the correct strings.
+> [!test-card] "A valid configuration is passed to the function"
+>
+> A valid configuration for the production is passed to the function.
+>
+> **Inputs:**
+>
+> - A valid configuration
+>
+> **Expected Output:**
+>
+> A positive response, with the one of the correct strings.
 
 #### Negative Tests
 
-!!! test-card "Bad Configuration"
-
-    A null configuration for the computation is passed to the function.
-
-    **Inputs:**
-
-    - A null configuration.
-    - A null terminal script
-    - A null output string
-    - A zero length output string
-
-    **Expected Output:**
-
-    A negative response.
+> [!test-card] "Bad Configuration"
+>
+> A null configuration for the computation is passed to the function.
+>
+> **Inputs:**
+>
+> - A null configuration.
+> - A null terminal script
+> - A null output string
+> - A zero length output string
+>
+> **Expected Output:**
+>
+> A negative response.

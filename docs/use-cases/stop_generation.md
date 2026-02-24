@@ -5,7 +5,7 @@ authors:
 ---
 
 [](){#stop_generation}
-## Primary actor
+## Primary Actor
 
 The PDGL itself is the primary actor.
 

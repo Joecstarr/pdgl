@@ -1,4 +1,3 @@
-site_name: Toml Parser 
+site_name: Toml Parser
 nav:
     - Description: "unit_description.md"
-            
