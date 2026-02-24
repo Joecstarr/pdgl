@@ -13,7 +13,7 @@ authors:
 
 The following document as well as the [Documentation](./lib_docs.md) and
 [Code Comments](./lib/files/) pages are intended for developers. A user who doesn't intend to
-contribute to development might find the [User Guide](./manual/languages) page more helpful.
+contribute to development might find the [User Guide](./manual/whatis/) page more helpful.
 
 If you discover an issue with this repository or have a question, please feel free to open an issue.
 I've included templates for the following issues:
