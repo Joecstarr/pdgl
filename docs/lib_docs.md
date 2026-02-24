@@ -45,7 +45,7 @@ flowchart LR
 The PDGL is to be written in C, one major consideration when using a non-memory language like C is
 memory leaks. The allocation (and release) of memory at runtime is complicated and error prone. To
 mitigate the risk of a memory leak we will restrict runtime memory allocation where possible.
-Instead we will allocate memory at runtime or opt for passing of buffers.
+Instead, we will allocate memory at runtime or opt for passing of buffers.
 
 ##### Patterns
 
