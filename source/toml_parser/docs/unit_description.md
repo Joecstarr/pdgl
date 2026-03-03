@@ -117,7 +117,7 @@ should be documented in Doxygen comments at declaration.
 >
 > **Expected Output:**
 >
-> - A NULL ptr is returned.
+> - A NULL pointer is returned.
 
 > [!test-card] "Configuration with invalid pure production"
 >
@@ -148,7 +148,7 @@ should be documented in Doxygen comments at declaration.
 >     - Missing upper bound int
 >     - Missing name
 >     - Name is an int
->     - Lpper bound is a string
+>     - Lower bound is a string
 >     - Upper bound is a string
 >
 > **Expected Output:**
@@ -180,7 +180,7 @@ should be documented in Doxygen comments at declaration.
 >
 > **Inputs:**
 >
-> - A TOML string with the a production containing extra symbols.
+> - A TOML string with a production containing extra symbols.
 >
 > **Expected Output:**
 >

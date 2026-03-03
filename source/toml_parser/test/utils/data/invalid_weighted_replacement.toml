@@ -1,0 +1,8 @@
+[[production]]
+name = "entry"
+type = "weighted"
+replacements = [{ weight = 1 }, { string = "replacement2", weight = 2 }]
+terminals = [
+  { string = "terminal1", weight = 1 },
+  { string = "terminal2", weight = 2 }
+]

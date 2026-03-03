@@ -5,7 +5,7 @@ replacement = "replacement"
 terminal = "terminal"
 
 [[production]]
-name = 10  
+name = 10
 type = "janet"
 replacement = "replacement"
 terminal = "terminal"

@@ -7,6 +7,7 @@ target_link_libraries(
   production_store_lib
   pdgl_defs
   prod_pure_lib
+  prod_weighted_lib
   prod_range_lib
   prod_janet_lib)
 

@@ -3,6 +3,7 @@
 #include "../../utils/test_utils_toml_parser.h"
 #include "prod_range.h"
 #include "prod_pure.h"
+#include "prod_weighted.h"
 #include "prod_janet.h"
 #include "production_store.h"
 
@@ -12,7 +13,7 @@ void test_parsing_positive(void)
     prodstr_store_t *const store     = tomlprsr_parse(toml_data);
 
     TEST_ASSERT_NOT_NULL(store);
-    TEST_ASSERT_EQUAL_UINT32_MESSAGE(store->count, 3, "");
+    TEST_ASSERT_EQUAL_UINT32_MESSAGE(store->count, 4, "");
 
     const prodstr_obj_t *range = prodstr_find(store, "range production");
     TEST_ASSERT_NOT_NULL(range);
@@ -34,6 +35,23 @@ void test_parsing_positive(void)
 
     TEST_ASSERT_EQUAL_PTR(&prod_pure_resolve, pure->res);
     TEST_ASSERT_EQUAL_PTR(&prod_pure_terminate, pure->term);
+
+    const prodstr_obj_t *weighted = prodstr_find(store, "weighted production");
+    TEST_ASSERT_NOT_NULL(weighted);
+    const prod_weighted_config_t *weighted_cfg = (prod_weighted_config_t *)weighted->config;
+    TEST_ASSERT_EQUAL_STRING(weighted_cfg->term_list[0].string, "terminal1");
+    TEST_ASSERT_EQUAL_STRING(weighted_cfg->repl_list[0].string, "replacement1");
+    TEST_ASSERT_EQUAL_STRING(weighted_cfg->term_list[1].string, "terminal2");
+    TEST_ASSERT_EQUAL_STRING(weighted_cfg->repl_list[1].string, "replacement2");
+    TEST_ASSERT_EQUAL_INT(weighted_cfg->term_list[0].weight, 1);
+    TEST_ASSERT_EQUAL_INT(weighted_cfg->repl_list[0].weight, 1);
+    TEST_ASSERT_EQUAL_INT(weighted_cfg->term_list[1].weight, 2);
+    TEST_ASSERT_EQUAL_INT(weighted_cfg->repl_list[1].weight, 2);
+    TEST_ASSERT_EQUAL_INT(weighted_cfg->term_len, 2);
+    TEST_ASSERT_EQUAL_INT(weighted_cfg->repl_len, 2);
+
+    TEST_ASSERT_EQUAL_PTR(&prod_weighted_resolve, weighted->res);
+    TEST_ASSERT_EQUAL_PTR(&prod_weighted_terminate, weighted->term);
 
     const prodstr_obj_t *janet = prodstr_find(store, "janet production");
     TEST_ASSERT_NOT_NULL(janet);

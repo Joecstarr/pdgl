@@ -2,4 +2,4 @@
 name = "entry"
 type = "pure"
 replacements = ["replacement"]
-terminal = 10 
+terminal = 10
