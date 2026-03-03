@@ -1,4 +1,3 @@
-site_name: Prod Janet 
+site_name: Janet Production
 nav:
-    - Description: "unit_description.md"
-            
+    - Unit Description: "unit_description.md"

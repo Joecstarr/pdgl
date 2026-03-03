@@ -1,0 +1,40 @@
+{
+    "$id": "weighted-production_schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+        },
+        "type": {
+            "type": "string",
+            "const": "pure"
+        },
+        "replacements": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "string": { "type": "string", "minLength": 0, "maxLength": 3000 },
+                    "weight": { "type": "integer", "minimum": 1 }
+                }
+            },
+            "minLength": 1
+        },
+        "terminals": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "string": { "type": "string", "minLength": 0, "maxLength": 3000 },
+                    "weight": { "type": "integer", "minimum": 1 }
+                }
+            },
+            "minLength": 1
+        }
+    },
+    "additionalProperties": false,
+    "minProperties": 4
+}

@@ -114,11 +114,7 @@ A context free grammar is built from the following ingredients:
 > variable, we condense those maps to a single line with a $|$ symbol separating resulting strings.
 > This condensation process is seen here:
 >
-> ```math
-> \begin{matrix}
-> \begin{aligned}V&\to W_1\\V&\to W_2\end{aligned} &\Rightarrow & V\to W_1 \mid  W_2
-> \end{matrix}
-> ```
+> $\begin{matrix}\begin{aligned}V&\to W_1\\V&\to W_2\end{aligned} &\Rightarrow & V\to W_1 \mid  W_2\end{matrix}$
 
 A common example given for a context free grammar is the paired parentheses grammar. In this
 language each word is an arrangement of the alphabet symbols $($ and $)$ where each $($ has a paired

@@ -1,4 +1,3 @@
-site_name: Prod Pure 
+site_name: Pure Production
 nav:
-    - Description: "unit_description.md"
-            
+    - Unit Description: "unit_description.md"

@@ -1,0 +1,5 @@
+[[production]]
+name = "entry"
+type = "pure"
+replacements = [{ string = "%{entry}", weight = 1 }]
+terminals = [{ string = "Stack Full", weight = 1 }]

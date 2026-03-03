@@ -1,0 +1,11 @@
+[[production]]
+name = "entry"
+type = "pure"
+replacements = [{ string = "%{prod}", weight = 1 }]
+terminals = [{ string = "", weight = 1 }]
+
+[[production]]
+name = "prod"
+type = "pure"
+replacements = [{ string = "replacement", weight = 1 }]
+terminals = [{ string = "", weight = 1 }]
