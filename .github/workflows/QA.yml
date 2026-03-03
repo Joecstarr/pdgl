@@ -24,15 +24,15 @@ jobs:
             - name: Install Nix
               uses: DeterminateSystems/nix-installer-action@main
 
-            - name: Check
-              run: |
-                  nix develop --command \
-                      just check
-
             - name: Build
               run: |
                   nix develop --command \
                       just build_all
+
+            - name: Check
+              run: |
+                  nix develop --command \
+                      just check
 
             - name: Test
               run: |
