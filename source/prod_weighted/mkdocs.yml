@@ -1,0 +1,3 @@
+site_name: Weighted Production
+nav:
+    - Unit Description: "unit_description.md"
