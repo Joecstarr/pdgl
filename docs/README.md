@@ -131,8 +131,8 @@ A unit in this project shall be defined as a header file for a C library module.
 
 ### Quality
 
-The PDGL and its units shall fail safe, that is the PDGL and its units can fail but the failure must
-be detectable.
+The PDGL and its units shall fail-safe, that is the PDGL and its units can fail, but the failure
+must be detectable.
 
 #### Unit Testing
 
@@ -168,7 +168,7 @@ features may be hard or impossible to reproduce with a modular design. The PDGL 
 | DGL Production Type                  |                                               Support                                               | PDGL Production Type or Implementation Difficulty                                                                                          |
 | ------------------------------------ | :-------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------- |
 | "Unweighted production"              |                                  <i class="fa-solid fa-star"></i>                                   | [Pure Production][prod_pure]                                                                                                               |
-| "Weighted production"                |                                    <i class="fa-solid fa-x"></i>                                    | Easy, straight forward extension of a pure production.                                                                                     |
+| "Weighted production"                |                                  <i class="fa-solid fa-star"></i>                                   | [Weighted Production][prod_weighted]                                                                                                       |
 | "Character Range production `[a-z]`" | <i class="fa-solid fa-star-half-stroke"></i><br>Can be reproduced with a list in a pure production. | [Pure Production][prod_pure]                                                                                                               |
 | "Arithmetic Productions"             |                                    <i class="fa-solid fa-x"></i>                                    | Hard for native arithmetic productions, as modeling the storage of a global variable is a pain point that requires thought.                |
 | action                               |             <i class="fa-solid fa-star-half-stroke"></i><br>PDGL doesn't maintain state             | [Janet Production][prod_janet] Adding the ability to maintain state of a production is easy. Having state be scoped to a language is hard. |
@@ -215,6 +215,7 @@ subgraph lib [Libraries]
     PPtS(["Push Production to Stack"])
     PPfS(["Pop Production from Stack"])
     EPP(["Execute Pure Production"])
+    EWP(["Execute Weighted Production"])
     EJP(["Execute Janet Production"])
     ERP(["Execute Range Production"])
     FTP(["Force Terminate Production"])
@@ -240,6 +241,7 @@ subgraph lib [Libraries]
     EP -. include .-> PPtS
     EP -. include .-> PPfS
     EP -. include .-> EPP
+    EP -. include .-> EWP
     EP -. include .-> ERP
     EP -. include .-> EJP
     EP -. include .-> RPGS
@@ -270,6 +272,7 @@ end
 - [Execute Pure Production](use-cases/execute_pure_production.md)
 - [Execute Janet Production](use-cases/execute_janet_production.md)
 - [Execute Range Production](use-cases/execute_range_production.md)
+- [Execute Weighted Production](use-cases/execute_weighted_production.md)
 - [Supply Language Specification](use-cases/supply_language_specification.md)
 - [Load Language Specification](use-cases/load_language_specification.md)
 - [Language Specification is Well-defined](use-cases/language_specification_is_welldefined.md)
@@ -323,9 +326,11 @@ libraries for unit testing. Test indexing is handled by
 - Doxygen
 - CMock
 - Python
-- sphinx
+- mkdocs
 - Pytest
 - prek
+- valgrind
+- tombi
 - uncrustify
 - mdformat
 - MADR[@Kopp2018]
