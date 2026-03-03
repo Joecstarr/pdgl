@@ -69,7 +69,9 @@
               winetricks
               tinyxxd
               jsonschema-cli
+              valgrind
               toml2json
+
             ]
             ++ builtins.attrValues ccPkgs;
 

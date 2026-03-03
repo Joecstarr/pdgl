@@ -5,15 +5,19 @@ set export
 
 # Set up development environment
 bootstrap:
-    git submodule deinit -f . 
-    git submodule update --init --recursive
-    prek install -f -c .pre-commit-config.yaml
     if test ! -e .venv; then \
+      git submodule deinit -f . ;\
+      git submodule update --init --recursive ; \
+      prek install -f -c .pre-commit-config.yaml ; \
       uv venv --python 3.13 && uv pip install -r requirements.txt && \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-bibtex"; \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-author-plugin"; \
       uv pip install "git+https://github.com/Joecstarr/markdown-gfm-admonition"; \
     fi
+
+refresh-sub: 
+      git submodule deinit -f . 
+      git submodule update --init --recursive 
 
 ##################################################################################################
 ## Cmake      ####################################################################################
@@ -219,6 +223,16 @@ check-cppcheck: build_rel
     cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all  --std=c89     --inline-suppr      --error-exitcode=1       --suppressions-list=cppcheck.supp 
 
 ##################################################################################################
+####### Valgrind          ########################################################################
+##################################################################################################
+
+check-valgrind: build_rel 
+    cat ./.build/Debug/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --suppressions=.valgrind.supp ./.build/Debug/pdgl_cli -c 1
+
+check-valgrind_rel: build_rel 
+    cat ./.build/Release/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --suppressions=.valgrind.supp ./.build/Release/pdgl_cli -c 1
+
+##################################################################################################
 ####### uncrustify format ########################################################################
 ##################################################################################################
 
@@ -227,6 +241,19 @@ do-uncrustify:
     find ./source -iname "*.c"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.h"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.cpp" -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+
+##################################################################################################
+####### tombi format ##########################################################################
+##################################################################################################
+    
+# Run tombi 
+do-tombi:
+    tombi format source
+    tombi format wrappers 
+    tombi format misc
+    tombi format languages
+    tombi format docs 
+    
 
 ##################################################################################################
 ####### mdformat format ##########################################################################
@@ -253,6 +280,6 @@ check:
 ##################################################################################################
 
 # Run all formatting.  
-format: do-mdformat do-cmakeformat do-uncrustify 
+format: do-mdformat do-cmakeformat do-uncrustify do-tombi
     @echo "🚀 Formated the files"
     exit 0
