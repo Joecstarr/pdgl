@@ -203,12 +203,14 @@ void tomlprsr_free(prodstr_store_t *store)
         {
             prodstr_builder_set_t *builder = registed_prod_builders;
             prodstr_obj_t *        nextobj = obj->next;
+
             /* For each configured production type*/
             while (NULL != builder->type)
             {
                 if (DEFS_PDGL_STRING_MATCH == strcmp(obj->type, builder->type))
                 {
                     builder->free(obj);
+                    break;
                 }
                 builder++;
             }
@@ -367,8 +369,8 @@ STATIC_INLINE void tomlprsr_prod_pure_free(prodstr_obj_t *prd)
         free(config);
         free(prd->name);
         free(prd->type);
+        free(prd);
     }
-    free(prd);
 }
 
 /**
@@ -551,6 +553,7 @@ STATIC_INLINE void tomlprsr_prod_range_free(prodstr_obj_t *prd)
     {
         prod_range_config_t *config = (prod_range_config_t *)prd->config;
         free(config->out_str);
+        free(config);
         free(prd->name);
         free(prd->type);
     }
