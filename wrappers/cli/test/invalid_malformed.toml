@@ -1,4 +1,4 @@
-
+#:tombi format.disabled = true
 ss[production]]
 name = "entry"
 type = "pure"
