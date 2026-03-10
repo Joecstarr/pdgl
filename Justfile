@@ -194,6 +194,7 @@ check-doxygen:
 # Run cmake-format
 do-cmakeformat:
     find ./source/ -name 'CMakeLists.txt' -exec cmake-format -i {} \;
+    find ./wrappers/ -name 'CMakeLists.txt' -exec cmake-format -i {} \;
     cmake-format -i ./libraries/CMakeLists.txt
     cmake-format -i CMakeLists.txt
 
@@ -208,7 +209,8 @@ clear-cppcheck: build_rel
 
 # Build cppckeck html 
 report-cppcheck:
-    cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all --std=c89 --inline-suppr --suppressions-list=cppcheck.supp --xml 2> ./.build/cppcheck/err.xml
+    mkdir -p ./.build/cppcheck
+    cppcheck --project=./.build/Release/compile_commands.json -q -ilibraries  --enable=all --std=c89 --inline-suppr --suppressions-list=cppcheck.supp --xml 2> ./.build/cppcheck/err.xml
     cppcheck-htmlreport --file=./.build/cppcheck/err.xml --report-dir=./.build/cppcheck --source-dir=. 
 
 # Server cppcheck results
@@ -220,17 +222,17 @@ serve-cppcheck: build_rel clear-cppcheck report-cppcheck
 
 # check cppcheck fail on warning
 check-cppcheck: build_rel
-    cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all  --std=c89     --inline-suppr      --error-exitcode=1       --suppressions-list=cppcheck.supp 
+    cppcheck --project=./.build/Release/compile_commands.json -q -ilibraries  --enable=all  --std=c89     --inline-suppr      --error-exitcode=1       --suppressions-list=cppcheck.supp 
 
 ##################################################################################################
 ####### Valgrind          ########################################################################
 ##################################################################################################
 
 check-valgrind: build_dbg 
-    cat ./.build/Debug/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --suppressions=.valgrind.supp ./.build/Debug/pdgl_cli -c 1
+    cat ./.build/Debug/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --trace-children=yes --track-origins=yes --suppressions=.valgrind.supp ./.build/Debug/pdgl_cli -c 1
 
 check-valgrind_rel: build_rel 
-    cat ./.build/Release/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --suppressions=.valgrind.supp ./.build/Release/pdgl_cli -c 1
+    cat ./.build/Release/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --trace-children=yes --track-origins=yes --suppressions=.valgrind.supp ./.build/Release/pdgl_cli -c 1
 
 ##################################################################################################
 ####### uncrustify format ########################################################################
@@ -241,6 +243,9 @@ do-uncrustify:
     find ./source -iname "*.c"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.h"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.cpp" -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+    find ./wrappers -iname "*.c"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+    find ./wrappers -iname "*.h"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+    find ./wrappers -iname "*.cpp" -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
 
 ##################################################################################################
 ####### tombi format ##########################################################################
