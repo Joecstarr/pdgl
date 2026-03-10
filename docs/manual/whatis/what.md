@@ -111,8 +111,8 @@ literature some samples include:
 
 - Paz's "Introduction to Probabilistic Automata"[@pazIntroductionProbabilisticAutomata1971]
 - Rabin's "Probabilistic automata"[@rabinProbabilisticAutomata1963]
-- Booth and Thompson's "Applying Probability Measures to Abstract
-  Languages"[@boothApplyingProbabilityMeasures1973]
+- Booth and Thompson's "Applying Probability Measures to Abstract Languages"
+    [@boothApplyingProbabilityMeasures1973]
 - Ellis' "Probabilistic languages and automata"[@ellisProbabilisticLanguagesAutomata1969]
 
 ## Stochastic Generation
@@ -162,15 +162,17 @@ second set of replacement strings to productions in PDGL grammars, we call these
 `terminals`. Fittingly, we require that a terminal replacement contain only terminal symbols,
 effectively cutting off the derivation branch.
 
+<!-- rumdl-capture -->
+<!-- rumdl-disable MD013 -->
 > [!EXAMPLE] "Example: Formal description of the PDGL grammar for the
 > [paired parentheses language][ex-paired_paren]:"
 >
 > 1. $V=\LS S\RS$.
 > 1. $\Sigma=\LS (,),\varepsilon\RS$.
 > 1. $R$ is the set
->     - $S\to \begin{cases}(S) \mid SS \mid \varepsilon & \text{Stack is not full}\\ \varepsilon  & \text{Stack is full}\end{cases}$
+>    - $S\to \begin{cases}(S) \mid SS \mid \varepsilon & \text{Stack is not full}\\ \varepsilon & \text{Stack is full}\end{cases}$
 > 1. $S=S$
-
+<!-- rumdl-restore -->
 > [!NOTE]
 >
 > We should take a second to give context to the stack design choices. The PDGL operates with a
@@ -185,4 +187,4 @@ effectively cutting off the derivation branch.
 > 1. Using calls into the call stack means local and global state is a tad easier to maintain. The
 >    PDGL design currently maintains state only within individual productions.
 
-[ $\leftarrow$ Last](../prelim){ .md-button } [ Next $\rightarrow$](../why){ .md-button }
+[$\leftarrow$ Last](../prelim){ .md-button } [Next $\rightarrow$](../why){ .md-button }

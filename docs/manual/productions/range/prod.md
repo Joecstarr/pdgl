@@ -46,6 +46,7 @@ A range production contains two configurable integer bounds a lower and upper bo
 ```
 
 [](){#schema-range}
+
 ## Production Schema
 
 ```json

@@ -1,4 +1,3 @@
-site_name: Prod Range 
+site_name: Range Production
 nav:
-    - Description: "unit_description.md"
-            
+    - Unit Description: "unit_description.md"

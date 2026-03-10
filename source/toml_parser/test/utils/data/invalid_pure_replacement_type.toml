@@ -1,7 +1,5 @@
-
-
 [[production]]
 name = "entry"
 type = "pure"
-replacement = 10  
+replacements = 10
 terminals = ["terminal"]

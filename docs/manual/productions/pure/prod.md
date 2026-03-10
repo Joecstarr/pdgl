@@ -42,6 +42,7 @@ strings. Each list must be configured with at least one string.
 ```
 
 [](){#schema-pure}
+
 ## Production Schema
 
 ```json

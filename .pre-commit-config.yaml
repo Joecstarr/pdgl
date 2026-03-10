@@ -8,16 +8,37 @@ repos:
             files:
                 glob:
                     - "**/*.py"
+          - id: tombi
+            name: tombi
+            language: system
+            entry: tombi format --check
+            files:
+                glob:
+                    - "**/*.toml"
           - id: docs
             name: docs
             language: system
-            entry: mdformat --check
+            entry: rumdl check
             exclude:
                 glob:
                     - ".github/**/*.*"
             files:
                 glob:
                     - "**/*.md"
+          - id: valgrind
+            name: valgrind
+            language: system
+            entry: just check-valgrind
+            pass_filenames: false
+            exclude:
+                glob:
+                    - "libraries/**/*.*"
+            files:
+                glob:
+                    - "**/*.c"
+                    - "**/*.h"
+                    - "**/*.hpp"
+                    - "**/*.cpp"
           - id: uncrustify
             name: uncrustify
             language: system

@@ -18,7 +18,7 @@ classDiagram
         - int hash(char* name)
         }
 
-    
+
     class prodstr_obj_t{
         <<struct>>
         prodstr_obj_t *next
@@ -65,7 +65,7 @@ contains:
 
 - The name of the production. This serves as the key for the hash.
 - A void pointer to a production configuration. We choose void to allow storage of arbitrary
-  production types.
+    production types.
 - A function pointer to the resolve function of the production.
 - A function pointer to the terminate function of the production.
 
@@ -125,8 +125,8 @@ stateDiagram-v2
 >
 > - A production is passed to the add function with an empty store.
 > - A production is passed to the add function with a non-empty stores:
->     - The store has a value away from the hash of the supplied production
->     - The store has a value at the hash of the supplied production
+>   - The store has a value away from the hash of the supplied production
+>   - The store has a value at the hash of the supplied production
 >
 > **Expected Output:**
 >
@@ -146,7 +146,7 @@ stateDiagram-v2
 > **Expected Output:**
 >
 > A negative response.
-
+>
 > [!test-card] "A NULL pointer is passed to the function"
 >
 > A NULL pointer is passed to the function.
@@ -154,11 +154,11 @@ stateDiagram-v2
 > **Inputs:**
 >
 > - A null pointer for:
->     - store
->     - production
->     - production name
->     - production type
->     - production config
+>   - store
+>   - production
+>   - production name
+>   - production type
+>   - production config
 >
 > **Expected Output:**
 >
@@ -175,8 +175,8 @@ stateDiagram-v2
 > **Inputs:**
 >
 > - A valid production which is:
->     - In the store.
->     - Not in the store.
+>   - In the store.
+>   - Not in the store.
 >
 > **Expected Output:**
 >
@@ -192,8 +192,8 @@ stateDiagram-v2
 > **Inputs:**
 >
 > - A null pointer for:
->     - store
->     - production key
+>   - store
+>   - production key
 >
 > **Expected Output:**
 >

@@ -5,22 +5,23 @@ authors:
 ---
 
 [](){#log_state_information}
+
 ## Primary Actor
 
 The PDGL itself is the primary actor.
 
-## Trigger:
+## Trigger
 
 The PDGL needs the report data to a log.
 
-## Goal:
+## Goal
 
 The PDGL reports state information to a log.
 
-## Preconditions:
+## Preconditions
 
 None.
 
-## Scenario:
+## Scenario
 
 1. The PDGL reports state information to a logging interface.

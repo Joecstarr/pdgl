@@ -90,6 +90,7 @@ Supported by `./docs/manual/productions/janet/media/3/script.janet`
 ```
 
 [](){#schema-janet}
+
 ## Production Schema
 
 ```json

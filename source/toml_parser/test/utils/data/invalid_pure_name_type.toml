@@ -5,7 +5,7 @@ replacements = ["replacement"]
 terminals = ["terminal"]
 
 [[production]]
-name = 10  
+name = 10
 type = "pure"
 replacements = ["replacement"]
 terminals = ["terminal"]

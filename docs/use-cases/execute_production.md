@@ -10,19 +10,19 @@ authors:
 
 N/A
 
-## Trigger:
+## Trigger
 
 An upstream actor requires the resolution of a production in the configured language.
 
-## Goal:
+## Goal
 
 The resolution of a production in the configured language.
 
-## Preconditions:
+## Preconditions
 
 A language is specified.
 
-## Scenario:
+## Scenario
 
 1. A production is defined.
 1. The production symbol is replaced.

@@ -5,10 +5,10 @@ joe_starr: # author key
         - name: GitHub
           link: https://github.com/Joecstarr
           icon: fa-brands fa-github
-        - name: Website 
+        - name: Website
           link: https://joe-starr.com
           icon: fa-solid fa-link
-        - name: Linkedin 
+        - name: Linkedin
           link: https://www.linkedin.com/in/joseph-c-starr/
           icon: fa-brands fa-linkedin
-    img: https://joe-starr.com/avatar_hu_d4cafccc0472e34f.jpg
+    img: https://joe-starr.com/_astro/avatar.BCYTbMWl_Z1LXOOP.webp

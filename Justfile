@@ -5,15 +5,19 @@ set export
 
 # Set up development environment
 bootstrap:
-    git submodule deinit -f . 
-    git submodule update --init --recursive
-    prek install -f -c .pre-commit-config.yaml
     if test ! -e .venv; then \
+      git submodule deinit -f . ;\
+      git submodule update --init --recursive ; \
+      prek install -f -c .pre-commit-config.yaml ; \
       uv venv --python 3.13 && uv pip install -r requirements.txt && \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-bibtex"; \
       uv pip install "git+https://github.com/Joecstarr/mkdocs-author-plugin"; \
       uv pip install "git+https://github.com/Joecstarr/markdown-gfm-admonition"; \
     fi
+
+refresh-sub: 
+      git submodule deinit -f . 
+      git submodule update --init --recursive 
 
 ##################################################################################################
 ## Cmake      ####################################################################################
@@ -190,6 +194,7 @@ check-doxygen:
 # Run cmake-format
 do-cmakeformat:
     find ./source/ -name 'CMakeLists.txt' -exec cmake-format -i {} \;
+    find ./wrappers/ -name 'CMakeLists.txt' -exec cmake-format -i {} \;
     cmake-format -i ./libraries/CMakeLists.txt
     cmake-format -i CMakeLists.txt
 
@@ -204,7 +209,8 @@ clear-cppcheck: build_rel
 
 # Build cppckeck html 
 report-cppcheck:
-    cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all --std=c89 --inline-suppr --suppressions-list=cppcheck.supp --xml 2> ./.build/cppcheck/err.xml
+    mkdir -p ./.build/cppcheck
+    cppcheck --project=./.build/Release/compile_commands.json -q -ilibraries  --enable=all --std=c89 --inline-suppr --suppressions-list=cppcheck.supp --xml 2> ./.build/cppcheck/err.xml
     cppcheck-htmlreport --file=./.build/cppcheck/err.xml --report-dir=./.build/cppcheck --source-dir=. 
 
 # Server cppcheck results
@@ -216,7 +222,17 @@ serve-cppcheck: build_rel clear-cppcheck report-cppcheck
 
 # check cppcheck fail on warning
 check-cppcheck: build_rel
-    cppcheck --project=./.build/Release/compile_commands.json -q --suppress=*:libraries/cxxopts/include/cxxopts.hpp -ilibraries  --enable=all  --std=c89     --inline-suppr      --error-exitcode=1       --suppressions-list=cppcheck.supp 
+    cppcheck --project=./.build/Release/compile_commands.json -q -ilibraries  --enable=all  --std=c89     --inline-suppr      --error-exitcode=1       --suppressions-list=cppcheck.supp 
+
+##################################################################################################
+####### Valgrind          ########################################################################
+##################################################################################################
+
+check-valgrind: build_dbg 
+    cat ./.build/Debug/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --trace-children=yes --track-origins=yes --suppressions=.valgrind.supp ./.build/Debug/pdgl_cli -c 1
+
+check-valgrind_rel: build_rel 
+    cat ./.build/Release/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --trace-children=yes --track-origins=yes --suppressions=.valgrind.supp ./.build/Release/pdgl_cli -c 1
 
 ##################################################################################################
 ####### uncrustify format ########################################################################
@@ -227,16 +243,32 @@ do-uncrustify:
     find ./source -iname "*.c"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.h"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
     find ./source -iname "*.cpp" -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+    find ./wrappers -iname "*.c"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+    find ./wrappers -iname "*.h"   -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
+    find ./wrappers -iname "*.cpp" -exec  sh -c 'uncrustify -c .uncrustify.cfg --replace "$0" || kill $PPID' \{\} \;
 
 ##################################################################################################
-####### mdformat format ##########################################################################
+####### tombi format ##########################################################################
 ##################################################################################################
     
-# Run mdformat 
-do-mdformat:
-    source .venv/bin/activate && \
-    mdformat  docs && \
-    mdformat source
+# Run tombi 
+do-tombi:
+    tombi format source
+    tombi format wrappers 
+    tombi format misc
+    tombi format languages
+    tombi format docs 
+    
+
+##################################################################################################
+####### rumdl format ##########################################################################
+##################################################################################################
+    
+# Run rumdl 
+do-rumdl:
+    rumdl fmt --fix docs
+    rumdl fmt --fix source
+    rumdl fmt --fix wrappers 
 
 ##################################################################################################
 ####### check everything #########################################################################
@@ -253,6 +285,6 @@ check:
 ##################################################################################################
 
 # Run all formatting.  
-format: do-mdformat do-cmakeformat do-uncrustify 
+format: do-rumdl do-cmakeformat do-uncrustify do-tombi
     @echo "🚀 Formated the files"
     exit 0

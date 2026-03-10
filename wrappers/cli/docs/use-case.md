@@ -8,19 +8,19 @@ authors:
 
 The primary actor for the use case is the user.
 
-## Trigger:
+## Trigger
 
 The user requests the generation
 
-## Goal:
+## Goal
 
 The loading of a language and generation of N words of that language.
 
-## Preconditions:
+## Preconditions
 
 None
 
-## Scenario:
+## Scenario
 
 1. The user starts the CLI and specifies how many words to generate.
 1. The user supplies a language specification.

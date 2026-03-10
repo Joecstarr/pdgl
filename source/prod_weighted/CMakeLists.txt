@@ -1,0 +1,11 @@
+add_library(prod_weighted_lib STATIC src/prod_weighted.c)
+
+target_include_directories(prod_weighted_lib PUBLIC src)
+target_link_libraries(prod_weighted_lib pdgl_defs)
+
+set_target_properties(prod_weighted_lib
+                      PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C")
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Emscripten")
+  add_subdirectory(test)
+  add_lizard_target(prod_weighted_lib_lizard ALL ARGUMENTS --warnings_only)
+endif(NOT CMAKE_BUILD_TYPE STREQUAL "Emscripten")

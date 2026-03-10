@@ -1,5 +1,5 @@
 {
-    "$id": "janet_production-schema",
+    "$id": "janet-production_schema",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "properties": {

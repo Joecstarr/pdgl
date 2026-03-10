@@ -7,8 +7,8 @@ authors:
 ## Run the Executable on Your Computer
 
 The PDGL CLI wrapper takes input in two forms, first the language specification from `stdin` and
-second configuration options from arguments[^1]. The PDGL CLI outputs words to `stdout`. This allows
-for the PDGL CLI to be included in complex
+second configuration options from arguments [^1]. The PDGL CLI outputs words to `stdout`. This
+allows for the PDGL CLI to be included in complex
 [pipelines](<https://en.wikipedia.org/wiki/Pipeline_(Unix)>). A typical call that outputs words to
 the screen looks like the following:
 

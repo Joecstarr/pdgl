@@ -6,7 +6,7 @@ authors:
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[![](https://brainmade.org/white-logo.svg)](https://brainmade.org)
+[![White Logo image](https://brainmade.org/white-logo.svg)](https://brainmade.org)
 ![./assets/logo.svg](./assets/logo.svg)
 
 ## Note to Reader
@@ -42,9 +42,9 @@ Tasks are tracked as GitHub issues, each `Enhancement` and `Bug` generating the 
 of issues and child issues:
 
 - A primary issue describing the goal:
-    - A documentation child issue.
-    - An implementation child issue.
-    - A validation child issue.
+  - A documentation child issue.
+  - An implementation child issue.
+  - A validation child issue.
 
 ### Version control
 
@@ -62,13 +62,13 @@ on main with the following quality gates:
 The project shall be tagged when an `Enhancement` or `Bug` issue is merged into main. The tag shall
 follow [semantic versioning](https://semver.org) for labels.
 
-```
+```text
 vMAJOR.MINOR.PATCH
 ```
 
 ### Project Structure
 
-```
+```text
 
 
 📁 .
@@ -131,8 +131,8 @@ A unit in this project shall be defined as a header file for a C library module.
 
 ### Quality
 
-The PDGL and its units shall fail safe, that is the PDGL and its units can fail but the failure must
-be detectable.
+The PDGL and its units shall fail-safe, that is the PDGL and its units can fail, but the failure
+must be detectable.
 
 #### Unit Testing
 
@@ -156,7 +156,7 @@ end the PDGL shall match the features and use cases of the original DGL where po
 features may be hard or impossible to reproduce with a modular design. The PDGL shall forgo the
 `DGL` language itself in favor of definitions of languages in `TOML`.
 
-###### DGL Vs. PDGL Feature Matrix
+##### DGL Vs. PDGL Feature Matrix
 
 | Symbol                                       | Support Level   |
 | -------------------------------------------- | --------------- |
@@ -168,7 +168,7 @@ features may be hard or impossible to reproduce with a modular design. The PDGL 
 | DGL Production Type                  |                                               Support                                               | PDGL Production Type or Implementation Difficulty                                                                                          |
 | ------------------------------------ | :-------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------- |
 | "Unweighted production"              |                                  <i class="fa-solid fa-star"></i>                                   | [Pure Production][prod_pure]                                                                                                               |
-| "Weighted production"                |                                    <i class="fa-solid fa-x"></i>                                    | Easy, straight forward extension of a pure production.                                                                                     |
+| "Weighted production"                |                                  <i class="fa-solid fa-star"></i>                                   | [Weighted Production][prod_weighted]                                                                                                       |
 | "Character Range production `[a-z]`" | <i class="fa-solid fa-star-half-stroke"></i><br>Can be reproduced with a list in a pure production. | [Pure Production][prod_pure]                                                                                                               |
 | "Arithmetic Productions"             |                                    <i class="fa-solid fa-x"></i>                                    | Hard for native arithmetic productions, as modeling the storage of a global variable is a pain point that requires thought.                |
 | action                               |             <i class="fa-solid fa-star-half-stroke"></i><br>PDGL doesn't maintain state             | [Janet Production][prod_janet] Adding the ability to maintain state of a production is easy. Having state be scoped to a language is hard. |
@@ -215,6 +215,7 @@ subgraph lib [Libraries]
     PPtS(["Push Production to Stack"])
     PPfS(["Pop Production from Stack"])
     EPP(["Execute Pure Production"])
+    EWP(["Execute Weighted Production"])
     EJP(["Execute Janet Production"])
     ERP(["Execute Range Production"])
     FTP(["Force Terminate Production"])
@@ -229,21 +230,22 @@ subgraph lib [Libraries]
     SG -. include .-> FTP
     SG -. include .-> EX 
     SLS -. include .-> LSWD
-    
+
     SLS -. include .-> LL
-    
+
     EMG -. include .-> EGL
     EGL -. include .-> EP
-    
+
     EP -. include .-> FTP
     FTP -. include .-> RPGS
     EP -. include .-> PPtS
     EP -. include .-> PPfS
     EP -. include .-> EPP
+    EP -. include .-> EWP
     EP -. include .-> ERP
     EP -. include .-> EJP
     EP -. include .-> RPGS
-   
+
     SLS -. uses .-> sti
     LSI -. uses .-> err 
     RPGS -. uses .-> scr
@@ -270,6 +272,7 @@ end
 - [Execute Pure Production](use-cases/execute_pure_production.md)
 - [Execute Janet Production](use-cases/execute_janet_production.md)
 - [Execute Range Production](use-cases/execute_range_production.md)
+- [Execute Weighted Production](use-cases/execute_weighted_production.md)
 - [Supply Language Specification](use-cases/supply_language_specification.md)
 - [Load Language Specification](use-cases/load_language_specification.md)
 - [Language Specification is Well-defined](use-cases/language_specification_is_welldefined.md)
@@ -284,12 +287,12 @@ end
 ##### Architectural Decisions
 
 For the PDGL libraries the use cases should be sufficient to motivate and document behavior. When
-this is insufficient to document specific architectural decisions a collection of
-[MADR](https://github.com/adr/madr)[@Kopp2018] should be used to document the decisions.
+this is insufficient to document specific architectural decisions a collection of [MADR][@Kopp2018]
+(<https://github.com/adr/madr>) should be used to document the decisions.
 
-Wrappers may reference system use cases and define their use cases. However,
-[MADR](https://github.com/adr/madr)[@Kopp2018] should serve as the primary documentation for the
-architecture of a wrapper.
+Wrappers may reference system use cases and define their use cases. However, [MADR][@Kopp2018]
+(<https://github.com/adr/madr>) should serve as the primary documentation for the architecture of a
+wrapper.
 
 #### Nonfunctional Requirements
 
@@ -323,11 +326,13 @@ libraries for unit testing. Test indexing is handled by
 - Doxygen
 - CMock
 - Python
-- sphinx
+- mkdocs
 - Pytest
 - prek
+- valgrind
+- tombi
 - uncrustify
-- mdformat
+- rumdl
 - MADR[@Kopp2018]
 
 ###### Documentation of Implementation

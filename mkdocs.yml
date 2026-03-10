@@ -61,6 +61,7 @@ nav:
                 - "manual/productions/toml.md"
                 - Production Types:
                       - Pure Production: "manual/productions/pure/prod.md"
+                      - Weighted Production: "manual/productions/weighted/prod.md"
                       - Range Production: "manual/productions/range/prod.md"
                       - Janet Production: "manual/productions/janet/prod.md"
           - Generation:

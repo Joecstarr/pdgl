@@ -67,10 +67,15 @@ char * test_toml_parser_read_test_file(const char *file)
     fseek(infile, 0L, SEEK_SET);
 
     /* grab sufficient memory for the buffer to hold the text */
-    buffer = (char *)calloc(numbytes, sizeof(char));
+    buffer = (char *)calloc(numbytes + 1, sizeof(char));
 
     TEST_ASSERT_NOT_NULL_MESSAGE(buffer, "buffer is still null when it shouldn't be.");
 
+    size_t i;
+    for (i = 0; i < numbytes + 1; i++)
+    {
+        buffer[i] = '\0';
+    }
 
     /* copy all the text into the buffer */
     size_t out = fread(buffer, sizeof(char), numbytes, infile);

@@ -59,13 +59,13 @@ private:
  */
 PDGL_wasm::~PDGL_wasm()
 {
-    for (size_t i = 0; i < this->stack_size; i++)
-    {
-        delete this->stack->partials[i].buff;
-    }
     if (nullptr != this->store)
     {
         tomlprsr_free(this->store);
+    }
+    for (size_t i = 0; i < this->stack_size; i++)
+    {
+        delete[] this->stack->partials[i].buff;
     }
     delete[] this->stack->partials;
     delete this->stack;

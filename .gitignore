@@ -453,3 +453,4 @@ out.txt
 *.zst 
 .wine
 *.orig
+vgcore*

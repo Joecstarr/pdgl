@@ -1,0 +1,10 @@
+[[production]]
+type = "pure"
+replacements = [
+  { string = "replacement1", weight = 1 },
+  { string = "replacement2", weight = 1 }
+]
+terminals = [
+  { string = "terminal1", weight = 1 },
+  { string = "terminal2", weight = 1 }
+]

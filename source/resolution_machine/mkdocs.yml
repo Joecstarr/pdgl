@@ -1,4 +1,3 @@
-site_name: Resolution Machine 
+site_name: Resolution Machine
 nav:
-    - Description: "unit_description.md"
-            
+    - Unit Description: "unit_description.md"

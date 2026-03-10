@@ -11,9 +11,9 @@ classDiagram
    cli *-- toml_parser
    cli *-- resolution_machine
    cli *-- prodstr_store 
-   cli *-- cxxopts 
+   cli *-- argparse 
    cli -- pdgl 
-    
+
    class cli{
     <<executable>>
     int main()
@@ -34,7 +34,7 @@ classDiagram
    class prodstr_store{<<External>>}
    class toml_parser{<<External>>}
    class resolution_machine {<<External>>}
-   class cxxopts{<<External>>}
+   class argparse{<<External>>}
 
 ```
 
@@ -44,7 +44,7 @@ None
 
 ## Libraries
 
-- [cxxopts](https://github.com/jarro2783/cxxopts)
+- [argparse](https://github.com/cofyc/argparse)
 
 ## Functionality
 
@@ -61,11 +61,11 @@ Container class used for producing and running a PDGL stack.
 The class has two constructors:
 
 1. A constructor with three arguments for:
-    - language specification
-    - stack_size
-    - random seed
-1. A constructor with an argument for the language specification. The stack size is defaulted to 100
-   and the random seed is generated in the function.
+   - language specification
+   - stack_size
+   - random seed
+1. A constructor with an argument for the language specification. The stack size is defaulted to
+    100 and the random seed is generated in the function.
 
 ###### De-constructor
 
@@ -90,7 +90,7 @@ stateDiagram-v2
 
 #### Main
 
-Main calling routine. Uses cxxopts for parsing arguments and reads file content off `stdin`.
+Main calling routine. Uses argparse for parsing arguments and reads file content off `stdin`.
 
 ```mermaid
 stateDiagram-v2
@@ -140,13 +140,13 @@ language specification TOML files can be found in the `language` directory or in
 > **Inputs:**
 >
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 10 words
->     - Stack size is 100
+>   - The paired paren lanaguage specification
+>   - 10 words
+>   - Stack size is 100
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 10 words
->     - Stack size is 1
+>   - The paired paren lanaguage specification
+>   - 10 words
+>   - Stack size is 1
 >
 > **Expected Output:**
 >
@@ -161,13 +161,13 @@ language specification TOML files can be found in the `language` directory or in
 > **Inputs:**
 >
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 100000 words
+>   - The paired paren lanaguage specification
+>   - 100000 words
 >
 > **Expected Output:**
 >
 > - No memory leaks detected in heaptrack
-
+>
 > [!test-card] "Invalid language configured"
 >
 > The tool is configured for generation of 10 word but with Invalid language specification.

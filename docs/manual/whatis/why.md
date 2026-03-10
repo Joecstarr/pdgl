@@ -24,7 +24,7 @@ this can serve to create lightly or heavily tailored datasets.
 You probably don't think very much about the fact that your life revolves around rocks. I mean
 that's caveman stuff right? Granted the rocks we depend on look a lot different from an arrowhead or
 handaxe. If you're reading this on a computer of some sort you're actively using fancy rocks(I hope
-you aren't printing out web pages ... it's bad for the environment and makes clicking buttons a lot
+you aren't printing out web pages... it's bad for the environment and makes clicking buttons a lot
 harder). The integrated circuits (ICs) you're using are essentially rocks that we shot with a laser
 to turn into logic systems.
 
@@ -35,9 +35,7 @@ Integration (VLSI).
 
 [](){#fig-circuit} ![Circuit Design](../media/vlsi.svg)
 
-/// caption
-An overview of the IC design process[^cd].
-///
+/// caption An overview of the IC design process[^cd]. ///
 
 Consider how complicated the process of IC creation is and how are critical they are to our lives.
 Every day when we press the brake pedal in our car we trust in the reliability of ICs. That
@@ -53,5 +51,5 @@ verification abstraction process is one of the motivating applications for the o
 >
 > See paper by Jonoska, Obatake, Poznanovic, Price, Riehl, and Vazquez [@jonoskaModelingRNADNA2021].
 
-[^cd]: Remix of <a href="https://commons.wikimedia.org/wiki/File:PhysicalDesign.svg">Linear77</a>,
-    <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>, via Wikimedia Commons
+[^cd]: Remix of <a href="https://commons.wikimedia.org/wiki/File:PhysicalDesign.svg">Linear77 </a>,
+<a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0 </a>, via Wikimedia Commons
