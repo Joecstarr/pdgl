@@ -13,8 +13,8 @@
 #include <production_store.h>
 #include <toml_parser.h>
 #include <resolution_machine.h>
-#include <cxxopts.hpp>
 
+#include <argparse.h>
 #include <cstddef>
 #include <string>
 #include <iostream>
@@ -157,6 +157,11 @@ bool PDGL_cli::run()
     return true;
 }
 
+static const char *const usages[] = {
+    "pdgl_cli [options] ",
+    NULL,
+};
+
 /**
  * \brief Main calling routine.
  *
@@ -164,26 +169,36 @@ bool PDGL_cli::run()
  * \param argv A list of void pointers to argument.
  * \return An exit code 0 indicating success or failure otherwise.
  */
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
-    cxxopts::Options options("test", "A brief description");
+    size_t count      = 10u;
+    size_t stack_size = 100u;
 
-    options.add_options()
-    ("c,count", "Number of words to produce", cxxopts::value <size_t> ()->default_value("10"))
-    ("s,stack", "Size of stack to use", cxxopts::value <size_t> ()->default_value("100"))
-    ("h,help", "Print usage")
-    ;
+    struct argparse_option options[] = {
+        OPT_HELP(),
+        OPT_GROUP("Basic options"),
+        OPT_INTEGER('c',
+                    "count",
+                    &count,
+                    "Number of words to produce.",
+                    NULL,
+                    0,
+                    0),
+        OPT_INTEGER('s',
+                    "stack",
+                    &stack_size,
+                    "Size of stack to use",
+                    NULL,
+                    0,
+                    0),
+        OPT_END(),
+    };
+    struct argparse        argparse;
 
-    auto result = options.parse(argc, argv);
-
-    if (result.count("help"))
-    {
-        std::cout << options.help() << std::endl;
-        exit(0);
-    }
-
-    size_t count      = result["count"].as <size_t>();
-    size_t stack_size = result["stack"].as <size_t>();
+    argparse_init(&argparse, options, usages, 0);
+    argparse_describe(&argparse, "\nGenerate words in a grammar.",
+                      "\nGenerate words in a grammar.");
+    (void)argparse_parse(&argparse, argc, argv);
 
     std::random_device rd;
     std::string        language;

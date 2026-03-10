@@ -14,15 +14,15 @@ target_include_directories(tomlc_lib PUBLIC ./tomlc17/src/)
 endblock()
 
 # =================================================================================================
-# cxxopts library
+# argparse library
 # =================================================================================================
 block(SCOPE_FOR VARIABLES)
 unset(CMAKE_CXX_CPPCHECK)
 unset(CMAKE_C_CPPCHECK)
 
-add_library(cxxopts_lib INTERFACE)
+add_library(argparse_lib STATIC ./argparse/argparse.c)
 
-target_include_directories(cxxopts_lib INTERFACE ./cxxopts/include/)
+target_include_directories(argparse_lib INTERFACE ./argparse/)
 
 endblock()
 

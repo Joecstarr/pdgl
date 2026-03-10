@@ -11,7 +11,7 @@ classDiagram
    cli *-- toml_parser
    cli *-- resolution_machine
    cli *-- prodstr_store 
-   cli *-- cxxopts 
+   cli *-- argparse 
    cli -- pdgl 
 
    class cli{
@@ -34,7 +34,7 @@ classDiagram
    class prodstr_store{<<External>>}
    class toml_parser{<<External>>}
    class resolution_machine {<<External>>}
-   class cxxopts{<<External>>}
+   class argparse{<<External>>}
 
 ```
 
@@ -44,7 +44,7 @@ None
 
 ## Libraries
 
-- [cxxopts](https://github.com/jarro2783/cxxopts)
+- [argparse](https://github.com/cofyc/argparse)
 
 ## Functionality
 
@@ -90,7 +90,7 @@ stateDiagram-v2
 
 #### Main
 
-Main calling routine. Uses cxxopts for parsing arguments and reads file content off `stdin`.
+Main calling routine. Uses argparse for parsing arguments and reads file content off `stdin`.
 
 ```mermaid
 stateDiagram-v2
