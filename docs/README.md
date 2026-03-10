@@ -6,7 +6,7 @@ authors:
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[![](https://brainmade.org/white-logo.svg)](https://brainmade.org)
+[![White Logo image](https://brainmade.org/white-logo.svg)](https://brainmade.org)
 ![./assets/logo.svg](./assets/logo.svg)
 
 ## Note to Reader
@@ -42,9 +42,9 @@ Tasks are tracked as GitHub issues, each `Enhancement` and `Bug` generating the 
 of issues and child issues:
 
 - A primary issue describing the goal:
-    - A documentation child issue.
-    - An implementation child issue.
-    - A validation child issue.
+  - A documentation child issue.
+  - An implementation child issue.
+  - A validation child issue.
 
 ### Version control
 
@@ -62,13 +62,13 @@ on main with the following quality gates:
 The project shall be tagged when an `Enhancement` or `Bug` issue is merged into main. The tag shall
 follow [semantic versioning](https://semver.org) for labels.
 
-```
+```text
 vMAJOR.MINOR.PATCH
 ```
 
 ### Project Structure
 
-```
+```text
 
 
 📁 .
@@ -156,7 +156,7 @@ end the PDGL shall match the features and use cases of the original DGL where po
 features may be hard or impossible to reproduce with a modular design. The PDGL shall forgo the
 `DGL` language itself in favor of definitions of languages in `TOML`.
 
-###### DGL Vs. PDGL Feature Matrix
+##### DGL Vs. PDGL Feature Matrix
 
 | Symbol                                       | Support Level   |
 | -------------------------------------------- | --------------- |
@@ -230,12 +230,12 @@ subgraph lib [Libraries]
     SG -. include .-> FTP
     SG -. include .-> EX 
     SLS -. include .-> LSWD
-    
+
     SLS -. include .-> LL
-    
+
     EMG -. include .-> EGL
     EGL -. include .-> EP
-    
+
     EP -. include .-> FTP
     FTP -. include .-> RPGS
     EP -. include .-> PPtS
@@ -245,7 +245,7 @@ subgraph lib [Libraries]
     EP -. include .-> ERP
     EP -. include .-> EJP
     EP -. include .-> RPGS
-   
+
     SLS -. uses .-> sti
     LSI -. uses .-> err 
     RPGS -. uses .-> scr
@@ -287,12 +287,12 @@ end
 ##### Architectural Decisions
 
 For the PDGL libraries the use cases should be sufficient to motivate and document behavior. When
-this is insufficient to document specific architectural decisions a collection of
-[MADR](https://github.com/adr/madr)[@Kopp2018] should be used to document the decisions.
+this is insufficient to document specific architectural decisions a collection of [MADR][@Kopp2018]
+(<https://github.com/adr/madr>) should be used to document the decisions.
 
-Wrappers may reference system use cases and define their use cases. However,
-[MADR](https://github.com/adr/madr)[@Kopp2018] should serve as the primary documentation for the
-architecture of a wrapper.
+Wrappers may reference system use cases and define their use cases. However, [MADR][@Kopp2018]
+(<https://github.com/adr/madr>) should serve as the primary documentation for the architecture of a
+wrapper.
 
 #### Nonfunctional Requirements
 
@@ -332,7 +332,7 @@ libraries for unit testing. Test indexing is handled by
 - valgrind
 - tombi
 - uncrustify
-- mdformat
+- rumdl
 - MADR[@Kopp2018]
 
 ###### Documentation of Implementation

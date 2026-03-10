@@ -226,7 +226,7 @@ check-cppcheck: build_rel
 ####### Valgrind          ########################################################################
 ##################################################################################################
 
-check-valgrind: build_rel 
+check-valgrind: build_dbg 
     cat ./.build/Debug/toml_parser_test_data/valid_all_prod_types.toml | valgrind --error-exitcode=1 --leak-check=full --suppressions=.valgrind.supp ./.build/Debug/pdgl_cli -c 1
 
 check-valgrind_rel: build_rel 
@@ -256,14 +256,14 @@ do-tombi:
     
 
 ##################################################################################################
-####### mdformat format ##########################################################################
+####### rumdl format ##########################################################################
 ##################################################################################################
     
-# Run mdformat 
-do-mdformat:
-    source .venv/bin/activate && \
-    mdformat  docs && \
-    mdformat source
+# Run rumdl 
+do-rumdl:
+    rumdl fmt --fix docs
+    rumdl fmt --fix source
+    rumdl fmt --fix wrappers 
 
 ##################################################################################################
 ####### check everything #########################################################################
@@ -280,6 +280,6 @@ check:
 ##################################################################################################
 
 # Run all formatting.  
-format: do-mdformat do-cmakeformat do-uncrustify do-tombi
+format: do-rumdl do-cmakeformat do-uncrustify do-tombi
     @echo "🚀 Formated the files"
     exit 0

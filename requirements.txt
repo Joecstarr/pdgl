@@ -17,7 +17,4 @@ pymdown-extensions
 mkdoxy
 mkdocs-monorepo-plugin
 mkdocs-auto-refresh-build-pages
-mdformat
-mdformat-mkdocs[recommended]
-mdformat-front-matters
 reloadserver

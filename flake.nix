@@ -71,7 +71,7 @@
               jsonschema-cli
               valgrind
               toml2json
-
+              rumdl
             ]
             ++ builtins.attrValues ccPkgs;
 

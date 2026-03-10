@@ -1,0 +1,11 @@
+[global]
+disable = ["MD041", "MD033", "MD074", "MD057", "MD052"]
+flavor = "mkdocs"
+
+[MD013]
+line-length = 100
+reflow = true
+reflow-mode = "normalize"
+code-blocks = false  # Don't check code blocks (default: true)
+tables = false  # Don't check tables (default: false)
+paragraphs = false

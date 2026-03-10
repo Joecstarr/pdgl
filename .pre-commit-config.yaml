@@ -18,7 +18,7 @@ repos:
           - id: docs
             name: docs
             language: system
-            entry: mdformat --check
+            entry: rumdl check
             exclude:
                 glob:
                     - ".github/**/*.*"
