@@ -19,4 +19,4 @@ PDGL. Next, we will show how the PDGL harnesses these theoretical objects to gen
 some flowcharts and examples). From here we will switch gears from "what" to "how" and see how a
 language is configured for the PDGL. Finally, we will show how a user can obtain and run the PDGL.
 
-[ Next $\to$](./prelim){ .md-button }
+[Next $\to$](./prelim){ .md-button }

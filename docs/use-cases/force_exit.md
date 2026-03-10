@@ -5,22 +5,23 @@ authors:
 ---
 
 [](){#force_exit}
+
 ## Primary Actor
 
 N/A
 
-## Trigger:
+## Trigger
 
 An upstream actor requests the PDGL be exited.
 
-## Goal:
+## Goal
 
 The PDGL is exited.
 
-## Preconditions:
+## Preconditions
 
 None.
 
-## Scenario:
+## Scenario
 
 1. The PDGL exits.

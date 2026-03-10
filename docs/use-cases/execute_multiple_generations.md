@@ -5,23 +5,24 @@ authors:
 ---
 
 [](){#execute_multiple_generations}
+
 ## Primary Actor
 
 The primary actor for the use case is the user.
 
-## Trigger:
+## Trigger
 
 The user requests multiple words to be computed.
 
-## Goal:
+## Goal
 
 The generation of $n$ words in the configured language.
 
-## Preconditions:
+## Preconditions
 
 A language is specified.
 
-## Scenario:
+## Scenario
 
 1. User requests $n$ words of the configured language.
 1. PDGL executes $n$ times.

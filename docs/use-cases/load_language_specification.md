@@ -5,23 +5,24 @@ authors:
 ---
 
 [](){#load_language_specification}
+
 ## Primary Actor
 
 N/A
 
-## Trigger:
+## Trigger
 
 A language specification needs to be loaded.
 
-## Goal:
+## Goal
 
 Load a collection of configuration settings from a language specification.
 
-## Preconditions:
+## Preconditions
 
 No preconditions.
 
-## Scenario:
+## Scenario
 
 1. The user supplies a language specification to the PDGL.
 1. The language specification is loaded into a collection of productions.

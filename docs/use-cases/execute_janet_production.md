@@ -5,23 +5,24 @@ authors:
 ---
 
 [](){#execute_janet_production}
+
 ## Primary Actor
 
 N/A
 
-## Trigger:
+## Trigger
 
 An upstream actor requires the resolution of a Janet production in the configured language.
 
-## Goal:
+## Goal
 
 The resolution of a Janet production in the configured language.
 
-## Preconditions:
+## Preconditions
 
 A language is specified.
 
-## Scenario:
+## Scenario
 
 1. A Janet production symbol is removed from the current state string.
 1. A Janet snippet is executed resulting in a string.

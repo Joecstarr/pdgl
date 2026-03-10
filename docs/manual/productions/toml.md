@@ -114,7 +114,7 @@ required, is determined by the `type` configured for the production.
 The variables of the PDGL consist of the set of configured `name` fields of the productions. Notice
 that the variables are words over the terminal, this causes some headaches for parsing the variables
 out of a string that is being resolved. To mitigate this issue we modify the variables (when found
-in a partially derived string) with the delimiters `%`,`{`, and `}` as `%{<variable>}`.
+in a partially derived string) with the delimiters `%`, `{`, and `}` as `%{<variable>}`.
 
 ### The Start Variable ($S$)
 
@@ -123,6 +123,7 @@ specification. Meaning every language specification must have a production confi
 `entry`. Defining this as a constant means the TOML files are slightly easier to read.
 
 [](){#schema-pdgl}
+
 ## Schema
 
 ```json
@@ -141,10 +142,13 @@ To validate a grammar against the PDGL schema follow these steps from inside the
 development shell:
 
 1. Convert the grammar TOML into JSON:
+
     ```fish
     toml2json gramar_file.toml > .build/temp.json
     ```
+
 1. Validate the generated JSON:
+
     ```fish
     jsonschema-cli docs/manual/media/schema/pdgl-schema.json -i .build/temp.json
     ```

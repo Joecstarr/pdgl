@@ -51,7 +51,7 @@ stateDiagram-v2
   state fep {
     state "Build production object" as bpo 
     state "Add production object to production store" as apo
-    
+
     [*]--> bpo
     bpo --> apo 
     apo --> [*]
@@ -105,7 +105,7 @@ should be documented in Doxygen comments at declaration.
 > **Expected Output:**
 >
 > - A NULL ptr is returned.
-
+>
 > [!test-card] "NULL TOML string is supplied"
 >
 > A NULL pointer is supplied as the TOML string is passed to the parsing routine. The routine exits
@@ -118,7 +118,7 @@ should be documented in Doxygen comments at declaration.
 > **Expected Output:**
 >
 > - A NULL pointer is returned.
-
+>
 > [!test-card] "Configuration with invalid pure production"
 >
 > A TOML string is passed to the parsing routine with invalid pure production specified.
@@ -126,17 +126,17 @@ should be documented in Doxygen comments at declaration.
 > **Inputs:**
 >
 > - The following configurations of TOML:
->     - Missing terminal string
->     - Missing replacement string
->     - Missing name
->     - Name is an int
->     - Terminal string is an int
->     - Transition string is an int
+>   - Missing terminal string
+>   - Missing replacement string
+>   - Missing name
+>   - Name is an int
+>   - Terminal string is an int
+>   - Transition string is an int
 >
 > **Expected Output:**
 >
 > - The creation of the store fails.
-
+>
 > [!test-card] "Configuration with invalid range production"
 >
 > A TOML string is passed to the parsing routine with invalid range production specified.
@@ -144,17 +144,17 @@ should be documented in Doxygen comments at declaration.
 > **Inputs:**
 >
 > - The following configurations of TOML:
->     - Missing lower bound int
->     - Missing upper bound int
->     - Missing name
->     - Name is an int
->     - Lower bound is a string
->     - Upper bound is a string
+>   - Missing lower bound int
+>   - Missing upper bound int
+>   - Missing name
+>   - Name is an int
+>   - Lower bound is a string
+>   - Upper bound is a string
 >
 > **Expected Output:**
 >
 > - The creation of the store fails.
-
+>
 > [!test-card] "Configuration with invalid Janet production"
 >
 > A TOML string is passed to the parsing routine with invalid Janet production specified.
@@ -162,17 +162,17 @@ should be documented in Doxygen comments at declaration.
 > **Inputs:**
 >
 > - The following configurations of TOML:
->     - Missing terminal string
->     - Missing replacement string
->     - Missing name
->     - Name is an int
->     - Terminal script is an int
->     - Transition script is an int
+>   - Missing terminal string
+>   - Missing replacement string
+>   - Missing name
+>   - Name is an int
+>   - Terminal script is an int
+>   - Transition script is an int
 >
 > **Expected Output:**
 >
 > - The creation of the store fails.
-
+>
 > [!test-card] "Configuration with a production containing extra symbols"
 >
 > A TOML string is passed to the parsing routine with a production containing extra (unknown)
@@ -185,7 +185,7 @@ should be documented in Doxygen comments at declaration.
 > **Expected Output:**
 >
 > - The creation of the store fails.
-
+>
 > [!test-card] "Configuration with missing entry symbol"
 >
 > A TOML string is passed to the parsing routine with no entry symbol named.

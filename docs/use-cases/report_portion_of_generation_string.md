@@ -6,23 +6,23 @@ authors:
 
 [](){#report_portion_of_generation_string}
 
-## Primary Actor:
+## Primary Actor
 
 N/A
 
-## Trigger:
+## Trigger
 
 An upstream actor processes a printable section.
 
-## Goal:
+## Goal
 
 Report a completed portion of a processed word.
 
-## Preconditions:
+## Preconditions
 
 The derivation of a word has been started.
 
-## Scenario:
+## Scenario
 
 1. A derivation has been started.
 1. A portion of a replacement has been processed.

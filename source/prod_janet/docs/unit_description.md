@@ -11,7 +11,7 @@ classDiagram
    prod_janet --> production 
    prod_janet *-- prod_janet_config_t
    class prod_janet{ }
-    
+
    class prod_janet_config_t{
    char * replacement_script
    char* term_script

@@ -5,23 +5,24 @@ authors:
 ---
 
 [](){#supply_language_specification}
+
 ## Primary Actor
 
 The primary actor for the use case is the user.
 
-## Trigger:
+## Trigger
 
 The user submits a language specification.
 
-## Goal:
+## Goal
 
 Initialize the PDGL with a language specification.
 
-## Preconditions:
+## Preconditions
 
 No preconditions.
 
-## Scenario:
+## Scenario
 
 1. User supplies a language specification to the PDGL.
 1. PDGL verifies the language specification is well formed.

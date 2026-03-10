@@ -13,7 +13,7 @@ classDiagram
   pdgl_wasm *-- prodstr_store 
   pdgl_wasm *-- fmem 
   pdgl_wasm -- pdgl 
-    
+
    class pdgl_wasm{
     <<executable>>
     }
@@ -95,13 +95,13 @@ Integration tests are to be performed manually. Tests are specified in a JSON ar
 
 When the webpage loads the tests will run automatically and report positive results as:
 
-```
+```text
 n. <test name> 
 ```
 
 Failures will report results as:
 
-```
+```text
 n. <test name> 
 ```
 
@@ -116,7 +116,7 @@ with detailed failure results:
 
 > [!note] "Note:"
 
-````
+````text
 The build and launch steps are bundled in the command:
 
 ```sh
@@ -125,6 +125,7 @@ just test_em
 ````
 
 [](){#test-schema}
+
 #### Test Schema
 
 ```json
@@ -177,29 +178,29 @@ just test_em
 > **Inputs:**
 >
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 10 words
->     - Stack size is 100
+>   - The paired paren lanaguage specification
+>   - 10 words
+>   - Stack size is 100
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 10 words
->     - Stack size is 1
+>   - The paired paren lanaguage specification
+>   - 10 words
+>   - Stack size is 1
 > - A valid configuration:
->     - The paired paren lanaguage specification with `%{parent set}` as a range production
->     - 10 words
->     - Stack size is 100
+>   - The paired paren lanaguage specification with `%{parent set}` as a range production
+>   - 10 words
+>   - Stack size is 100
 > - A valid configuration:
->     - The paired paren lanaguage specification with `%{parent set}` as a range production
->     - 10 words
->     - Stack size is 1
+>   - The paired paren lanaguage specification with `%{parent set}` as a range production
+>   - 10 words
+>   - Stack size is 1
 > - A valid configuration:
->     - The paired paren lanaguage specification with `%{parent set}` as a janet production
->     - 10 words
->     - Stack size is 100
+>   - The paired paren lanaguage specification with `%{parent set}` as a janet production
+>   - 10 words
+>   - Stack size is 100
 > - A valid configuration:
->     - The paired paren lanaguage specification with `%{parent set}` as a janet production
->     - 10 words
->     - Stack size is 1
+>   - The paired paren lanaguage specification with `%{parent set}` as a janet production
+>   - 10 words
+>   - Stack size is 1
 >
 > **Expected Output:**
 >
@@ -218,7 +219,7 @@ just test_em
 > **Expected Output:**
 >
 > Tool yields and error
-
+>
 > [!test-card] "Invalid language configured"
 >
 > The tool is configured for generation of 10 word but with Invalid language specification.

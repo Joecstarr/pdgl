@@ -13,7 +13,7 @@ classDiagram
    cli *-- prodstr_store 
    cli *-- cxxopts 
    cli -- pdgl 
-    
+
    class cli{
     <<executable>>
     int main()
@@ -61,11 +61,11 @@ Container class used for producing and running a PDGL stack.
 The class has two constructors:
 
 1. A constructor with three arguments for:
-    - language specification
-    - stack_size
-    - random seed
-1. A constructor with an argument for the language specification. The stack size is defaulted to 100
-   and the random seed is generated in the function.
+   - language specification
+   - stack_size
+   - random seed
+1. A constructor with an argument for the language specification. The stack size is defaulted to
+    100 and the random seed is generated in the function.
 
 ###### De-constructor
 
@@ -140,13 +140,13 @@ language specification TOML files can be found in the `language` directory or in
 > **Inputs:**
 >
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 10 words
->     - Stack size is 100
+>   - The paired paren lanaguage specification
+>   - 10 words
+>   - Stack size is 100
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 10 words
->     - Stack size is 1
+>   - The paired paren lanaguage specification
+>   - 10 words
+>   - Stack size is 1
 >
 > **Expected Output:**
 >
@@ -161,13 +161,13 @@ language specification TOML files can be found in the `language` directory or in
 > **Inputs:**
 >
 > - A valid configuration:
->     - The paired paren lanaguage specification
->     - 100000 words
+>   - The paired paren lanaguage specification
+>   - 100000 words
 >
 > **Expected Output:**
 >
 > - No memory leaks detected in heaptrack
-
+>
 > [!test-card] "Invalid language configured"
 >
 > The tool is configured for generation of 10 word but with Invalid language specification.

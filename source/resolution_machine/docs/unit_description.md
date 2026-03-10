@@ -31,7 +31,7 @@ classDiagram
     const resolution_partial_t * stack_end_ptr 
     resolution_partial_t * stack_ptr 
     }
-   
+
     class prodstr_obj_t{
         <<external>>
     } 
@@ -150,7 +150,7 @@ stateDiagram-v2
 > **Expected Output:**
 >
 > The correct output is seen on the output stream.
-
+>
 > [!test-card] "Induce a terminal resolution"
 >
 > A valid store and stack are passed to the function. The combination induces a terminal resolution.
@@ -172,14 +172,14 @@ stateDiagram-v2
 > **Inputs:**
 >
 > - A null pointer is passed to the function:
->     - For the store
->     - For the stack
->     - For the stream
+>   - For the store
+>   - For the stack
+>   - For the stream
 >
 > **Expected Output:**
 >
 > A negative response.
-
+>
 > [!test-card] "Correctly formatted production symbol but not in store"
 >
 > A valid configuration is passed to the function. A production contains a reference to a

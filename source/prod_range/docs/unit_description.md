@@ -11,7 +11,7 @@ classDiagram
    prod_range --> production 
    prod_range *-- prod_range_config_t
    class prod_range{ }
-    
+
    class prod_range_config_t{
    char* key
    int lower_bound 
@@ -72,8 +72,8 @@ stateDiagram-v2
 > **Inputs:**
 >
 > - A valid configuration with:
->     - Upper == Lower
->     - Lower $<$ Upper
+>   - Upper == Lower
+>   - Lower $<$ Upper
 >
 > **Expected Output:**
 >
@@ -93,7 +93,7 @@ stateDiagram-v2
 > **Expected Output:**
 >
 > A negative response.
-
+>
 > [!test-card] "Null Configuration"
 >
 > A null configuration for the production is passed to the function.

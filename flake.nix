@@ -3,7 +3,7 @@
   description = "Flake";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs =
@@ -14,7 +14,7 @@
     in
     {
 
-      devShell.${system} =
+      devShells.${system}.default =
         let
           targetName = {
             mingw = "x86_64-w64-mingw32";

@@ -77,22 +77,23 @@ grammars.
 
 [](){#fig-higher} ![Hierarchy of Grammars](../media/higher.svg)
 
-/// caption
-The hierarchy of grammars[^chom], information on the other "flavors" can be found in Hopcroft, Motwani, and Ullman [@hopcroftIntroductionAutomataTheory2007] as well as many other sources.
-///
+/// caption The hierarchy of grammars [^chom], information on the other "flavors" can be found in
+Hopcroft, Motwani, and Ullman [@hopcroftIntroductionAutomataTheory2007] as well as many other
+sources. ///
 
 [](){#subsec-context_free}
+
 ### What Is a Context Free Grammar?
 
 A context free grammar is built from the following ingredients:
 
 1. An alphabet for the language, called terminals.
 1. A second alphabet of temporary symbols distinct from the alphabet. We call these symbols
-   variables.
+    variables.
 1. A starting variable.
 1. A set of maps that we call productions. Each production in the set eats a variable and maps to a
-   string. The derived strings are made of terminals and variables in any combination we desire.
-   Maps are written $V\to W$ where $V$ is a variable and $W$ is an output string.
+    string. The derived strings are made of terminals and variables in any combination we desire.
+    Maps are written $V\to W$ where $V$ is a variable and $W$ is an output string.
 
 [](){#def-grammar}
 
@@ -114,7 +115,7 @@ A context free grammar is built from the following ingredients:
 > variable, we condense those maps to a single line with a $|$ symbol separating resulting strings.
 > This condensation process is seen here:
 >
-> $\begin{matrix}\begin{aligned}V&\to W_1\\V&\to W_2\end{aligned} &\Rightarrow & V\to W_1 \mid  W_2\end{matrix}$
+> $\begin{matrix}\begin{aligned}V&\to W_1\\V&\to W_2\end{aligned} &\Rightarrow & V\to W_1 \mid W_2\end{matrix}$
 
 A common example given for a context free grammar is the paired parentheses grammar. In this
 language each word is an arrangement of the alphabet symbols $($ and $)$ where each $($ has a paired
@@ -129,7 +130,7 @@ closing $)$.
 > 1. $V=\LS S\RS$.
 > 1. $\Sigma=\LS (,),\varepsilon\RS$.
 > 1. $R$ is the set
->     - $S\to (S) \mid SS \mid \varepsilon$
+>    - $S\to (S) \mid SS \mid \varepsilon$
 > 1. $S=S$
 >
 > A sample of words of this language are:
@@ -171,8 +172,8 @@ result in the desired word.
 
 We call the resulting language of words fitting the productions a **context free language**.
 
-[ Next $\to$](../what){ .md-button }
+[Next $\to$](../what){ .md-button }
 
 [^chom]: I think it is important to note this is usually called the "Chomsky Hierarchy". I've
-    elected a different name based on ongoing
-    [controversy](https://en.wikipedia.org/wiki/Noam_Chomsky#Friendship_with_Jeffrey_Epstein).
+elected a different name based on ongoing
+[controversy](https://en.wikipedia.org/wiki/Noam_Chomsky#Friendship_with_Jeffrey_Epstein).

@@ -12,7 +12,7 @@ classDiagram
    prod_weighted *-- prod_weighted_config_t
   prod_weighted_config_t *-- prod_weighted_pair_t
    class prod_weighted{ }
-    
+
    class prod_weighted_config_t{
    prod_weighted_pair_t* replacement_list
    int replacement_len 
@@ -86,8 +86,8 @@ $s_i$ is represented $w_i$ times.
 > **Inputs:**
 >
 > - A valid configuration:
->     - 2 strings one with weight 1 and one with weight 2
->     - 1 string with weight 1
+>   - 2 strings one with weight 1 and one with weight 2
+>   - 1 string with weight 1
 >
 > **Expected Output:**
 >
@@ -121,8 +121,8 @@ $s_i$ is represented $w_i$ times.
 > **Inputs:**
 >
 > - A valid configuration:
->     - 2 strings one with weight 1 and one with weight 2
->     - 1 string with weight 1
+>   - 2 strings one with weight 1 and one with weight 2
+>   - 1 string with weight 1
 >
 > **Expected Output:**
 >

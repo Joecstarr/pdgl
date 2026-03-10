@@ -5,22 +5,23 @@ authors:
 ---
 
 [](){#push_production_to_stack}
+
 ## Primary Actor
 
 N/A
 
-## Trigger:
+## Trigger
 
 An upstream actor requires a production result to be pushed onto the resolution stack.
 
-## Goal:
+## Goal
 
 A step in a production is pushed onto the resolution stack.
 
-## Preconditions:
+## Preconditions
 
 A language is specified.
 
-## Scenario:
+## Scenario
 
 1. A production result is pushed onto the resolution stack.

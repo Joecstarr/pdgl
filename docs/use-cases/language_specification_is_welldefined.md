@@ -6,23 +6,23 @@ authors:
 
 [](){#language_specification_is_welldefined}
 
-## Primary Actor:
+## Primary Actor
 
 N/A
 
-## Trigger:
+## Trigger
 
 An upstream actor requests the validation of a language specification.
 
-## Goal:
+## Goal
 
 An input language specification is validated.
 
-## Preconditions:
+## Preconditions
 
 A language specification is loaded.
 
-## Scenario:
+## Scenario
 
 1. The user supplies a language specification to the PDGL.
 1. The language specification is validated for consistency.

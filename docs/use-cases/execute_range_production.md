@@ -5,23 +5,24 @@ authors:
 ---
 
 [](){#execute_range_production}
+
 ## Primary Actor
 
 N/A
 
-## Trigger:
+## Trigger
 
 An upstream actor requires the resolution of a range production in the configured language.
 
-## Goal:
+## Goal
 
 The resolution of a range production in the configured language.
 
-## Preconditions:
+## Preconditions
 
 A language is specified.
 
-## Scenario:
+## Scenario
 
 1. A range production symbol is removed from the current state string.
 1. A decimal string representation of an integer is generated.

@@ -73,6 +73,7 @@ terminal strings. Each list contains pairs of a string called `string` and an in
 ```
 
 [](){#schema-weighted}
+
 ## Production Schema
 
 ```json
