@@ -74,7 +74,7 @@ const char * prod_weighted_terminate(const void *config)
 
         if ((0 < typed_cfg->term_len) && (NULL != typed_cfg->term_list))
         {
-            retval = prod_weighted_select(typed_cfg->term_list, typed_cfg->repl_len);
+            retval = prod_weighted_select(typed_cfg->term_list, typed_cfg->term_len);
         }
     }
     return retval;
