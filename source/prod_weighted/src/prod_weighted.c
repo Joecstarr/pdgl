@@ -18,12 +18,25 @@
 /************************** Defines **************************************************************/
 /*************************************************************************************************/
 
+/**
+ * \brief Posted by chux, modified by community. See post 'Timeline' for change history Retrieved
+ *2026-03-11, License - CC BY-SA 4.0
+ */
+#define IMAX_BITS(m)    ((m) / ((m) % 255 + 1) / 255 % 255 * 8 + 7 - 86 / ((m) % 255 + 12))
+
+/**
+ * \brief Posted by chux, modified by community. See post 'Timeline' for change history Retrieved
+ *2026-03-11, License - CC BY-SA 4.0
+ */
+#define RAND_MAX_WIDTH    IMAX_BITS(RAND_MAX)
+
 /*************************************************************************************************/
 /************************** Private Function Declarations ****************************************/
 /*************************************************************************************************/
 
 STATIC_INLINE uint64_t  prod_weighted_sum(prod_weighted_pair_t *pairs, size_t pairs_len);
 STATIC_INLINE const char *prod_weighted_select(prod_weighted_pair_t *pairs, size_t pairs_len);
+STATIC_INLINE uint64_t rand_uint64(void);
 
 /*************************************************************************************************/
 /************************** Local Variables ******************************************************/
@@ -61,7 +74,7 @@ const char * prod_weighted_terminate(const void *config)
 
         if ((0 < typed_cfg->term_len) && (NULL != typed_cfg->term_list))
         {
-            retval = prod_weighted_select(typed_cfg->term_list, typed_cfg->repl_len);
+            retval = prod_weighted_select(typed_cfg->term_list, typed_cfg->term_len);
         }
     }
     return retval;
@@ -85,7 +98,7 @@ STATIC_INLINE uint64_t prod_weighted_sum(prod_weighted_pair_t *pairs, size_t pai
 
     for (i = 0u; i < pairs_len; i++)
     {
-        if (retval < UINT64_MAX - pairs[i].weight)
+        if (retval < (UINT64_MAX - pairs[i].weight))
         {
             retval += pairs[i].weight;
         }
@@ -116,7 +129,9 @@ STATIC_INLINE const char *prod_weighted_select(prod_weighted_pair_t *pairs, size
     if (sum != 0)
     {
         size_t   i;
-        uint64_t idx      = rand() % sum;
+        uint64_t idx = rand_uint64();
+        idx %= sum;
+
         uint64_t part_sum = 0;
         for (i = 0; i < pairs_len; i++)
         {
@@ -127,6 +142,27 @@ STATIC_INLINE const char *prod_weighted_select(prod_weighted_pair_t *pairs, size
                 break;
             }
         }
+    }
+    return retval;
+}
+
+/**
+ * \brief Select by weighted random selection a string from a list of string/weight pairs.
+ *
+ * Posted by chux, modified by community. See post
+ *'Timeline' for change history Retrieved 2026-03-11, License - CC BY-SA 4.0
+ *
+ * \return A random uint64
+ */
+STATIC_INLINE uint64_t rand_uint64(void)
+{
+    uint64_t retval = 0;
+    size_t   i;
+
+    for (i = 0; i < 64; i += RAND_MAX_WIDTH)
+    {
+        retval <<= RAND_MAX_WIDTH;
+        retval  ^= (unsigned)rand();
     }
     return retval;
 }

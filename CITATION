@@ -1,0 +1,17 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'Portable Generation Language Based on Probabilistic Context Free Grammars'
+message: >-
+  If you use this software or design, please cite it as below.
+type: software
+authors:
+  - family-names: Starr
+    given-names: Joseph
+doi: 10.5281/zenodo.18962752
+repository-code: 'https://github.com/joecstarr/pdgl'
+abstract: >-
+   The primary use case of the PDGL is the generation of words from an input grammar. 
+license: GPL-3.0-or-later
+date-released: '2026-03-11'
