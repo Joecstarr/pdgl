@@ -13,7 +13,7 @@ allows for the PDGL CLI to be included in complex
 the screen looks like the following:
 
 ```console
-$ cat paren_lang.toml | ./pdgl_cli -c 4
+$ cat dyck_lang.toml | ./pdgl_cli -c 4
 
 (()())
 (())

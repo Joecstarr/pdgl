@@ -10,7 +10,7 @@
         },
         "type": {
             "type": "string",
-            "const": "pure"
+            "const": "weighted"
         },
         "replacements": {
             "type": "array",

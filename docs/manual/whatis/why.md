@@ -33,9 +33,13 @@ laser won't magically create an IC. Instead, production of an IC, particularly c
 carrying out a complex [multistep development process][fig-circuit] called Very-Large-Scale
 Integration (VLSI).
 
-[](){#fig-circuit} ![Circuit Design](../media/vlsi.svg)
-
-/// caption An overview of the IC design process[^cd]. ///
+<!-- rumdl-capture -->
+<!-- rumdl-disable * -->
+[](){#fig-circuit} ![Circuit Design](../media/vlsi.svg) 
+///caption 
+An overview of the IC design process[^cd]. 
+///
+<!-- rumdl-restore -->
 
 Consider how complicated the process of IC creation is and how are critical they are to our lives.
 Every day when we press the brake pedal in our car we trust in the reliability of ICs. That

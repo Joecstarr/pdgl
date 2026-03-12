@@ -10,7 +10,7 @@ detail what the PDGL is doing we will focus on Context Free Grammars. First we w
 approach to using a context free grammar to generate data. This begs the question of the existence
 of probabilistic grammars. Finally, we discuss the PDGL's stochastic word generation.
 
-## Sequentially Generating Words with a Context Free Grammar
+## Sequentially Deriving Words with a Context Free Grammar
 
 As we saw a [context free grammar][subsec-context_free] can be applied to answer the word question.
 While this is a common use for grammars we will instead apply context free grammars to different
@@ -22,9 +22,9 @@ productions.
 
 > [!example] "Example: "
 >
-> Working in the [paired parentheses language][ex-paired_paren] we have three productions on $S$. We
-> can enumerate all possibilities by counting up from 0 in the ternary numeral system with the
-> following correspondence:
+> Working in the [Dyck language][ex-dyck_lang] we have three productions on $S$. We can enumerate
+> all possibilities by counting up from 0 in the ternary numeral system with the following
+> correspondence:
 >
 > | Ternary Number | Production        |
 > | -------------- | ----------------- |
@@ -84,8 +84,7 @@ productions.
 > | $()(())(S)$    | 0              | $S\to \varepsilon$                              |
 > | $()(())()$     |                |                                                 |
 >
-> It's easy to prove that this method of generating paired parentheses attains every word in the
-> language.
+> It's easy to prove that this method of deriving from the Dyck grammar attains every word in the language.
 
 ### Probability and Grammars
 
@@ -122,9 +121,8 @@ the context free grammars we've been working with this means selecting legal pro
 
 > [!EXAMPLE] "Example: "
 >
-> [](){#ex-random} Working in the [paired parentheses language][ex-paired_paren] we have three
-> productions on $S$. We can enumerate each of the productions with a pair of values from integers
-> 1-6 as:
+> [](){#ex-random} Working in the [Dyck language][ex-dyck_lang] we have three productions on $S$. We
+> can enumerate each of the productions with a pair of values from integers 1-6 as:
 >
 > | Values | Production        |
 > | ------ | ----------------- |
@@ -165,7 +163,7 @@ effectively cutting off the derivation branch.
 <!-- rumdl-capture -->
 <!-- rumdl-disable MD013 -->
 > [!EXAMPLE] "Example: Formal description of the PDGL grammar for the
-> [paired parentheses language][ex-paired_paren]:"
+> [Dyck language][ex-dyck_lang]:"
 >
 > 1. $V=\LS S\RS$.
 > 1. $\Sigma=\LS (,),\varepsilon\RS$.

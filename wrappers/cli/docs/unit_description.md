@@ -140,11 +140,11 @@ language specification TOML files can be found in the `language` directory or in
 > **Inputs:**
 >
 > - A valid configuration:
->   - The paired paren lanaguage specification
+>   - The Dyck language specification
 >   - 10 words
 >   - Stack size is 100
 > - A valid configuration:
->   - The paired paren lanaguage specification
+>   - The Dyck language specification
 >   - 10 words
 >   - Stack size is 1
 >
@@ -161,7 +161,7 @@ language specification TOML files can be found in the `language` directory or in
 > **Inputs:**
 >
 > - A valid configuration:
->   - The paired paren lanaguage specification
+>   - The Dyck language specification
 >   - 100000 words
 >
 > **Expected Output:**
