@@ -10,10 +10,10 @@ interface this means a TOML file. These TOML files can't just be in any format y
 written in a way that the PDGL can understand. The PDGL can parse TOML files written in the
 following [format (schema)](#schema-pdgl).
 
-## Language Specification for the [Paired Parentheses Grammar][ex-paired_paren]
+## Language Specification for the [Dyck Grammar][ex-dyck_lang][@AlgebraicTheoryContextFree1959]
 
 ```TOML
---8<-- "languages/paren/def.toml"
+--8<-- "languages/dyck/def.toml"
 ```
 
 ## Parts of a PDGL Language Specification

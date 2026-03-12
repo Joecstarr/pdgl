@@ -178,27 +178,27 @@ just test_em
 > **Inputs:**
 >
 > - A valid configuration:
->   - The paired paren lanaguage specification
+>   - The Dyck language specification
 >   - 10 words
 >   - Stack size is 100
 > - A valid configuration:
->   - The paired paren lanaguage specification
+>   - The Dyck language specification
 >   - 10 words
 >   - Stack size is 1
 > - A valid configuration:
->   - The paired paren lanaguage specification with `%{parent set}` as a range production
+>   - The Dyck language specification with `%{parent set}` as a range production
 >   - 10 words
 >   - Stack size is 100
 > - A valid configuration:
->   - The paired paren lanaguage specification with `%{parent set}` as a range production
+>   - The Dyck language specification with `%{parent set}` as a range production
 >   - 10 words
 >   - Stack size is 1
 > - A valid configuration:
->   - The paired paren lanaguage specification with `%{parent set}` as a janet production
+>   - The Dyck language specification with `%{parent set}` as a janet production
 >   - 10 words
 >   - Stack size is 100
 > - A valid configuration:
->   - The paired paren lanaguage specification with `%{parent set}` as a janet production
+>   - The Dyck language specification with `%{parent set}` as a janet production
 >   - 10 words
 >   - Stack size is 1
 >

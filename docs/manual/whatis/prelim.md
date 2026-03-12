@@ -75,11 +75,15 @@ formal grammars comprise a [hierarchy][fig-higher] that is (imprecisely) based o
 "complexity" for words in the language. Of interest to the PDGL and its use are the context free
 grammars.
 
+<!-- rumdl-capture -->
+<!-- rumdl-disable * -->
 [](){#fig-higher} ![Hierarchy of Grammars](../media/higher.svg)
 
-/// caption The hierarchy of grammars [^chom], information on the other "flavors" can be found in
-Hopcroft, Motwani, and Ullman [@hopcroftIntroductionAutomataTheory2007] as well as many other
-sources. ///
+/// caption 
+The hierarchy of grammars[^chom], information on the other "flavors" can be found in Hopcroft, 
+Motwani, and Ullman[@hopcroftIntroductionAutomataTheory2007] as well as many other sources. 
+///
+<!-- rumdl-restore -->
 
 [](){#subsec-context_free}
 
@@ -117,13 +121,12 @@ A context free grammar is built from the following ingredients:
 >
 > $\begin{matrix}\begin{aligned}V&\to W_1\\V&\to W_2\end{aligned} &\Rightarrow & V\to W_1 \mid W_2\end{matrix}$
 
-A common example given for a context free grammar is the paired parentheses grammar. In this
-language each word is an arrangement of the alphabet symbols $($ and $)$ where each $($ has a paired
-closing $)$.
+A common example given for a context free grammar is the Dyck grammar. In this language each word is
+an arrangement of the alphabet symbols $($ and $)$ where each $($ has a paired closing $)$.
 
-[](){#ex-paired_paren}
+[](){#ex-dyck_lang}
 
-> [!example] "Taken from Sipser Example 2.3 [@sipserIntroductionTheoryComputation2013]"
+> [!example] "Taken from Sipser Example 2.3 [@sipserIntroductionTheoryComputation2013;@AlgebraicTheoryContextFree1959]"
 >
 > The context free grammar:
 >
@@ -147,12 +150,12 @@ for a word is as simple as checking for productions that lead to the word. Speci
 with the start variable. Demonstrate there is at least one sequence of productions from $R$ that
 result in the desired word.
 
-[](){#ex-der_paired_paren}
+[](){#ex-der_dyck_lang}
 
 > [!example] "Example:"
 >
-> In the paired parentheses grammar we can verify $()(())()$ to be in the language by the sequence
-> of productions given in the table below.
+> In the Dyck grammar we can verify $()(())()$ to be in the language by the sequence of productions
+> given in the table below.
 >
 > | Current string | Next production to resolve on leftmost variable |
 > | -------------- | ----------------------------------------------- |
