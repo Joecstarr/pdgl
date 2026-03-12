@@ -64,7 +64,7 @@ nav:
                       - Weighted Production: "manual/productions/weighted/prod.md"
                       - Range Production: "manual/productions/range/prod.md"
                       - Janet Production: "manual/productions/janet/prod.md"
-          - Generation:
+          - Derivation:
                 - "manual/getting.md"
                 - "manual/running.md"
                 - "manual/building.md"
@@ -95,6 +95,7 @@ nav:
     - Code Comments:
           - Libraries: "lib/files.md"
           - Wrappers: "wrap/files.md"
+    - Supplied Languages: "*include ./languages/*/mkdocs.yml"
 plugins:
     - auto-refresh-build-pages:
           update_message: "The page has been updated. Do you want to reload?"
