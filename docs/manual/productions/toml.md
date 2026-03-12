@@ -144,7 +144,7 @@ development shell:
 1. Convert the grammar TOML into JSON:
 
     ```fish
-    toml2json gramar_file.toml > .build/temp.json
+    toml2json grammar_file.toml > .build/temp.json
     ```
 
 1. Validate the generated JSON:
