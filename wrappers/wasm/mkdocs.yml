@@ -6,5 +6,3 @@ nav:
     - Architectural Decisions:
           - Compiler:
                 - "decisions/compiler/2026-02-03_00.md"
-          - Interface Options:
-                - "decisions/interface/2026-02-03_00.md"

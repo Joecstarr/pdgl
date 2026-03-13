@@ -34,7 +34,9 @@ using namespace emscripten;
 class PDGL_wasm {
 public:
     /* cppcheck-suppress passedByValue */
-    PDGL_wasm(std::string input, size_t stack_size, size_t seed);
+    PDGL_wasm(std::string input, size_t stack_size, uint64_t seed);
+    /* cppcheck-suppress passedByValue */
+    PDGL_wasm(std::string input, size_t stack_size);
     /* cppcheck-suppress passedByValue */
     explicit PDGL_wasm(std::string input);
     ~PDGL_wasm();
@@ -42,7 +44,7 @@ public:
 
 private:
     /* cppcheck-suppress passedByValue */
-    void init(std::string input, size_t stack_size, size_t seed);
+    void init(std::string input, size_t stack_size, uint64_t seed);
 
     std::string language;                                  /**< Language specification TOML data. */
     prodstr_store_t *store;                                /**< Pointer to a production store for
@@ -55,7 +57,7 @@ private:
 };
 
 /**
- * \brief constructor for the WASM wrapper class.
+ * \brief deconstructor for the WASM wrapper class.
  */
 PDGL_wasm::~PDGL_wasm()
 {
@@ -72,6 +74,20 @@ PDGL_wasm::~PDGL_wasm()
 }
 
 /**
+ * \brief Constructor with stack size and input configurable items.
+ *
+ * \param input A language string as TOML data.
+ * \param stack_size The size of the stack to configure.
+ */
+/* cppcheck-suppress passedByValue */
+PDGL_wasm::PDGL_wasm(std::string input, size_t stack_size)
+{
+    std::random_device rd;
+
+    this->init(input, stack_size, rd());
+}
+
+/**
  * \brief Constructor with all possible configurable items.
  *
  * \param input A language string as TOML data.
@@ -79,7 +95,7 @@ PDGL_wasm::~PDGL_wasm()
  * \param seed The seed to use to seed random.
  */
 /* cppcheck-suppress passedByValue */
-PDGL_wasm::PDGL_wasm(std::string input, size_t stack_size, size_t seed)
+PDGL_wasm::PDGL_wasm(std::string input, size_t stack_size, uint64_t seed)
 {
     this->init(input, stack_size, seed);
 }
@@ -105,7 +121,7 @@ PDGL_wasm::PDGL_wasm(std::string input)
  * \param seed The seed to use to seed random.
  */
 /* cppcheck-suppress passedByValue */
-void PDGL_wasm::init(std::string input, size_t stack_size, size_t seed)
+void PDGL_wasm::init(std::string input, size_t stack_size, uint64_t seed)
 {
     this->seed             = seed;
     this->language         = input;
@@ -173,7 +189,8 @@ EMSCRIPTEN_BINDINGS(notewptt)
     /*  clang-format off  */
     class_<PDGL_wasm>("PDGL")
            .constructor<std::string>()
-           .constructor<std::string,size_t,size_t>()
+           .constructor<std::string,size_t>()
+           .constructor<std::string,size_t,uint64_t>()
            .function("run", &PDGL_wasm::run);
     /* clang-format on */
 }
