@@ -20,6 +20,7 @@ classDiagram
 
    class pdgl{
     + pdgl(string,int,int)
+    + pdgl(string,int)
     + ~pdgl()
     + string run() 
     - string language
