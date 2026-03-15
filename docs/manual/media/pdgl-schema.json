@@ -1,6 +1,5 @@
 {
-    "$id": "PDGL-schema",
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://pdgl.joe-starr.com/manual/media/pdgl-schema.json",
     "description": "Schema for a PDGL compatable grammar file.",
 
     "type": "object",
@@ -9,10 +8,18 @@
             "type": "array",
             "items": {
                 "oneOf": [
-                    { "$ref": "../productions/pure/media/schema.json" },
-                    { "$ref": "../productions/weighted/media/schema.json" },
-                    { "$ref": "../productions/range/media/schema.json" },
-                    { "$ref": "../productions/janet/media/schema.json" }
+                    {
+                        "$ref": "https://pdgl.joe-starr.com/manual/productions/pure/media/schema.json"
+                    },
+                    {
+                        "$ref": "https://pdgl.joe-starr.com/manual/productions/weighted/media/schema.json"
+                    },
+                    {
+                        "$ref": "https://pdgl.joe-starr.com/manual/productions/range/media/schema.json"
+                    },
+                    {
+                        "$ref": "https://pdgl.joe-starr.com/manual/productions/janet/media/schema.json"
+                    }
                 ]
             },
             "contains": {

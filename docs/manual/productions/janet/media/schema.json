@@ -1,6 +1,5 @@
 {
-    "$id": "janet-production_schema",
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://pdgl.joe-starr.com/manual/productions/janet/media/schema.json",
     "type": "object",
     "properties": {
         "name": {
